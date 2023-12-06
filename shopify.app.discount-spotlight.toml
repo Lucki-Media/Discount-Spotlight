@@ -1,14 +1,14 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
-name = "Tealium Track App"
-client_id = "c2e807fb42216f62e995852d94a144e8"
+name = "Discount Spotlight"
+client_id = "77ab0f117b5c21f97449cc51920fad19"
 application_url = "https://pig-striking-snipe.ngrok-free.app"
 embedded = true
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
 scopes = "write_products"
-use_legacy_install_flow = true 
+use_legacy_install_flow = true
 
 [auth]
 redirect_urls = [
@@ -25,5 +25,5 @@ api_version = "2023-10"
 embedded = false
 
 [build]
-automatically_update_urls_on_dev = true
-dev_store_url = "lm-ai-seo-metatag-enhancer-store.myshopify.com"
+automatically_update_urls_on_dev = false
+dev_store_url = "discount-spotlight.myshopify.com"

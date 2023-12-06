@@ -18,6 +18,7 @@ import axios from "axios";
 import { ProductsCard } from "../components";
 import { useEffect } from "react";
 
+
 export default function HomePage() {
   const shop_url = document.getElementById("shopOrigin").value;
   const appFetch = useAuthenticatedFetch();
@@ -41,6 +42,7 @@ export default function HomePage() {
       <TitleBar title={t("HomePage.title")} primaryAction={null} />
       <Layout>
         <Layout.Section>
+        Hello From Vidhee Patel <br />We are on the Admin panel
           <ProductsCard />
         </Layout.Section>
       </Layout>
