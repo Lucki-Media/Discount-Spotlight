@@ -21,7 +21,6 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express-graphql": "^0.12.0",
-    "font-picker-react": "^3.5.2",
     "graphql": "^14.7.0",
     "knex": "^0.21.19",
     "mime": "^3.0.0",
