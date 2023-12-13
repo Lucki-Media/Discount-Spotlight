@@ -52,7 +52,6 @@ export function ProductsCard() {
 
   return (
     <>
-      Vidhee
       {toastMarkup}
       <Card
         title={t("ProductsCard.title")}

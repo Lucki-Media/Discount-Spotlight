@@ -23,12 +23,16 @@ export default function App() {
             <NavigationMenu
               navigationLinks={[
                 {
-                  label: t("NavigationMenu.pageName"),
-                  destination: "/pagename",
+                  label: "Customization",
+                  destination: "/customization",
                 },
                 {
-                  label: t("NavigationMenu.pageName"),
-                  destination: "/ChatComponent",
+                  label: "Discounts",
+                  destination: "/discounts",
+                },
+                {
+                  label: "FAQs",
+                  destination: "/faqs",
                 },
               ]}
             />
