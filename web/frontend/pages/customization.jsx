@@ -7,7 +7,7 @@ export default function PageName() {
   return (
     <Page>
       <TitleBar
-        title="Customization"
+        title="Popup Modal Customization"
         primaryAction={{
           content: t("PageName.primaryAction"),
           onAction: () => console.log("Primary heyy"),
