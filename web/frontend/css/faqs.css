@@ -1,0 +1,18 @@
+/* FAQs Page CSS START */
+.faq_div {
+    padding: 5px 0;
+}
+.faq_div > div:first-child > div:first-child {
+    font-size: 16px;
+    font-weight: 600;
+}
+.setting_title {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-left: 10px;
+}
+.show_span {
+    margin-left: 10px;
+}
+/* FAQs Page CSS END */

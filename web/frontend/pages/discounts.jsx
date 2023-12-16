@@ -7,7 +7,7 @@ export default function PageName() {
   return (
     <Page>
       <TitleBar
-        title={t("PageName.title")}
+        title="Discount Management"
         primaryAction={{
           content: t("PageName.primaryAction"),
           onAction: () => console.log("Primary heyy"),
