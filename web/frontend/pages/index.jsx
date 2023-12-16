@@ -39,11 +39,9 @@ export default function HomePage() {
 
   return (
     <Page narrowWidth>
-      <TitleBar title={t("HomePage.title")} primaryAction={null} />
+      <TitleBar title="DASHBOARD" primaryAction={null} />
       <Layout>
         <Layout.Section>
-        Hello From Vidhee Patel <br />We are on the Admin panel
-          <ProductsCard />
         </Layout.Section>
       </Layout>
     </Page>
