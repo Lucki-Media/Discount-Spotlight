@@ -99,8 +99,7 @@ export default function HomePage() {
             icon={PaintBrushMajor}
             action={{
               content: "Go to Customization",
-              url: url,
-              target: "_blank",
+              url: "/customization",
             }}
             tone="info"
           >
@@ -118,8 +117,7 @@ export default function HomePage() {
             icon={DiscountsMajor}
             action={{
               content: "Manage Discounts",
-              url: "/discounts", // Replace "/discounts" with the actual URL of your discounts page
-              target: "_blank",
+              url: "/discounts", 
             }}
             tone="info"
           >
@@ -137,8 +135,7 @@ export default function HomePage() {
             icon={QuestionMarkMajor}
             action={{
               content: "Visit FAQ",
-              url: "/faq", // Replace "/faq" with the actual URL of your second FAQ page
-              target: "_blank",
+              url: "/faqs", 
             }}
             tone="info"
           >
@@ -155,7 +152,7 @@ export default function HomePage() {
       {/* GRAPH */}
       <Layout>
         <Layout.Section>
-          <div style={{ padding: "20px 0" }}>
+          <div style={{ padding: "20px 0 100px 0px" }}>
             <Card sectioned>
               <CChart
                 type="bar"
