@@ -55,6 +55,7 @@ export default function PageName() {
               onClick={() => {
                 setActiveTab(tab.id);
               }}
+              style={{cursor: 'pointer'}}
             >
               <Card
                 roundedAbove="md"
