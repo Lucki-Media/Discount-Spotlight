@@ -13,15 +13,12 @@ import { useCallback, useState } from "react";
 import PopupSettings from "../components/SidebarSettings/PopupSettings";
 import DiscountLabelSettings from "../components/SidebarSettings/DiscountLabelSettings";
 import OfferRibbonSettings from "../components/SidebarSettings/OfferRibbonSettings";
+import { json_style_data } from "../Static/General_settings";
+import OfferRibbon from "../components/Preview/OfferRibbon";
 
 export default function PageName() {
+  const [transferData, setTransferData] = useState(json_style_data);
   const [activeTab, setActiveTab] = useState(1);
-
-  const handleTabChange = useCallback(
-    (selectedTabIndex) => setSelected(selectedTabIndex),
-    []
-  );
-
   const tabs = [
     {
       id: "1",
@@ -55,7 +52,7 @@ export default function PageName() {
               onClick={() => {
                 setActiveTab(tab.id);
               }}
-              style={{cursor: 'pointer'}}
+              style={{ cursor: "pointer" }}
             >
               <Card
                 roundedAbove="md"
@@ -77,16 +74,20 @@ export default function PageName() {
         <Layout>
           {/* SIDEBAR FUNCTIONALITY */}
           <Layout.Section variant="oneThird">
-            {activeTab == 2 && <PopupSettings/>}
-            {activeTab == 1 && <DiscountLabelSettings/>}
-            {activeTab == 3 && <OfferRibbonSettings/>}
+            {activeTab == 1 && (
+              <DiscountLabelSettings json_style_data={transferData} />
+            )}
+            {activeTab == 2 && <PopupSettings />}
+            {activeTab == 3 && (
+              <OfferRibbonSettings json_style_data={transferData} />
+            )}
           </Layout.Section>
 
           {/* LIVE PREVIEW */}
           <Layout.Section>
-            {activeTab == 2 && "Popup Modal"}
             {activeTab == 1 && "Discount Label"}
-            {activeTab == 3 && "Offer Ribbon"}
+            {activeTab == 2 && "Popup Modal"}
+            {activeTab == 3 && <OfferRibbon json_style_data={transferData} />}
           </Layout.Section>
         </Layout>
       </Card>
