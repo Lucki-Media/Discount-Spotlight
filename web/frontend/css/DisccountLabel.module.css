@@ -1,0 +1,231 @@
+.onclick-popup {
+    border-top: 30px solid #91D0FF;
+    border-radius: 10px;
+    background: #cccccc5e;
+    padding: 15px;
+}
+.pagewidth {
+    margin: 0 auto;
+    padding: 20px;
+    max-width: 1300px;
+}
+
+.ds_product_details {
+    width: 100%;
+
+}
+
+.ds_product_details_main {
+    display: flex;
+    align-items: center;
+}
+
+.ds_product_details_main .product_image img {
+    border: 1px solid #Dfdfdf;
+    border-radius: 5px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+
+.onclick-popup .icon-with-text {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 0 0 10px 0;
+}
+
+.p_details {
+    margin-left: 50px;
+}
+
+.p_details p {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #1C1D1D;
+    margin: 0 0 10px 0;
+}
+
+.p_details h2 {
+    font-family: 'Inter', sans-serif;
+    font-size: 30px;
+    font-weight: 500;
+    color: #1C1D1D;
+    margin: 0 0 10px 0;
+}
+
+.p_details h3 {
+    font-family: 'Inter', sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    color: #1C1D1D;
+    margin: 0 0 5px 0;
+
+}
+
+.p_details .quantity_btns span {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: #1C1D1D;
+    margin: 0 0 5px;
+    display: block;
+}
+
+.quantity_numbers {
+    display: flex;
+    border: 1px solid #1C1D1D;
+    padding: 5px;
+    border-radius: 3px;
+    max-width: 80px;
+    justify-content: center;
+}
+
+.quantity_numbers .numbers {
+    margin: 0 20px;
+}
+
+.addtocartbtn {
+    max-width: 400px;
+    background: #000;
+    color: #fff;
+    text-align: center;
+    border-radius: 5px;
+    padding: 10px 5px 10px 5px;
+    font-size: 18px;
+    font-weight: 500;
+    font-family: 'Inter', sans-serif;
+    text-decoration: none;
+    display: block;
+    margin: 20px 0 20px 0;
+}
+
+.buynowbtn {
+    max-width: 400px;
+    background: transparent;
+    color: #1C1D1D;
+    text-align: center;
+    border: 1px solid #1C1D1D;
+    border-radius: 5px;
+    padding: 10px 5px 10px 5px;
+    font-size: 18px;
+    font-weight: 500;
+    font-family: 'Inter', sans-serif;
+    text-decoration: none;
+    display: block;
+    margin: 0px 0 20px 0;
+}
+
+.product_content {
+    max-width: 700px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: #1C1D1D;
+    line-height: 25px;
+}
+
+.onclick-popup .bgimage img {
+    width: 100%;
+}
+
+.onclick-popup .on-click a {
+    color: #A10000;
+    font-size: 18px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    text-decoration: none;
+    padding: 0;
+    margin: 0px 0 0 10px;
+    cursor: pointer;
+
+}
+
+.modal-content .popup-heading {
+    background-color: #fff;
+    border-radius: 8px 8px 0 0;
+    color: #1C1D1D;
+    font-family: 'Inter', sans-serif;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    padding: 15px 20px;
+    margin-bottom: 1px;
+
+}
+
+.onclick-popup .modal-content {
+    position: relative;
+    background: #F4F4F5;
+    border-radius: 8px;
+    width: 50%;
+    min-height: 70%;
+}
+
+.onclick-popup .close-btn {
+    cursor: pointer;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+
+}
+
+.popupcoupon {
+    background-color: #fff;
+    margin: 0 0 10px;
+    padding: 10px 20px;
+}
+
+.popup_couponcode {
+    border: 0.5px dashed #A10000;
+    color: #A10000;
+    padding: 5px;
+    max-width: 167px;
+    text-align: center;
+    padding: 5px;
+    margin-bottom: 15px;
+    font-size: 10px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    background-color: #fff;
+}
+
+.popup_couponcode-details {
+    color: #1C1D1D;
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    display: block;
+}
+
+.popup_couponcode-details span {
+    display: block;
+    padding: 0 0 5px;
+
+}
+
+
+@media (max-width: 991.98px) {
+    .ds_product_details_main {
+        display: block;
+
+    }
+
+    .ds_product_details_main .product_image img {
+        display: block;
+        width: 80%;
+        text-align: center;
+    }
+
+    .ds_product_details_main .product_image {
+        margin: 0 0 50px 0;
+    }
+
+    .p_details {
+        margin: 0 auto;
+        width: 80%;
+    }
+}

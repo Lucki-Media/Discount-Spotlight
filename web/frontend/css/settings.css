@@ -1,4 +1,6 @@
-.settings_input_field {
+.customization_page div:first-child > div:first-child > div:first-child {
+    overflow: inherit !important;
+}.settings_input_field {
     width: 100%;
 }
 
@@ -39,7 +41,7 @@
 .color_picker_popup {
     width: fit-content;
     margin: 5px;
-    /* position: absolute; */
+    position: absolute;
     z-index: 9999;
     background-color: #ebebec;
     padding: 10px;
@@ -53,4 +55,27 @@
 .radio_div{
     width: 50%;
     display: flex;
+}
+.settings_input_field{
+    padding: 5px 10px;
+        border-radius: 5px;
+        border-color: #ebebeb;
+        box-shadow: none;
+        outline: none;
+        border-style: solid;
+}
+.bottom_border{
+    margin: 15px 0;
+}
+.faq_div .show_span{
+font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: #1C1D1D;
+}
+.faq_div #basic-collapsible p{
+    font-family: 'Inter', sans-serif;
+        font-size: 14px;
+        font-weight: 400;
+        color: #1C1D1D;
 }

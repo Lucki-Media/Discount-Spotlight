@@ -1,7 +1,14 @@
-.pagewidth {
-    margin: 0 auto;
-    padding: 20px;
-    max-width: 1300px;
+.offer_ribbon_product{
+        border-top: 30px solid #91D0FF;
+            border-radius: 10px;
+            background: #cccccc5e;
+            padding: 30px;
+}
+.pagewidth_ribbon {
+        margin: 0 auto;
+            padding: 20px;
+            max-width: 400px;
+            background: white;
 }
 
 .offer_ribbon_product_image {

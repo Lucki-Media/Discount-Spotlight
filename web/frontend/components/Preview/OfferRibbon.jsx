@@ -1,5 +1,5 @@
 import React from "react";
-import "../../css/OfferRibbon.css";
+import style from "../../css/OfferRibbon.module.css";
 import placeholder from "../../assets/placeholder-image.jpg";
 
 export default function OfferRibbon(props) {
@@ -9,18 +9,18 @@ export default function OfferRibbon(props) {
     <>
       <style>
         {`
-        .discount_tag:after {
+        .DS__After_Discount_tag:after {
           border-color: rgba(${r}, ${g}, ${b}, 0.5) transparent rgba(${r}, ${g}, ${b}, 0.5) rgba(${r}, ${g}, ${b}, 1) ;
         }
       `}
       </style>
-      <div className="offer_ribbon_product">
-        <div className="pagewidth">
-          <div className="offer_ribbon_product_main">
-            <div className="offer_ribbon_product_image">
+      <div className={style.offer_ribbon_product}>
+        <div className={style.pagewidth_ribbon}>
+          <div className={style.offer_ribbon_product_main}>
+            <div className={style.offer_ribbon_product_image}>
               <img src={placeholder} alt="" />
               <div
-                className="discount_tag"
+                className={`${style.discount_tag} DS__After_Discount_tag`}
                 style={{
                   color: props.json_style_data.offer_ribbon_settings.textColor,
                   background:
@@ -37,11 +37,13 @@ export default function OfferRibbon(props) {
               </div>
             </div>
 
-            <div className="offer_ribbon_product_brandname">one8 x PUMA</div>
-            <div className="offer_ribbon_product_name">
+            <div className={style.offer_ribbon_product_brandname}>
+              one8 x PUMA
+            </div>
+            <div className={style.offer_ribbon_product_name}>
               Men Treadgryp Printed Sneakers
             </div>
-            <div className="offer_ribbon_product_price">RS.2000 IND</div>
+            <div className={style.offer_ribbon_product_price}>RS.2000 IND</div>
           </div>
         </div>
       </div>

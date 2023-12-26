@@ -1,14 +1,14 @@
 export const json_style_data = {
     discount_label_settings: {
         icon_style: {
-            iconType: "1",
+            iconType: "6",
             size: 25,
-            color: "#A10000",
+            color: "#5488C7",
         },
         label_style: {
             text: "Apply Coupons",
             fontSize: 18,
-            color: "#A10000",
+            color: "#5488C7",
         }
     },
     popup_modal_settings: {
@@ -21,11 +21,11 @@ export const json_style_data = {
             discountTaCFontSize: 10,
         },
         color: {
-            titleTextColor: "#000000",
-            discountCodeTextColor: "#A10000",
+            titleTextColor: "#1c1d1d",
+            discountCodeTextColor: "#5488C7",
             discountTaCFontColor: "#1C1D1D",
-            cancleButtonColor: "#000",
-            discountCodeBorderColor: "#A10000",
+            cancleButtonColor: "#1C1D1D",
+            discountCodeBorderColor: "#5488C7",
             discountCodeBGColor: "#fff",
             bGContentColor: "#ffffff",
             titleBGColor: "#ffffff"
@@ -34,7 +34,7 @@ export const json_style_data = {
     offer_ribbon_settings: {
         fontSize: 10,
         textColor: "#FFF",
-        bgColor: 'rgba(238, 12, 104, 1)',
+        bgColor: 'rgba(84, 136, 199,1)',
         position: "2",
         offset: 45
     }
