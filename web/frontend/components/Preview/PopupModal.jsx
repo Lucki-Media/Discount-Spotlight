@@ -42,7 +42,7 @@ export default function PopupModal(props) {
                   props.json_style_data.popup_modal_settings.color.titleBGColor,
               }}
             >
-              {"DiscountPopupTitle"}
+              {props.json_style_data.popup_modal_settings.text.titleText}
             </div>
             <div className={style["popupcoupon"]}>
               <div
@@ -72,7 +72,7 @@ export default function PopupModal(props) {
                       .discountTaCFontSize,
                   color:
                     props.json_style_data.popup_modal_settings.color
-                      .discountTaCFontColor,
+                      .discountTaCTextColor,
                 }}
               >
                 <span> Rs. 200 off on minimum purchase of Rs. 749 .</span>
@@ -107,7 +107,7 @@ export default function PopupModal(props) {
                       .discountTaCFontSize,
                   color:
                     props.json_style_data.popup_modal_settings.color
-                      .discountTaCFontColor,
+                      .discountTaCTextColor,
                 }}
               >
                 <span> Rs. 200 off on minimum purchase of Rs. 749 .</span>
@@ -142,7 +142,7 @@ export default function PopupModal(props) {
                       .discountTaCFontSize,
                   color:
                     props.json_style_data.popup_modal_settings.color
-                      .discountTaCFontColor,
+                      .discountTaCTextColor,
                 }}
               >
                 <span> Rs. 200 off on minimum purchase of Rs. 749 .</span>

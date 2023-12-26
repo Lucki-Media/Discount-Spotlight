@@ -1,5 +1,5 @@
 import { RadioButton, Text } from "@shopify/polaris";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import TooltipSlider from "rc-slider";
 import "rc-slider/assets/index.css";
 import "../../css/settings.css";
@@ -21,6 +21,36 @@ function OfferRibbonSettings(props) {
   const [ribbonBGColor, setRibbonBGColor] = useState(
     props.json_style_data.offer_ribbon_settings.bgColor
   );
+
+  // VARIABLE THAT TRANSFER DATA FROM ONE FILE TO ANOTHER
+  var transfer_data = {
+    discount_label_settings: props.json_style_data.discount_label_settings,
+    popup_modal_settings: props.json_style_data.popup_modal_settings,
+    offer_ribbon_settings: {
+      fontSize: ribbonFontSize,
+      textColor: ribbonTextColor,
+      bgColor: ribbonBGColor,
+      position: ribbonPosition,
+      offset: ribbonOffset,
+    },
+  };
+  // CALLBACK FUNCTION TO SEND PROPS START
+  useEffect(() => {
+    callbackFunction();
+  }, [
+    // IT WILL SEND LATEST DATA OF ALL STATES
+    ribbonFontSize,
+    ribbonTextColor,
+    ribbonBGColor,
+    ribbonPosition,
+    ribbonOffset,
+  ]);
+
+  const callbackFunction = useCallback(() => {
+    props.dataCallback(transfer_data);
+  }, [transfer_data]);
+  // CALLBACK FUNCTION TO SEND PROPS END
+
   // HANDLE FUNCTIONS START
   const handleRibbonPosition = useCallback((newValue) => {
     setRibbonPosition(newValue.target.value);

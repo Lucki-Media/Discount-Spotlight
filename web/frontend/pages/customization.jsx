@@ -9,7 +9,8 @@ import {
   Text,
 } from "@shopify/polaris";
 import { TitleBar } from "@shopify/app-bridge-react";
-import { useCallback, useState } from "react";
+import isEqual from "lodash/isEqual";
+import { useCallback, useEffect, useState } from "react";
 import PopupSettings from "../components/SidebarSettings/PopupSettings";
 import DiscountLabelSettings from "../components/SidebarSettings/DiscountLabelSettings";
 import OfferRibbonSettings from "../components/SidebarSettings/OfferRibbonSettings";
@@ -17,9 +18,12 @@ import { json_style_data } from "../Static/General_settings";
 import OfferRibbon from "../components/Preview/OfferRibbon";
 import DisccountLabel from "../components/Preview/DiscountLabel";
 import PopupModal from "../components/Preview/PopupModal";
+import "../css/settings.css";
 
 export default function PageName() {
   const [transferData, setTransferData] = useState(json_style_data);
+  const [APIresponse, setAPIresponse] = useState(json_style_data);
+  const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
   const [activeTab, setActiveTab] = useState(1);
   const tabs = [
     {
@@ -36,13 +40,26 @@ export default function PageName() {
     },
   ];
 
+  // TO ENABLE OR DISABLE SAVE BUTTON
+  useEffect(() => {
+    setIsSaveButtonDisabled(isEqual(transferData, APIresponse));
+  }, [transferData, APIresponse]);
+
+  // HANDLE FUNCTION FOR TRANSFER DATA
+  const handleTransferData = (data) => {
+    setTransferData(data);
+  };
+
   return (
     <div className="customization_page">
       <Page fullWidth>
         <TitleBar
-          title="Customization Corner"
+          title={
+            isSaveButtonDisabled ? "Customization Corner" : "Unsaved Changes"
+          }
           primaryAction={{
             content: "Save",
+            disabled: isSaveButtonDisabled,
             onAction: () => console.log("Primary heyy"),
           }}
         />
@@ -78,11 +95,22 @@ export default function PageName() {
             {/* SIDEBAR FUNCTIONALITY */}
             <Layout.Section variant="oneThird">
               {activeTab == 1 && (
-                <DiscountLabelSettings json_style_data={transferData} />
+                <DiscountLabelSettings
+                  json_style_data={transferData}
+                  dataCallback={handleTransferData}
+                />
               )}
-              {activeTab == 2 && <PopupSettings />}
+              {activeTab == 2 && (
+                <PopupSettings
+                  json_style_data={transferData}
+                  dataCallback={handleTransferData}
+                />
+              )}
               {activeTab == 3 && (
-                <OfferRibbonSettings json_style_data={transferData} />
+                <OfferRibbonSettings
+                  json_style_data={transferData}
+                  dataCallback={handleTransferData}
+                />
               )}
             </Layout.Section>
 

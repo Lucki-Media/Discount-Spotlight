@@ -81,7 +81,10 @@ export default function DisccountLabel(props) {
                           .label_style.fontSize,
                     }}
                   >
-                    {"DiscountLableText"}
+                    {
+                      props.json_style_data.discount_label_settings.label_style
+                        .text
+                    }
                   </a>
                 </div>
               </div>

@@ -23,7 +23,7 @@ export const json_style_data = {
         color: {
             titleTextColor: "#1c1d1d",
             discountCodeTextColor: "#5488C7",
-            discountTaCFontColor: "#1C1D1D",
+            discountTaCTextColor: "#1C1D1D",
             cancleButtonColor: "#1C1D1D",
             discountCodeBorderColor: "#5488C7",
             discountCodeBGColor: "#fff",

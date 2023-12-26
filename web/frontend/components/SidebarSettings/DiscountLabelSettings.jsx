@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { ColorPlate } from "../colorPlate";
 import TooltipSlider from "rc-slider";
 import "rc-slider/assets/index.css";
@@ -21,6 +21,40 @@ function DiscountLabelSettings(props) {
   const [labelIconColor, setLabelIconColor] = useState(
     props.json_style_data.discount_label_settings.icon_style.color
   );
+
+  // VARIABLE THAT TRANSFER DATA FROM ONE FILE TO ANOTHER
+  var transfer_data = {
+    discount_label_settings: {
+      icon_style: {
+        iconType: "6",
+        size: labelIconSize,
+        color: labelIconColor,
+      },
+      label_style: {
+        text: labelText,
+        fontSize: labelFontSize,
+        color: labelTextColor,
+      },
+    },
+    popup_modal_settings: props.json_style_data.popup_modal_settings,
+    offer_ribbon_settings: props.json_style_data.offer_ribbon_settings,
+  };
+  // CALLBACK FUNCTION TO SEND PROPS START
+  useEffect(() => {
+    callbackFunction();
+  }, [
+    // IT WILL SEND LATEST DATA OF ALL STATES
+    labelText,
+    labelFontSize,
+    labelIconSize,
+    labelTextColor,
+    labelIconColor,
+  ]);
+
+  const callbackFunction = useCallback(() => {
+    props.dataCallback(transfer_data);
+  }, [transfer_data]);
+  // CALLBACK FUNCTION TO SEND PROPS END
 
   // HANDLE FUNCTION START
   const handleLabelText = (val) => {
