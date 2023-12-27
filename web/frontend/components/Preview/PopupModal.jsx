@@ -44,7 +44,14 @@ export default function PopupModal(props) {
             >
               {props.json_style_data.popup_modal_settings.text.titleText}
             </div>
-            <div className={style["popupcoupon"]}>
+            <div
+              className={style["popupcoupon"]}
+              style={{
+                background:
+                  props.json_style_data.popup_modal_settings.color
+                    .bGContentColor,
+              }}
+            >
               <div
                 className={style["popup_couponcode"]}
                 style={{
@@ -79,7 +86,14 @@ export default function PopupModal(props) {
                 <span>Expires on: 31st December 2023 | 05:30 AM</span>
               </div>
             </div>
-            <div className={style["popupcoupon"]}>
+            <div
+              className={style["popupcoupon"]}
+              style={{
+                background:
+                  props.json_style_data.popup_modal_settings.color
+                    .bGContentColor,
+              }}
+            >
               <div
                 className={style["popup_couponcode"]}
                 style={{
@@ -114,7 +128,14 @@ export default function PopupModal(props) {
                 <span>Expires on: 31st December 2023 | 05:30 AM</span>
               </div>
             </div>
-            <div className={style["popupcoupon"]}>
+            <div
+              className={style["popupcoupon"]}
+              style={{
+                background:
+                  props.json_style_data.popup_modal_settings.color
+                    .bGContentColor,
+              }}
+            >
               <div
                 className={style["popup_couponcode"]}
                 style={{

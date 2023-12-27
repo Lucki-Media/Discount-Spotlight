@@ -46,7 +46,7 @@ export default function DisccountLabel(props) {
                 )}
                 {props.json_style_data.discount_label_settings.icon_style
                   .iconType === "4" && (
-                  <ThinDoubleTags
+                  <SolidPercentageTag
                     icon_style={
                       props.json_style_data.discount_label_settings.icon_style
                     }
@@ -54,7 +54,7 @@ export default function DisccountLabel(props) {
                 )}
                 {props.json_style_data.discount_label_settings.icon_style
                   .iconType === "5" && (
-                  <SolidPercentageTag
+                  <ThinDoubleTags
                     icon_style={
                       props.json_style_data.discount_label_settings.icon_style
                     }

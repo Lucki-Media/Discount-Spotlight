@@ -20,9 +20,9 @@ export default function HomePage() {
   const appFetch = useAuthenticatedFetch();
 
   const [graphArray, setGraphArray] = useState([
-    12, 34, 43, 5, 25, 36, 22, 35, 47, 20, 99, 54
+    12, 34, 43, 5, 25, 36, 22, 35, 47, 20, 99, 54,
   ]);
-  
+
   console.log(shop_url);
   const fetchDashboardData = async () => {
     axios
@@ -105,8 +105,8 @@ export default function HomePage() {
           >
             <List>
               <List.Item>
-                Personalize the appearance of your popup modal to match your
-                store's branding.
+                Personalize the appearance of popup modal to match your store's
+                branding.
               </List.Item>
             </List>
           </Banner>
@@ -117,7 +117,7 @@ export default function HomePage() {
             icon={DiscountsMajor}
             action={{
               content: "Manage Discounts",
-              url: "/discounts", 
+              url: "/discounts",
             }}
             tone="info"
           >
@@ -135,13 +135,13 @@ export default function HomePage() {
             icon={QuestionMarkMajor}
             action={{
               content: "Visit FAQ",
-              url: "/faqs", 
+              url: "/faqs",
             }}
             tone="info"
           >
             <List>
               <List.Item>
-                Quickly find answers to common questions about our app and its
+                Quickly find answers to common questions about app and its
                 features.
               </List.Item>
             </List>

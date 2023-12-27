@@ -236,7 +236,7 @@ function PopupSettings(props) {
           <ColorPlate
             defaultColor={titleBGColor}
             onChildResult={handleTitleBGColor}
-            hideColorTypeBtns={true}
+            hideColorTypeBtns={false}
             colorPlateTitle="Title Background"
           />
         </div>
@@ -251,7 +251,7 @@ function PopupSettings(props) {
           <ColorPlate
             defaultColor={discountCodeBGColor}
             onChildResult={handleDiscountCodeBGColor}
-            hideColorTypeBtns={true}
+            hideColorTypeBtns={false}
             colorPlateTitle="Discount Background"
           />
         </div>
@@ -266,7 +266,7 @@ function PopupSettings(props) {
           <ColorPlate
             defaultColor={bGContentColor}
             onChildResult={handleBGContentColor}
-            hideColorTypeBtns={true}
+            hideColorTypeBtns={false}
             colorPlateTitle="Content Background"
           />
         </div>

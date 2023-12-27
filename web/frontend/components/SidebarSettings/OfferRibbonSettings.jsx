@@ -158,13 +158,13 @@ function OfferRibbonSettings(props) {
             defaultColor={ribbonTextColor}
             onChildResult={handleRibbonTextColor}
             hideColorTypeBtns={true}
-            colorPlateTitle="Icon"
+            colorPlateTitle="Text"
           />
           <ColorPlate
             defaultColor={ribbonBGColor}
             onChildResult={handleRibbonBGColor}
             hideColorTypeBtns={true}
-            colorPlateTitle="Label"
+            colorPlateTitle="Background"
           />
         </div>
       </div>

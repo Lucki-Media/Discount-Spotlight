@@ -3,9 +3,18 @@ import { ColorPlate } from "../colorPlate";
 import TooltipSlider from "rc-slider";
 import "rc-slider/assets/index.css";
 import "../../css/settings.css";
-import { Text } from "@shopify/polaris";
+import { Card, InlineGrid, Text } from "@shopify/polaris";
+import ThinTag from "../Icons/ThinTag";
+import SolidTag from "../Icons/SolidTag";
+import ThinDoubleTags from "../Icons/ThinDoubleTags";
+import SolidDoubleTags from "../Icons/SolidDoubleTags";
+import ThinPercentageTag from "../Icons/ThinPercentageTag";
+import SolidPercentageTag from "../Icons/SolidPercentageTag";
 
 function DiscountLabelSettings(props) {
+  const [labelIcon, setLabelIcon] = useState(
+    props.json_style_data.discount_label_settings.icon_style.iconType
+  );
   const [labelText, setLabelText] = useState(
     props.json_style_data.discount_label_settings.label_style.text
   );
@@ -26,7 +35,7 @@ function DiscountLabelSettings(props) {
   var transfer_data = {
     discount_label_settings: {
       icon_style: {
-        iconType: "6",
+        iconType: labelIcon,
         size: labelIconSize,
         color: labelIconColor,
       },
@@ -39,11 +48,47 @@ function DiscountLabelSettings(props) {
     popup_modal_settings: props.json_style_data.popup_modal_settings,
     offer_ribbon_settings: props.json_style_data.offer_ribbon_settings,
   };
+
+  // ICONS ARRAY
+  var icon_style = {
+    iconType: "6",
+    size: 25,
+    color: "#5488C7",
+  };
+  const icons = [
+    {
+      id: "1",
+      component: <ThinTag icon_style={icon_style} />,
+    },
+    {
+      id: "2",
+      component: <SolidTag icon_style={icon_style} />,
+    },
+    {
+      id: "3",
+      component: <ThinPercentageTag icon_style={icon_style} />,
+    },
+    {
+      id: "4",
+      component: <SolidPercentageTag icon_style={icon_style} />,
+    },
+    {
+      id: "5",
+      component: <ThinDoubleTags icon_style={icon_style} />,
+    },
+    {
+      id: "6",
+      component: <SolidDoubleTags icon_style={icon_style} />,
+    },
+    // Add other SVG icons
+  ];
+
   // CALLBACK FUNCTION TO SEND PROPS START
   useEffect(() => {
     callbackFunction();
   }, [
     // IT WILL SEND LATEST DATA OF ALL STATES
+    labelIcon,
     labelText,
     labelFontSize,
     labelIconSize,
@@ -80,6 +125,38 @@ function DiscountLabelSettings(props) {
   );
 
   // HANDLE FUNCTION END
+
+  //  RENDER SETTINGS RELATED TO ICONS
+  const renderIconSettings = () => (
+    <div>
+      <Text>Label Icon</Text>
+      <div style={{ display: "flex", flexWrap: "wrap" }}>
+        {icons.map((tab, index) => (
+          <div
+            key={tab.id}
+            onClick={() => {
+              setLabelIcon(tab.id);
+            }}
+            style={{
+              cursor: "pointer",
+              width: "42px",
+              marginRight: "10px",
+            }}
+          >
+            <div
+              className="icon_type_radio"
+              style={{
+                borderColor: tab.id == labelIcon ? "#5488c5" : "#E1E1E1",
+                background: tab.id == labelIcon ? "#EAF4FF" : "transparent",
+              }}
+            >
+              {tab.component}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 
   //  RENDER SETTINGS RELATED TO LABEL
   const renderContentSettings = () => (
@@ -164,6 +241,7 @@ function DiscountLabelSettings(props) {
 
   return (
     <div>
+      {renderIconSettings()}
       {renderContentSettings()}
       {renderSizeSettings()}
       {renderColorSettings()}

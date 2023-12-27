@@ -1,7 +1,7 @@
 export const json_style_data = {
     discount_label_settings: {
         icon_style: {
-            iconType: "6",
+            iconType: "1",
             size: 25,
             color: "#5488C7",
         },

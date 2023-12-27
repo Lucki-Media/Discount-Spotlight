@@ -1,7 +1,6 @@
 import React from "react";
 
 function ThinTag(props) {
-  console.log(props.icon_style.color);
   return (
     <div>
       <svg
