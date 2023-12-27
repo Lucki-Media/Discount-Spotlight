@@ -1,12 +1,23 @@
-embedded-app div:nth-child(3) {
-    background-color: red;
+.customization_fullscreenbar{
+    position: sticky;
+    top: 0;
+    z-index: 9;
+    margin-bottom: 10px;
+    
 }
 
+.customization_fullscreenbar >div:first-child > button:first-child {
+    display: none;
+}
 .customization_page{
     padding-bottom: 100px;
 } 
-.customization_page div:first-child > div:first-child > div:first-child {
+.customization_page div:first-child>div:first-child>div:nth-child(2) {
     overflow: inherit !important;
+}
+
+.customization_page div:first-child>div:first-child>div:nth-child(2) >div:first-child {
+    border-radius: 10px;
 }
 
 .style__wrapper_div {
@@ -84,5 +95,11 @@ font-family: 'Inter', sans-serif;
     font-family: 'Inter', sans-serif;
         font-size: 14px;
         font-weight: 400;
+        color: #1C1D1D;
+}
+.fullscreenbar_headertitle{
+        font-family: 'Inter', sans-serif;
+        font-size: 25px;
+        font-weight: 500;
         color: #1C1D1D;
 }

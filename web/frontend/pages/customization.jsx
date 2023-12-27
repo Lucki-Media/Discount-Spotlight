@@ -1,6 +1,9 @@
 import {
+  Button,
+  ButtonGroup,
   Card,
   Frame,
+  FullscreenBar,
   InlineGrid,
   Layout,
   LegacyTabs,
@@ -53,7 +56,7 @@ export default function PageName() {
   return (
     <div className="customization_page">
       <Page fullWidth>
-        <TitleBar
+        {/* <TitleBar
           title={
             isSaveButtonDisabled ? "Customization Corner" : "Unsaved Changes"
           }
@@ -62,7 +65,48 @@ export default function PageName() {
             disabled: isSaveButtonDisabled,
             onAction: () => console.log("Primary heyy"),
           }}
-        />
+        /> */}
+        <div className="customization_fullscreenbar">
+          <FullscreenBar>
+            <div
+              style={{
+                display: "flex",
+                flexGrow: 1,
+                justifyContent: "space-between",
+                alignItems: "center",
+                paddingLeft: "1rem",
+                paddingRight: "1rem",
+                background: isSaveButtonDisabled ? "#fff" : "#5488c7",
+              }}
+            >
+              <div
+                style={{
+                  flexGrow: 1,
+                }}
+              >
+                <p
+                  className="fullscreenbar_headertitle"
+                  style={{
+                    color: isSaveButtonDisabled ? "#000" : "#fff",
+                  }}
+                >
+                  {isSaveButtonDisabled
+                    ? "Customization Corner"
+                    : "Unsaved Changes"}
+                </p>
+              </div>
+              <ButtonGroup>
+                <Button
+                  variant="primary"
+                  disabled={isSaveButtonDisabled}
+                  onClick={() => console.log("Primary heyy")}
+                >
+                  Save
+                </Button>
+              </ButtonGroup>
+            </div>
+          </FullscreenBar>
+        </div>
         <Card>
           {/* TABS  */}
           <InlineGrid gap="400" columns={3}>
