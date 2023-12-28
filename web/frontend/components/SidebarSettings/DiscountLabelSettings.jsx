@@ -26,12 +26,12 @@ function DiscountLabelSettings() {
       <div className="style__wrapper_div">
         <span className="display_setting_subtitle">Label Text</span>
         <div className="buy_now__textfield">
-          <TextField
+          {/* <TextField
             label="Store name"
             value={labelText}
             onChange={handleLabelText}
             autoComplete="off"
-          />
+          /> */}
         </div>
       </div>
     </div>

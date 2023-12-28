@@ -26,6 +26,10 @@ const STATIC_PATH =
     : `${process.cwd()}/frontend/`;
 
 const app = express();
+app.post(
+  shopify.config.webhooks.path,
+  shopify.processWebhooks({ webhookHandlers: GDPRWebhookHandlers })
+);
 app.use(express.json());
 app.use(cors());
 // router.get("/shopify_session_data", DashBoardController.shopifySessions);
@@ -37,10 +41,6 @@ app.get(
   shopify.config.auth.callbackPath,
   shopify.auth.callback(),
   shopify.redirectToShopifyOrAppRoot()
-);
-app.post(
-  shopify.config.webhooks.path,
-  shopify.processWebhooks({ webhookHandlers: GDPRWebhookHandlers })
 );
 
 // If you are adding routes outside of the /api path, remember to

@@ -16,6 +16,7 @@
     "@shopify/app": "^3.0.0",
     "@shopify/cli": "^3.0.0",
     "@shopify/polaris": "^12.4.0",
+    "@shopify/shopify-app-express": "^3.0.2",
     "@shopify/shopify-app-session-storage-mongodb": "^1.0.6",
     "@shopify/stylelint-polaris": "^15.0.5",
     "@shopify/ui-extensions": "2023.10.0",
@@ -33,6 +34,7 @@
     "nexmo": "^2.9.1",
     "node-cron": "^3.0.3",
     "nodemailer": "^6.9.7",
+    "shopify-api-node": "^3.12.7",
     "twilio": "^4.19.0"
   }
 }

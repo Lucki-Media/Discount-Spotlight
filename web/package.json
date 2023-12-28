@@ -17,7 +17,7 @@
     "@shopify/app": "^3.45.1",
     "@shopify/cli": "^3.45.1",
     "@shopify/polaris": "^12.4.0",
-    "@shopify/shopify-app-express": "^2.1.3",
+    "@shopify/shopify-app-express": "^3.0.2",
     "@shopify/shopify-app-session-storage-mongodb": "^1.0.6",
     "@shopify/shopify-app-session-storage-sqlite": "^1.2.3",
     "axios": "^1.6.0",
@@ -28,7 +28,8 @@
     "mongoose": "^8.0.0",
     "node-cron": "^3.0.3",
     "react-refresh": "^0.14.0",
-    "serve-static": "^1.14.1"
+    "serve-static": "^1.14.1",
+    "shopify-api-node": "^3.12.7"
   },
   "devDependencies": {
     "nodemon": "^2.0.15",
