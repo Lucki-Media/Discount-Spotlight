@@ -8,8 +8,12 @@ import {
   Layout,
   LegacyTabs,
   Page,
+  SkeletonBodyText,
+  SkeletonDisplayText,
+  SkeletonPage,
   Tabs,
   Text,
+  TextContainer,
 } from "@shopify/polaris";
 import { TitleBar } from "@shopify/app-bridge-react";
 import isEqual from "lodash/isEqual";
@@ -22,13 +26,17 @@ import OfferRibbon from "../components/Preview/OfferRibbon";
 import DisccountLabel from "../components/Preview/DiscountLabel";
 import PopupModal from "../components/Preview/PopupModal";
 import "../css/settings.css";
+import axios from "axios";
 
 export default function PageName() {
+  const shop_url = document.getElementById("shopOrigin").value;
+
   const [transferData, setTransferData] = useState(json_style_data);
   const [APIresponse, setAPIresponse] = useState(json_style_data);
   const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
   const [activeTab, setActiveTab] = useState(1);
-  const tabs = [
+    const [loading, SetLoading] = useState(false);
+    const tabs = [
     {
       id: "1",
       content: "Discount Label",
@@ -43,6 +51,42 @@ export default function PageName() {
     },
   ];
 
+  // USEEFFECT
+  useEffect(() => {
+    getCustomizationDetails();
+  }, []);
+
+  // FETCH DETAILS 
+  const getCustomizationDetails = async () => {
+        SetLoading(true);
+        axios
+      .post("/api/getCustomizationDetails", {
+        shop: shop_url,
+      })
+      .then((response) => {
+        // console.log(JSON.parse(response.data.data.shop_data.customizations_json));
+        setTransferData(JSON.parse(response.data.data.shop_data.customizations_json));
+        setAPIresponse(JSON.parse(response.data.data.shop_data.customizations_json));
+        SetLoading(false);
+      });
+  };
+
+   // SAVE DETAILS 
+   const saveCustomizationDetails = async () => {
+        SetLoading(true);
+        axios
+      .post("/api/saveCustomizationDetails", {
+        shop: shop_url,
+        transferData: transferData,
+      })
+      .then((response) => {
+        // console.log(response.data.data.shop_data.customizations_json);
+        setTransferData(JSON.parse(response.data.data.shop_data.customizations_json));
+        setAPIresponse(JSON.parse(response.data.data.shop_data.customizations_json));
+      });
+      SetLoading(false);
+    };
+
   // TO ENABLE OR DISABLE SAVE BUTTON
   useEffect(() => {
     setIsSaveButtonDisabled(isEqual(transferData, APIresponse));
@@ -53,123 +97,137 @@ export default function PageName() {
     setTransferData(data);
   };
 
-  return (
-    <div className="customization_page">
-      <Page fullWidth>
-        {/* <TitleBar
-          title={
-            isSaveButtonDisabled ? "Customization Corner" : "Unsaved Changes"
-          }
-          primaryAction={{
-            content: "Save",
-            disabled: isSaveButtonDisabled,
-            onAction: () => console.log("Primary heyy"),
-          }}
-        /> */}
-        <div className="customization_fullscreenbar">
-          <FullscreenBar>
-            <div
-              style={{
-                display: "flex",
-                flexGrow: 1,
-                justifyContent: "space-between",
-                alignItems: "center",
-                paddingLeft: "1rem",
-                paddingRight: "1rem",
-                background: isSaveButtonDisabled ? "#fff" : "#5488c7",
-                transition: "background 0.5s ease-out 0s",
-              }}
-            >
+  if (loading === false) {
+    return (
+      <div className="customization_page">
+        <Page fullWidth>
+          <div className="customization_fullscreenbar">
+            <FullscreenBar>
               <div
                 style={{
+                  display: "flex",
                   flexGrow: 1,
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  paddingLeft: "1rem",
+                  paddingRight: "1rem",
+                  background: isSaveButtonDisabled ? "#fff" : "#5488c7",
+                  transition: "background 0.5s ease-out 0s",
                 }}
               >
-                <p
-                  className="fullscreenbar_headertitle"
+                <div
                   style={{
-                    color: isSaveButtonDisabled ? "#000" : "#fff",
+                    flexGrow: 1,
                   }}
                 >
-                  {isSaveButtonDisabled
-                    ? "Customization Corner"
-                    : "Unsaved Changes"}
-                </p>
+                  <p
+                    className="fullscreenbar_headertitle"
+                    style={{
+                      color: isSaveButtonDisabled ? "#000" : "#fff",
+                    }}
+                  >
+                    {isSaveButtonDisabled
+                      ? "Customization Corner"
+                      : "Unsaved Changes"}
+                  </p>
+                </div>
+                <ButtonGroup>
+                  <Button
+                    variant="primary"
+                    disabled={isSaveButtonDisabled}
+                    onClick={saveCustomizationDetails}
+                  >
+                    Save
+                  </Button>
+                </ButtonGroup>
               </div>
-              <ButtonGroup>
-                <Button
-                  variant="primary"
-                  disabled={isSaveButtonDisabled}
-                  onClick={() => console.log("Primary heyy")}
+            </FullscreenBar>
+          </div>
+          <Card>
+            {/* TABS  */}
+            <InlineGrid gap="400" columns={3}>
+              {tabs.map((tab, index) => (
+                <div
+                  key={tab.id}
+                  onClick={() => {
+                    setActiveTab(tab.id);
+                  }}
+                  style={{ cursor: "pointer" }}
                 >
-                  Save
-                </Button>
-              </ButtonGroup>
-            </div>
-          </FullscreenBar>
-        </div>
-        <Card>
-          {/* TABS  */}
-          <InlineGrid gap="400" columns={3}>
-            {tabs.map((tab, index) => (
-              <div
-                key={tab.id}
-                onClick={() => {
-                  setActiveTab(tab.id);
-                }}
-                style={{ cursor: "pointer" }}
-              >
-                <Card
-                  roundedAbove="md"
-                  background={
-                    tab.id == activeTab
-                      ? "bg-surface-info"
-                      : "bg-surface-secondary"
-                  }
-                >
-                  {tab.content}
-                </Card>
-              </div>
-            ))}
-          </InlineGrid>
+                  <Card
+                    roundedAbove="md"
+                    background={
+                      tab.id == activeTab
+                        ? "bg-surface-info"
+                        : "bg-surface-secondary"
+                    }
+                  >
+                    {tab.content}
+                  </Card>
+                </div>
+              ))}
+            </InlineGrid>
 
-          <hr className="bottom_border" />
+            <hr className="bottom_border" />
 
-          {/* SETTINGS FEATURE */}
+            {/* SETTINGS FEATURE */}
+            <Layout>
+              {/* SIDEBAR FUNCTIONALITY */}
+              <Layout.Section variant="oneThird">
+                {activeTab == 1 && (
+                  <DiscountLabelSettings
+                    json_style_data={transferData}
+                    dataCallback={handleTransferData}
+                  />
+                )}
+                {activeTab == 2 && (
+                  <PopupSettings
+                    json_style_data={transferData}
+                    dataCallback={handleTransferData}
+                  />
+                )}
+                {activeTab == 3 && (
+                  <OfferRibbonSettings
+                    json_style_data={transferData}
+                    dataCallback={handleTransferData}
+                  />
+                )}
+              </Layout.Section>
+
+              {/* LIVE PREVIEW */}
+              <Layout.Section>
+                {activeTab == 1 && (
+                  <DisccountLabel json_style_data={transferData} />
+                )}
+                {activeTab == 2 && <PopupModal json_style_data={transferData} />}
+                {activeTab == 3 && <OfferRibbon json_style_data={transferData} />}
+              </Layout.Section>
+            </Layout>
+          </Card>
+        </Page>
+      </div>
+    );
+} else {
+  return (
+    <div>
+      <Card>
+        <SkeletonPage primaryAction>
           <Layout>
-            {/* SIDEBAR FUNCTIONALITY */}
-            <Layout.Section variant="oneThird">
-              {activeTab == 1 && (
-                <DiscountLabelSettings
-                  json_style_data={transferData}
-                  dataCallback={handleTransferData}
-                />
-              )}
-              {activeTab == 2 && (
-                <PopupSettings
-                  json_style_data={transferData}
-                  dataCallback={handleTransferData}
-                />
-              )}
-              {activeTab == 3 && (
-                <OfferRibbonSettings
-                  json_style_data={transferData}
-                  dataCallback={handleTransferData}
-                />
-              )}
-            </Layout.Section>
-
-            {/* LIVE PREVIEW */}
             <Layout.Section>
-              {activeTab == 1 && (
-                <DisccountLabel json_style_data={transferData} />
-              )}
-              {activeTab == 2 && <PopupModal json_style_data={transferData} />}
-              {activeTab == 3 && <OfferRibbon json_style_data={transferData} />}
+              <Card sectioned>
+                <SkeletonBodyText />
+              </Card>
+              <Card sectioned>
+                <TextContainer>
+                  <SkeletonDisplayText size="small" />
+                  <SkeletonBodyText />
+                </TextContainer>
+              </Card>
             </Layout.Section>
           </Layout>
-        </Card>
-      </Page>
+        </SkeletonPage>
+      </Card>
     </div>
   );
+}
 }

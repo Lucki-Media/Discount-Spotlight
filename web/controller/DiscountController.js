@@ -1,17 +1,21 @@
-import ShopifySessions from "../db/models/ShopifySessions.js";
+import Discounts from "../db/models/Discounts.js";
+import shopify from "../shopify.js";
 
 const getDiscountsDetails = async (request, response) => {
-    console.log("vidhee");
   const { shop, accessToken } = request.body;
-//   const fetchShopifySessionsData = await ShopifySessions.findOne({
-//     shop: shop,
-//   });
+  const fetchDiscountsData = await Discounts.findOne({
+    shop: shop,
+  });
+  const ProductData = await shopify.rest.Product.all({
+    session: response.locals.shopify.session,
+  });
+    // fields: "id,image,title",
   try {
     return response.json({
       status: 200,
       success: true,
       data: {
-        shop_data: "fetchShopifySessionsData",
+        shop_data: ProductData,
       },
     });
   } catch (error) {

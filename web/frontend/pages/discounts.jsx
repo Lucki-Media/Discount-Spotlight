@@ -108,19 +108,19 @@ export default function PageName() {
   //   // SetLoading(false);
   // };
 
+  // FETCH DETAILS 
   const getDiscountsDetails = async () => {
-    axios
-      .post("/api/getDiscountsDetails", {
-        shop: shop_url,
-      })
+    appFetch("/api/getDiscountsDetails", {
+      shop: shop_url,
+    })
       .then((response) => {
         console.log(response);
       });
-  };
+  };     
   if (loading === false) {
     return (
       <div className="customization_page">
-        <Page>
+        <Page fullWidth>
           <div className="customization_fullscreenbar">
             <FullscreenBar>
               <div

@@ -12,8 +12,10 @@ import GDPRWebhookHandlers from "./gdpr.js";
 import dotenv from "dotenv";
 dotenv.config();
 import shopifySessionRoute from "./routes/ShopifySessions.js";
-import DashBoardController from "./controller/DashBoardController.js";
-
+import discountRoute from "./routes/DiscountRoute.js";
+import customizationRoute from "./routes/CustomizationRoute.js";
+import Customization from "./db/models/Customizations.js";
+import { json_style_data } from "./frontend/Static/General_settings.js";
 const PORT = parseInt(
   process.env.BACKEND_PORT || process.env.PORT || "3000",
   10
@@ -34,6 +36,8 @@ app.use(express.json());
 app.use(cors());
 // router.get("/shopify_session_data", DashBoardController.shopifySessions);
 app.use("/", shopifySessionRoute);
+app.use("/", discountRoute);
+app.use("/", customizationRoute);
 
 // Set up Shopify authentication and webhook handling
 app.get(shopify.config.auth.path, shopify.auth.begin());
@@ -49,15 +53,10 @@ app.get(
 app.use("/api/*", shopify.validateAuthenticatedSession());
 
 app.get("/api/products/count", async (_req, res) => {
-  const countData = await shopify.api.rest.Product.count({
+  const countData = await shopify.api.rest.Product.all({
     session: res.locals.shopify.session,
   });
   res.status(200).send(countData);
-});
-
-app.get("/api/products/somin", async (_req, res) => {
-  // res.send("About this somin");
-  res.status(200).send("About this somin");
 });
 
 app.get("/api/products/create", async (_req, res) => {
@@ -74,10 +73,47 @@ app.get("/api/products/create", async (_req, res) => {
   res.status(status).send({ success: status === 200, error });
 });
 
+// INITDATA SAVE FUNCTION 
+async function SaveInitCustomizationSettings(shop) {
+  const customizationSettings = await Customization.findOne({ shop });
+
+  if (customizationSettings) {
+    // Entry with the same shop already exists, update it
+    try {
+      if (customizationSettings.customizations_json) {
+        customizationSettings.customizations_json = JSON.stringify(json_style_data);
+      }
+      await customizationSettings.save();
+      console.log("Customization settings updated successfully");
+    } catch (error) {
+      console.error("Error updating customizationSettings: ", error);
+    }
+  } else {
+    //  Entry with the shop doesn't exist, create a new one
+    const customizationSettingsData = {
+      shop: shop,
+      customizations_json: JSON.stringify(json_style_data),
+    }
+
+    try {
+      const saveData = new Customization(customizationSettingsData);
+      await saveData.save();
+      console.log("Customization settings saved successfully");
+    } catch (error) {
+      console.error("Error updating customizationSettings: ", error);
+    }
+  }
+}
+
 app.use(shopify.cspHeaders());
 app.use(serveStatic(STATIC_PATH, { index: false }));
 
 app.use("/*", shopify.ensureInstalledOnShop(), async (_req, res, _next) => {
+    // Assuming that `res.locals.shopify.session` contains the shop information
+    const shopName = _req.query.shop;
+    console.log("Shop Name:", shopName);
+    SaveInitCustomizationSettings(shopName);
+  
   return res
     .status(200)
     .set("Content-Type", "text/html")
