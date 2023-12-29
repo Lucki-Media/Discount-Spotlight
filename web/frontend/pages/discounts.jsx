@@ -82,7 +82,7 @@ export default function PageName() {
         headings={[
           {title: 'Order'},
           {title: 'Date'},
-          {title: 'Customer'},
+          {title: 'Customer'}, 
           {title: 'Total', alignment: 'end'},
           {title: 'Payment status'},
           {title: 'Fulfillment status'},
