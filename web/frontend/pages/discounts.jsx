@@ -93,76 +93,60 @@ export default function PageName() {
     getDiscountsDetails();
   }, []);
 
-  // INIT API CALL FOR DISCOUNTS FOR STORE
-  // const getDiscountsDetails = async () => {
-  //   // SetLoading(true);
-  //   const res = await fetch("/api/getDiscountsDetails/" + shop_domain, {
-  //     method: "GET",
-  //   });
-  //   const response = await res.json();
-  //   // const clonedData = JSON.parse(JSON.stringify(response.data));
-  //   // const clonedData1 = JSON.parse(JSON.stringify(response.data));
-  //   console.log("API Response Data:", response.data);
-  //   // setDiscounts(clonedData);
-  //   // setApiResponse(clonedData1);
-  //   // SetLoading(false);
-  // };
-
-  // FETCH DETAILS 
+  // FETCH DETAILS
   const getDiscountsDetails = async () => {
     appFetch("/api/getDiscountsDetails", {
       shop: shop_url,
-    })
-      .then((response) => {
-        console.log(response);
-      });
-  };     
+    }).then((response) => {
+      console.log(response);
+    });
+  };
   if (loading === false) {
     return (
       <div className="customization_page">
-        <Page fullWidth>
-          <div className="customization_fullscreenbar">
-            <FullscreenBar>
+        <div className="fullscreenbar_div">
+          <FullscreenBar>
+            <div
+              style={{
+                display: "flex",
+                flexGrow: 1,
+                justifyContent: "space-between",
+                alignItems: "center",
+                paddingLeft: "1rem",
+                paddingRight: "1rem",
+                background: isSaveButtonDisabled ? "#fff" : "#5488c7",
+                transition: "background 0.5s ease-out 0s",
+              }}
+            >
               <div
                 style={{
-                  display: "flex",
                   flexGrow: 1,
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  paddingLeft: "1rem",
-                  paddingRight: "1rem",
-                  background: isSaveButtonDisabled ? "#fff" : "#5488c7",
-                  transition: "background 0.5s ease-out 0s",
                 }}
               >
-                <div
+                <p
+                  className="fullscreenbar_headertitle"
                   style={{
-                    flexGrow: 1,
+                    color: isSaveButtonDisabled ? "#000" : "#fff",
                   }}
                 >
-                  <p
-                    className="fullscreenbar_headertitle"
-                    style={{
-                      color: isSaveButtonDisabled ? "#000" : "#fff",
-                    }}
-                  >
-                    {isSaveButtonDisabled
-                      ? "Discount Management"
-                      : "Unsaved Changes"}
-                  </p>
-                </div>
-                <ButtonGroup>
-                  <Button
-                    variant="primary"
-                    disabled={isSaveButtonDisabled}
-                    onClick={() => console.log("Primary heyy")}
-                  >
-                    Save
-                  </Button>
-                </ButtonGroup>
+                  {isSaveButtonDisabled
+                    ? "Discount Management"
+                    : "Unsaved Changes"}
+                </p>
               </div>
-            </FullscreenBar>
-          </div>
+              <ButtonGroup>
+                <Button
+                  variant="primary"
+                  disabled={isSaveButtonDisabled}
+                  onClick={() => console.log("Primary heyy")}
+                >
+                  Save
+                </Button>
+              </ButtonGroup>
+            </div>
+          </FullscreenBar>
+        </div>
+        <Page>
           <LegacyCard>
             <div className="discount_table">
               <IndexTable

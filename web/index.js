@@ -78,9 +78,9 @@ async function SaveInitCustomizationSettings(shop) {
   const customizationSettings = await Customization.findOne({ shop });
 
   if (customizationSettings) {
-    // Entry with the same shop already exists, update it
+    // Entry with the same shop already exists, if data is null ,update it
     try {
-      if (customizationSettings.customizations_json) {
+      if (customizationSettings.customizations_json && customizationSettings.customizations_json === "") {
         customizationSettings.customizations_json = JSON.stringify(json_style_data);
       }
       await customizationSettings.save();

@@ -7,14 +7,14 @@
     margin: 5px 0;
 }
 
-.customization_fullscreenbar{
+.fullscreenbar_div{
     position: sticky;
     top: 0;
     z-index: 9;
-    margin-bottom: 10px;
+    /* margin-bottom: 10px; */
 }
 
-.customization_fullscreenbar > div:first-child > button:first-child {
+.fullscreenbar_div > div:first-child > button:first-child {
     display: none;
 }
 .customization_page{
@@ -113,3 +113,26 @@ font-family: 'Inter', sans-serif;
         font-weight: 500;
         color: #1C1D1D;
 }
+
+/* FAQs Page CSS START */
+.faq_div {
+    padding: 5px 0;
+}
+
+.faq_div>div:first-child>div:first-child {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.setting_title {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-left: 10px;
+}
+
+.show_span {
+    margin-left: 10px;
+}
+
+/* FAQs Page CSS END */

@@ -35,8 +35,8 @@ export default function PageName() {
   const [APIresponse, setAPIresponse] = useState(json_style_data);
   const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
   const [activeTab, setActiveTab] = useState(1);
-    const [loading, SetLoading] = useState(false);
-    const tabs = [
+  const [loading, SetLoading] = useState(false);
+  const tabs = [
     {
       id: "1",
       content: "Discount Label",
@@ -56,36 +56,44 @@ export default function PageName() {
     getCustomizationDetails();
   }, []);
 
-  // FETCH DETAILS 
+  // FETCH DETAILS
   const getCustomizationDetails = async () => {
-        SetLoading(true);
-        axios
+    SetLoading(true);
+    axios
       .post("/api/getCustomizationDetails", {
         shop: shop_url,
       })
       .then((response) => {
-        // console.log(JSON.parse(response.data.data.shop_data.customizations_json));
-        setTransferData(JSON.parse(response.data.data.shop_data.customizations_json));
-        setAPIresponse(JSON.parse(response.data.data.shop_data.customizations_json));
+        // console.log(   JSON.parse(response.data.data.shop_data.customizations_json) );
+        setTransferData(
+          JSON.parse(response.data.data.shop_data.customizations_json)
+        );
+        setAPIresponse(
+          JSON.parse(response.data.data.shop_data.customizations_json)
+        );
         SetLoading(false);
       });
   };
 
-   // SAVE DETAILS 
-   const saveCustomizationDetails = async () => {
-        SetLoading(true);
-        axios
+  // SAVE DETAILS
+  const saveCustomizationDetails = async () => {
+    SetLoading(true);
+    axios
       .post("/api/saveCustomizationDetails", {
         shop: shop_url,
         transferData: transferData,
       })
       .then((response) => {
         // console.log(response.data.data.shop_data.customizations_json);
-        setTransferData(JSON.parse(response.data.data.shop_data.customizations_json));
-        setAPIresponse(JSON.parse(response.data.data.shop_data.customizations_json));
+        setTransferData(
+          JSON.parse(response.data.data.shop_data.customizations_json)
+        );
+        setAPIresponse(
+          JSON.parse(response.data.data.shop_data.customizations_json)
+        );
       });
-      SetLoading(false);
-    };
+    SetLoading(false);
+  };
 
   // TO ENABLE OR DISABLE SAVE BUTTON
   useEffect(() => {
@@ -100,49 +108,49 @@ export default function PageName() {
   if (loading === false) {
     return (
       <div className="customization_page">
-        <Page fullWidth>
-          <div className="customization_fullscreenbar">
-            <FullscreenBar>
+        <div className="fullscreenbar_div">
+          <FullscreenBar>
+            <div
+              style={{
+                display: "flex",
+                flexGrow: 1,
+                justifyContent: "space-between",
+                alignItems: "center",
+                paddingLeft: "1rem",
+                paddingRight: "1rem",
+                background: isSaveButtonDisabled ? "#fff" : "#5488c7",
+                transition: "background 0.5s ease-out 0s",
+              }}
+            >
               <div
                 style={{
-                  display: "flex",
                   flexGrow: 1,
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  paddingLeft: "1rem",
-                  paddingRight: "1rem",
-                  background: isSaveButtonDisabled ? "#fff" : "#5488c7",
-                  transition: "background 0.5s ease-out 0s",
                 }}
               >
-                <div
+                <p
+                  className="fullscreenbar_headertitle"
                   style={{
-                    flexGrow: 1,
+                    color: isSaveButtonDisabled ? "#000" : "#fff",
                   }}
                 >
-                  <p
-                    className="fullscreenbar_headertitle"
-                    style={{
-                      color: isSaveButtonDisabled ? "#000" : "#fff",
-                    }}
-                  >
-                    {isSaveButtonDisabled
-                      ? "Customization Corner"
-                      : "Unsaved Changes"}
-                  </p>
-                </div>
-                <ButtonGroup>
-                  <Button
-                    variant="primary"
-                    disabled={isSaveButtonDisabled}
-                    onClick={saveCustomizationDetails}
-                  >
-                    Save
-                  </Button>
-                </ButtonGroup>
+                  {isSaveButtonDisabled
+                    ? "Customization Corner"
+                    : "Unsaved Changes"}
+                </p>
               </div>
-            </FullscreenBar>
-          </div>
+              <ButtonGroup>
+                <Button
+                  variant="primary"
+                  disabled={isSaveButtonDisabled}
+                  onClick={saveCustomizationDetails}
+                >
+                  Save
+                </Button>
+              </ButtonGroup>
+            </div>
+          </FullscreenBar>
+        </div>
+        <Page fullWidth>
           <Card>
             {/* TABS  */}
             <InlineGrid gap="400" columns={3}>
@@ -199,35 +207,39 @@ export default function PageName() {
                 {activeTab == 1 && (
                   <DisccountLabel json_style_data={transferData} />
                 )}
-                {activeTab == 2 && <PopupModal json_style_data={transferData} />}
-                {activeTab == 3 && <OfferRibbon json_style_data={transferData} />}
+                {activeTab == 2 && (
+                  <PopupModal json_style_data={transferData} />
+                )}
+                {activeTab == 3 && (
+                  <OfferRibbon json_style_data={transferData} />
+                )}
               </Layout.Section>
             </Layout>
           </Card>
         </Page>
       </div>
     );
-} else {
-  return (
-    <div>
-      <Card>
-        <SkeletonPage primaryAction>
-          <Layout>
-            <Layout.Section>
-              <Card sectioned>
-                <SkeletonBodyText />
-              </Card>
-              <Card sectioned>
-                <TextContainer>
-                  <SkeletonDisplayText size="small" />
+  } else {
+    return (
+      <div>
+        <Card>
+          <SkeletonPage primaryAction>
+            <Layout>
+              <Layout.Section>
+                <Card sectioned>
                   <SkeletonBodyText />
-                </TextContainer>
-              </Card>
-            </Layout.Section>
-          </Layout>
-        </SkeletonPage>
-      </Card>
-    </div>
-  );
-}
+                </Card>
+                <Card sectioned>
+                  <TextContainer>
+                    <SkeletonDisplayText size="small" />
+                    <SkeletonBodyText />
+                  </TextContainer>
+                </Card>
+              </Layout.Section>
+            </Layout>
+          </SkeletonPage>
+        </Card>
+      </div>
+    );
+  }
 }
