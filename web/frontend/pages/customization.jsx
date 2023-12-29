@@ -77,6 +77,7 @@ export default function PageName() {
                 paddingLeft: "1rem",
                 paddingRight: "1rem",
                 background: isSaveButtonDisabled ? "#fff" : "#5488c7",
+                transition: "background 0.5s ease-out 0s",
               }}
             >
               <div
