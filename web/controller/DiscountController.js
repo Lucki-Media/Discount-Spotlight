@@ -1,13 +1,9 @@
 import Discounts from "../db/models/Discounts.js";
-import shopify from "../shopify.js";
 
 const getDiscountsDetails = async (request, response) => {
   const { shop, accessToken } = request.body;
   const fetchDiscountsData = await Discounts.findOne({
     shop: shop,
-  });
-  const ProductData = await shopify.rest.Product.all({
-    session: response.locals.shopify.session,
   });
     // fields: "id,image,title",
   try {
@@ -15,7 +11,7 @@ const getDiscountsDetails = async (request, response) => {
       status: 200,
       success: true,
       data: {
-        shop_data: ProductData,
+        shop_data: "fetchDiscountsData",
       },
     });
   } catch (error) {

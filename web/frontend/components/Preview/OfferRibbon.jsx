@@ -3,14 +3,19 @@ import style from "../../css/OfferRibbon.module.css";
 import placeholder from "../../assets/placeholder-image.jpg";
 
 export default function OfferRibbon(props) {
-  const [r, g, b] =
-    props.json_style_data.offer_ribbon_settings.bgColor.match(/\d+/g);
+  const bgColorMatch =
+    props.json_style_data.offer_ribbon_settings.bgColor.match(/[\d.]+/g);
+  const [r, g, b] = bgColorMatch.map((value) => Math.round(parseFloat(value)));
+
   return (
     <>
       <style>
         {`
         .DS__After_Discount_tag:after {
-          border-color: rgba(${r}, ${g}, ${b}, 0.5) transparent rgba(${r}, ${g}, ${b}, 0.5) rgba(${r}, ${g}, ${b}, 1) ;
+          border-color: rgba(${r}, ${g}, ${b}, 0.5) 
+          transparent 
+          rgba(${r}, ${g}, ${b}, 0.5) 
+          rgba(${r}, ${g}, ${b}, 1) ;
         }
       `}
       </style>

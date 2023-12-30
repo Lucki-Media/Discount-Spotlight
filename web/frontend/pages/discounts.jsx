@@ -88,9 +88,11 @@ export default function PageName() {
     )
   );
 
-  // USEEFFECT
+  // USEEFFECT, GET ALL DATA ON LOAD
   useEffect(() => {
     getDiscountsDetails();
+    getProducts();
+    getDiscounts();
   }, []);
 
   // FETCH DETAILS
@@ -101,6 +103,23 @@ export default function PageName() {
       console.log(response);
     });
   };
+
+  // SHOPIFY PRODUCT API
+  const getProducts = async (req, res) => {
+    // const countData = await shopify.product.list({
+    //   accessToken: req.session.shopify.accessToken,
+    // });
+    console.log("countData:");
+    // console.log(countData);
+    // res.status(200).json({ success: true, data: countData });
+    return;
+  };
+
+  // SHOPIFY DISCOUNT API
+  const getDiscounts = async (req, res) => {
+    return;
+  };
+
   if (loading === false) {
     return (
       <div className="customization_page">
