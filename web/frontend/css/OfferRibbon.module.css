@@ -18,8 +18,9 @@
 .offer_ribbon_product_image img {
     border: 1px solid #Dfdfdf;
     border-radius: 5px;
-    width: 360px;
+    width: 100%;
     margin: 0 auto;
+    max-width: 360px;
 
 }
 

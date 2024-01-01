@@ -24,12 +24,12 @@ import { useAuthenticatedFetch } from "../hooks";
 export default function PageName() {
   const shop_url = document.getElementById("shopOrigin").value;
   const appFetch = useAuthenticatedFetch();
-
   const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
   const [APIresponse, setApiResponse] = useState([]);
   const [discounts, setDiscounts] = useState([]);
   const [loading, SetLoading] = useState(false);
 
+  console.log(process.env.API_VERSION);
   const orders = [
     {
       id: "1020",
@@ -92,32 +92,53 @@ export default function PageName() {
   useEffect(() => {
     getDiscountsDetails();
     getProducts();
-    getDiscounts();
+    // getDiscounts();
   }, []);
 
   // FETCH DETAILS
   const getDiscountsDetails = async () => {
-    appFetch("/api/getDiscountsDetails", {
-      shop: shop_url,
-    }).then((response) => {
-      console.log(response);
-    });
+    axios
+      .post("/api/getDiscountsDetails", {
+        shop: shop_url,
+      })
+      .then((response) => {
+        getDiscounts(response.data.data.accessToken);
+        console.log("response");
+        console.log(response);
+      });
   };
-
   // SHOPIFY PRODUCT API
   const getProducts = async (req, res) => {
-    // const countData = await shopify.product.list({
-    //   accessToken: req.session.shopify.accessToken,
-    // });
-    console.log("countData:");
-    // console.log(countData);
-    // res.status(200).json({ success: true, data: countData });
-    return;
+    axios
+      .get("/api/getProducts", {
+        shop: shop_url,
+      })
+      .then((response) => {
+        console.log("getProducts");
+        console.log(response);
+      });
   };
 
   // SHOPIFY DISCOUNT API
-  const getDiscounts = async (req, res) => {
-    return;
+  const getDiscounts = async (accessToken) => {
+    console.log("hello");
+    console.log(accessToken);
+    try {
+      const response = await axios.get(
+        "https://" + shop_url + "/admin/api/2023-10/price_rules.json",
+        {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "X-Shopify-Access-Token": accessToken,
+          },
+        }
+      );
+
+      console.log("response.data"); // Handle the response data as needed
+      console.log(response.data); // Handle the response data as needed
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
   };
 
   if (loading === false) {

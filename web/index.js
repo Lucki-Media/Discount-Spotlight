@@ -73,6 +73,21 @@ app.get("/api/products/create", async (_req, res) => {
   res.status(status).send({ success: status === 200, error });
 });
 
+app.get("/api/getProducts", async (_req, res) => {
+  const productData = await shopify.api.rest.Product.all({
+  session: res.locals.shopify.session,
+  fields: "id,image,title",
+});
+  res.status(200).send(productData);
+});
+
+// app.get("/api/getDiscounts", async (_req, res) => {
+//   const discountData = await shopify.api.rest.PriceRule.count({
+//   session: res.locals.shopify.session,
+// });
+//   res.status(200).send(discountData);
+// });
+
 // INITDATA SAVE FUNCTION 
 async function SaveInitCustomizationSettings(shop) {
   const customizationSettings = await Customization.findOne({ shop });
