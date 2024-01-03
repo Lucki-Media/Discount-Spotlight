@@ -1,49 +1,80 @@
 import Discounts from "../db/models/Discounts.js";
-import ShopifySessions from "../db/models/ShopifySessions.js";
-import axios from "axios";
 
 const getDiscountsDetails = async (request, response) => {
   const { shop, accessToken } = request.body;
-  const fetchShopifySessionsData = await ShopifySessions.findOne({
+  const fetchDiscountsData = await Discounts.find({
     shop: shop,
   });
   try {
-    getDiscounts(fetchShopifySessionsData);
-    // return response.json({
-    //   status: 200,
-    //   success: true,
-    //   data: fetchShopifySessionsData,
-    // });
+    return response.json({
+      status: 200,
+      success: true,
+      data: {
+        shop_data: fetchDiscountsData,
+      },
+    });
   } catch (error) {
     console.log(error);
   }
 };
 
-const getDiscounts = async (data) => {
-  console.log("hello");
-  console.log(data);
-  try {
-    const response = await axios.get(
-      "https://" +
-        data.shop +
-        "/admin/api" +
-        process.env.API_VERSION +
-        "/price_rules.json",
-      {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "X-Shopify-Access-Token": data.accessToken,
-        },
-      }
-    );
+const saveDiscountsDetails = async (request, response) => {
+  const { shop, accessToken, data } = request.body;
 
-    console.log("response.data"); // Handle the response data as needed
-    console.log(response.data); // Handle the response data as needed
+  try {
+    // Use map to loop through the data array and perform asynchronous operations
+    const promises = data.map(async (product) => {
+      const fetchProductData = await Discounts.findOne({
+        shop: shop,
+        product_id: product.id,
+      });
+
+      if (fetchProductData) {
+        // If the product exists, update its data
+        fetchProductData.product_image =
+          product.image != null && product.image.src != null
+            ? product.image.src
+            : "";
+        fetchProductData.product_name = product.title;
+        fetchProductData.discounts = product.discounts.join(", ");
+      } else {
+        // If the product doesn't exist, create a new entry
+        const newProductData = new Discounts({
+          shop: shop,
+          product_id: product.id,
+          product_image:
+            product.image != null && product.image.src != null
+              ? product.image.src
+              : "",
+          product_name: product.title,
+          discounts: product.discounts.join(", "),
+        });
+
+        await newProductData.save();
+      }
+    });
+
+    // Wait for all promises to resolve
+    await Promise.all(promises);
+
+    return response.json({
+      status: 200,
+      success: true,
+      data: {
+        shop_data: data,
+      },
+    });
   } catch (error) {
-    console.error("Error fetching data:", error);
+    console.error("Error saving discounts details:", error);
+    return response.status(500).json({
+      status: 500,
+      success: false,
+      error: "Internal Server Error",
+    });
   }
 };
 
 export default {
   getDiscountsDetails,
+  saveDiscountsDetails,
 };

@@ -15,131 +15,196 @@ import {
   SkeletonDisplayText,
   TextContainer,
   Card,
+  Thumbnail,
+  Icon,
 } from "@shopify/polaris";
+import Select from "react-select";
 import React, { useCallback, useEffect, useState } from "react";
 import "../css/settings.css";
 import axios from "axios";
 import { useAuthenticatedFetch } from "../hooks";
+import noImage from "../assets/noImage.jpeg";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function PageName() {
   const shop_url = document.getElementById("shopOrigin").value;
   const appFetch = useAuthenticatedFetch();
-  const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
-  const [APIresponse, setApiResponse] = useState([]);
-  const [discounts, setDiscounts] = useState([]);
-  const [loading, SetLoading] = useState(false);
 
-  console.log(process.env.API_VERSION);
-  const orders = [
-    {
-      id: "1020",
-      order: "#1020",
-      date: "Jul 20 at 4:34pm",
-      customer: "Jaydon Stanton",
-      total: "$969.44",
-      paymentStatus: <Badge progress="complete">Paid</Badge>,
-      fulfillmentStatus: <Badge progress="incomplete">Unfulfilled</Badge>,
-    },
-    {
-      id: "1019",
-      order: "#1019",
-      date: "Jul 20 at 3:46pm",
-      customer: "Ruben Westerfelt",
-      total: "$701.19",
-      paymentStatus: <Badge progress="partiallyComplete">Partially paid</Badge>,
-      fulfillmentStatus: <Badge progress="incomplete">Unfulfilled</Badge>,
-    },
-    {
-      id: "1018",
-      order: "#1018",
-      date: "Jul 20 at 3.44pm",
-      customer: "Leo Carder",
-      total: "$798.24",
-      paymentStatus: <Badge progress="complete">Paid</Badge>,
-      fulfillmentStatus: <Badge progress="incomplete">Unfulfilled</Badge>,
-    },
-  ];
+  const [products, setProducts] = useState([]);
+  const [discounts, setDiscounts] = useState([]);
+  const [options, setOptions] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [selectedOptions, setSelectedOptions] = useState([]);
+
+  const notify = () => toast("Wow so easy!");
+
   const resourceName = {
-    singular: "discount",
-    plural: "discounts",
+    singular: "product",
+    plural: "products",
   };
 
-  const rowMarkup = orders.map(
-    (
-      { id, order, date, customer, total, paymentStatus, fulfillmentStatus },
-      index
-    ) => (
+  // DISCOUNT COMBOBOX LOGIC START
+  useEffect(() => {
+    const newOptions = discounts.map((discount) => ({
+      value: discount.id,
+      label: discount.title,
+    }));
+
+    setOptions(newOptions);
+  }, [discounts]);
+
+  const handleChange = (value, productId) => {
+    // Create a copy of the selectedOptions array
+    const updatedSelectedOptions = [...selectedOptions];
+
+    // Update the selected option for the specific product
+    updatedSelectedOptions[productId] = value;
+
+    // Check and limit the number of selected options to 3
+    if (value && value.length > 3) {
+      updatedSelectedOptions[productId] = value.slice(0, 3);
+    }
+
+    // Update the state with the new array of selected options
+    setSelectedOptions(updatedSelectedOptions);
+  };
+
+  // DISCOUNT COMBOBOX LOGIC END
+
+  // PRODUCT DATA
+  const rowMarkup = (productsToDisplay) => {
+    return productsToDisplay.map(({ id, title, image }, index) => (
       <IndexTable.Row id={id} key={id} position={index}>
         <IndexTable.Cell>
-          <Text variant="bodyMd" fontWeight="bold" as="span">
-            {order}
-          </Text>
+          <Thumbnail
+            source={image != null && image.src != null ? image.src : noImage}
+            size="small"
+            alt="Black choker necklace"
+          />
         </IndexTable.Cell>
-        <IndexTable.Cell>{date}</IndexTable.Cell>
-        <IndexTable.Cell>{customer}</IndexTable.Cell>
+        <IndexTable.Cell>{title}</IndexTable.Cell>
         <IndexTable.Cell>
-          <Text as="span" alignment="end" numeric>
-            {total}
-          </Text>
+          <Select
+            isMulti
+            value={selectedOptions[index]}
+            onChange={(value) => handleChange(value, index)}
+            options={options}
+            placeholder="Discount Codes..."
+            max={3}
+          />
         </IndexTable.Cell>
-        <IndexTable.Cell>{paymentStatus}</IndexTable.Cell>
-        <IndexTable.Cell>{fulfillmentStatus}</IndexTable.Cell>
       </IndexTable.Row>
-    )
-  );
+    ));
+  };
 
   // USEEFFECT, GET ALL DATA ON LOAD
   useEffect(() => {
+    setLoading(true);
     getDiscountsDetails();
+    getPriceRules();
     getProducts();
-    // getDiscounts();
+    setLoading(false);
   }, []);
 
-  // FETCH DETAILS
+  // GET DATA FROM THE DATABSE
   const getDiscountsDetails = async () => {
+    setLoading(true);
     axios
       .post("/api/getDiscountsDetails", {
         shop: shop_url,
       })
       .then((response) => {
-        getDiscounts(response.data.data.accessToken);
-        console.log("response");
+        console.log("getDiscountsDetails");
         console.log(response);
+        setLoading(false);
       });
   };
-  // SHOPIFY PRODUCT API
-  const getProducts = async (req, res) => {
+
+  // SAVE DATA IN THE DATABSE
+  const handleSave = () => {
+    const productsWithDiscounts = products.map((product, index) => ({
+      ...product,
+      discounts: (selectedOptions[index] || []).map((option) => option.value),
+    }));
+
     axios
-      .get("/api/getProducts", {
+      .post("/api/saveDiscountsDetails", {
         shop: shop_url,
+        data: productsWithDiscounts,
       })
       .then((response) => {
-        console.log("getProducts");
-        console.log(response);
+        {
+          notify;
+        }
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error("Error saving data:", error);
       });
   };
 
-  // SHOPIFY DISCOUNT API
-  const getDiscounts = async (accessToken) => {
-    console.log("hello");
-    console.log(accessToken);
+  // SHOPIFY PRODUCT API
+  const getProducts = async (req, res) => {
     try {
-      const response = await axios.get(
-        "https://" + shop_url + "/admin/api/2023-10/price_rules.json",
-        {
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-            "X-Shopify-Access-Token": accessToken,
-          },
-        }
-      );
+      const response = await appFetch("/api/getProducts", {
+        shop: shop_url,
+      });
 
-      console.log("response.data"); // Handle the response data as needed
-      console.log(response.data); // Handle the response data as needed
+      if (response.ok) {
+        const responseData = await response.json();
+        // console.log("getProducts");
+        // console.log(responseData.data);
+        setProducts(responseData.data);
+      } else {
+        console.error("Error fetching products:", response.statusText);
+      }
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error("An error occurred while fetching products:", error);
     }
   };
+
+  // SHOPIFY PRICERULE API
+  const getPriceRules = async (req, res) => {
+    try {
+      const response = await appFetch("/api/pricerules", {
+        shop: shop_url,
+      });
+
+      if (response.ok) {
+        const responseData = await response.json();
+        // console.log("getPriceRules");
+        // console.log(responseData.data);
+        setDiscounts(responseData.data);
+      } else {
+        console.error("Error fetching price rules:", response.statusText);
+      }
+    } catch (error) {
+      console.error("An error occurred while fetching price rules:", error);
+    }
+  };
+
+  // PAGINATION LOGIC START
+  const itemsPerPage = 10;
+
+  // Calculate the start and end index for the current page
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+
+  // Filter the products based on the current page
+  const productsToDisplay = products.slice(startIndex, endIndex);
+
+  const handleNextPage = () => {
+    // Update the current page when the "Next" button is clicked
+    setCurrentPage((prevPage) => prevPage + 1);
+  };
+
+  const handlePrevPage = () => {
+    // Update the current page when the "Previous" button is clicked
+    setCurrentPage((prevPage) => Math.max(1, prevPage - 1));
+  };
+  // PAGINATION LOGIC END
 
   if (loading === false) {
     return (
@@ -154,7 +219,7 @@ export default function PageName() {
                 alignItems: "center",
                 paddingLeft: "1rem",
                 paddingRight: "1rem",
-                background: isSaveButtonDisabled ? "#fff" : "#5488c7",
+                background: "#fff",
                 transition: "background 0.5s ease-out 0s",
               }}
             >
@@ -166,19 +231,17 @@ export default function PageName() {
                 <p
                   className="fullscreenbar_headertitle"
                   style={{
-                    color: isSaveButtonDisabled ? "#000" : "#fff",
+                    color: "#000",
                   }}
                 >
-                  {isSaveButtonDisabled
-                    ? "Discount Management"
-                    : "Unsaved Changes"}
+                  Discount Management
                 </p>
               </div>
               <ButtonGroup>
                 <Button
                   variant="primary"
-                  disabled={isSaveButtonDisabled}
-                  onClick={() => console.log("Primary heyy")}
+                  onClick={handleSave}
+                  loading={loading}
                 >
                   Save
                 </Button>
@@ -192,18 +255,21 @@ export default function PageName() {
               <IndexTable
                 condensed={useBreakpoints().smDown}
                 resourceName={resourceName}
-                itemCount={orders.length}
+                itemCount={products.length}
                 headings={[
-                  { title: "Order" },
-                  { title: "Date" },
-                  { title: "Customer" },
-                  { title: "Total", alignment: "end" },
-                  { title: "Payment status" },
-                  { title: "Fulfillment status" },
+                  { title: "Image" },
+                  { title: "Product" },
+                  { title: "Discounts" },
                 ]}
                 selectable={false}
+                pagination={{
+                  hasNext: endIndex < products.length,
+                  hasPrevious: currentPage > 1,
+                  onNext: handleNextPage,
+                  onPrevious: handlePrevPage,
+                }}
               >
-                {rowMarkup}
+                {rowMarkup(productsToDisplay)}
               </IndexTable>
             </div>
           </LegacyCard>

@@ -35,7 +35,7 @@ export default function PageName() {
   const [APIresponse, setAPIresponse] = useState(json_style_data);
   const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
   const [activeTab, setActiveTab] = useState(1);
-  const [loading, SetLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const tabs = [
     {
       id: "1",
@@ -58,7 +58,7 @@ export default function PageName() {
 
   // FETCH DETAILS
   const getCustomizationDetails = async () => {
-    SetLoading(true);
+    setLoading(true);
     axios
       .post("/api/getCustomizationDetails", {
         shop: shop_url,
@@ -71,13 +71,13 @@ export default function PageName() {
         setAPIresponse(
           JSON.parse(response.data.data.shop_data.customizations_json)
         );
-        SetLoading(false);
+        setLoading(false);
       });
   };
 
   // SAVE DETAILS
   const saveCustomizationDetails = async () => {
-    SetLoading(true);
+    setLoading(true);
     axios
       .post("/api/saveCustomizationDetails", {
         shop: shop_url,
@@ -92,7 +92,7 @@ export default function PageName() {
           JSON.parse(response.data.data.shop_data.customizations_json)
         );
       });
-    SetLoading(false);
+    setLoading(false);
   };
 
   // TO ENABLE OR DISABLE SAVE BUTTON

@@ -16,6 +16,7 @@ import discountRoute from "./routes/DiscountRoute.js";
 import customizationRoute from "./routes/CustomizationRoute.js";
 import Customization from "./db/models/Customizations.js";
 import { json_style_data } from "./frontend/Static/General_settings.js";
+import axios from "axios";
 const PORT = parseInt(
   process.env.BACKEND_PORT || process.env.PORT || "3000",
   10
@@ -47,6 +48,9 @@ app.get(
   shopify.redirectToShopifyOrAppRoot()
 );
 
+// Enable CORS only for specific routes
+app.use("/api/*", cors());
+
 // If you are adding routes outside of the /api path, remember to
 // also add a proxy rule for them in web/frontend/vite.config.js
 
@@ -75,10 +79,18 @@ app.get("/api/products/create", async (_req, res) => {
 
 app.get("/api/getProducts", async (_req, res) => {
   const productData = await shopify.api.rest.Product.all({
-  session: res.locals.shopify.session,
-  fields: "id,image,title",
-});
+    session: res.locals.shopify.session,
+    fields: "id,image,title",
+  });
   res.status(200).send(productData);
+});
+
+// Endpoint to fetch price rules
+app.get("/api/pricerules", async (_req, res) => {
+  const discountData = await shopify.api.rest.PriceRule.all({
+    session: res.locals.shopify.session,
+  });
+  return res.json(discountData);
 });
 
 // app.get("/api/getDiscounts", async (_req, res) => {
@@ -88,15 +100,19 @@ app.get("/api/getProducts", async (_req, res) => {
 //   res.status(200).send(discountData);
 // });
 
-// INITDATA SAVE FUNCTION 
+// INITDATA SAVE FUNCTION
 async function SaveInitCustomizationSettings(shop) {
   const customizationSettings = await Customization.findOne({ shop });
 
   if (customizationSettings) {
     // Entry with the same shop already exists, if data is null ,update it
     try {
-      if (customizationSettings.customizations_json && customizationSettings.customizations_json === "") {
-        customizationSettings.customizations_json = JSON.stringify(json_style_data);
+      if (
+        customizationSettings.customizations_json &&
+        customizationSettings.customizations_json === ""
+      ) {
+        customizationSettings.customizations_json =
+          JSON.stringify(json_style_data);
       }
       await customizationSettings.save();
       console.log("Customization settings updated successfully");
@@ -108,7 +124,7 @@ async function SaveInitCustomizationSettings(shop) {
     const customizationSettingsData = {
       shop: shop,
       customizations_json: JSON.stringify(json_style_data),
-    }
+    };
 
     try {
       const saveData = new Customization(customizationSettingsData);
@@ -124,11 +140,11 @@ app.use(shopify.cspHeaders());
 app.use(serveStatic(STATIC_PATH, { index: false }));
 
 app.use("/*", shopify.ensureInstalledOnShop(), async (_req, res, _next) => {
-    // Assuming that `res.locals.shopify.session` contains the shop information
-    const shopName = _req.query.shop;
-    console.log("Shop Name:", shopName);
-    SaveInitCustomizationSettings(shopName);
-  
+  // Assuming that `res.locals.shopify.session` contains the shop information
+  const shopName = _req.query.shop;
+  console.log("Shop Name:", shopName);
+  SaveInitCustomizationSettings(shopName);
+
   return res
     .status(200)
     .set("Content-Type", "text/html")
