@@ -160,7 +160,11 @@ export default function PageName() {
                   onClick={() => {
                     setActiveTab(tab.id);
                   }}
-                  style={{ cursor: "pointer" }}
+                  style={{
+                    cursor: "pointer",
+                    border: "1px solid #EAF4FF",
+                    borderRadius: 12,
+                  }}
                 >
                   <Card
                     roundedAbove="md"
@@ -170,7 +174,9 @@ export default function PageName() {
                         : "bg-surface-secondary"
                     }
                   >
-                    {tab.content}
+                    <Text variant="headingMd" as="h6">
+                      {tab.content}
+                    </Text>
                   </Card>
                 </div>
               ))}

@@ -1,10 +1,7 @@
 import {
   IndexTable,
   LegacyCard,
-  Text,
-  Badge,
   useBreakpoints,
-  Checkbox,
   FullscreenBar,
   ButtonGroup,
   Button,
@@ -16,10 +13,9 @@ import {
   TextContainer,
   Card,
   Thumbnail,
-  Icon,
 } from "@shopify/polaris";
 import Select from "react-select";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../css/settings.css";
 import axios from "axios";
 import { useAuthenticatedFetch } from "../hooks";
@@ -31,15 +27,26 @@ export default function PageName() {
   const shop_url = document.getElementById("shopOrigin").value;
   const appFetch = useAuthenticatedFetch();
 
+  const [shopData, setShopData] = useState([]);
   const [products, setProducts] = useState([]);
   const [discounts, setDiscounts] = useState([]);
   const [options, setOptions] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedOptions, setSelectedOptions] = useState([]);
 
-  const notify = () => toast("Wow so easy!");
-
+  const notify = () => {
+    toast.info("Data saved successfully !", {
+      position: "bottom-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    });
+  };
   const resourceName = {
     singular: "product",
     plural: "products",
@@ -75,28 +82,55 @@ export default function PageName() {
 
   // PRODUCT DATA
   const rowMarkup = (productsToDisplay) => {
-    return productsToDisplay.map(({ id, title, image }, index) => (
-      <IndexTable.Row id={id} key={id} position={index}>
-        <IndexTable.Cell>
-          <Thumbnail
-            source={image != null && image.src != null ? image.src : noImage}
-            size="small"
-            alt="Black choker necklace"
-          />
-        </IndexTable.Cell>
-        <IndexTable.Cell>{title}</IndexTable.Cell>
-        <IndexTable.Cell>
-          <Select
-            isMulti
-            value={selectedOptions[index]}
-            onChange={(value) => handleChange(value, index)}
-            options={options}
-            placeholder="Discount Codes..."
-            max={3}
-          />
-        </IndexTable.Cell>
-      </IndexTable.Row>
-    ));
+    return productsToDisplay.map(({ id, title, image }, index) => {
+      // Find the product Data with matching product_id
+      const matchingObject = shopData.find(
+        (obj) => Number(obj.product_id) === Number(id)
+      );
+      let discountsValue = [];
+      if (matchingObject) {
+        discountsValue = matchingObject.discounts;
+      }
+      const defaultOptions = discountsValue.map((discountId) => {
+        const matchingOption = options.find(
+          (option) => option.value === discountId
+        );
+        return matchingOption;
+      });
+
+      return (
+        <IndexTable.Row id={id} key={id} position={index}>
+          <IndexTable.Cell>
+            <Thumbnail
+              source={image != null && image.src != null ? image.src : noImage}
+              size="small"
+              alt="Black choker necklace"
+            />
+          </IndexTable.Cell>
+          <IndexTable.Cell>{title}</IndexTable.Cell>
+          <IndexTable.Cell style={{ width: "50%" }}>
+            <Select
+              isMulti
+              styles={{
+                multiValueRemove: (styles) => ({
+                  ...styles,
+                  ":hover": {
+                    backgroundColor: "#5488c7",
+                    color: "white",
+                  },
+                }),
+              }}
+              value={selectedOptions[index]}
+              defaultValue={defaultOptions}
+              onChange={(value) => handleChange(value, index)}
+              options={options}
+              placeholder="Discount Codes..."
+              max={3}
+            />
+          </IndexTable.Cell>
+        </IndexTable.Row>
+      );
+    });
   };
 
   // USEEFFECT, GET ALL DATA ON LOAD
@@ -105,7 +139,9 @@ export default function PageName() {
     getDiscountsDetails();
     getPriceRules();
     getProducts();
-    setLoading(false);
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
   }, []);
 
   // GET DATA FROM THE DATABSE
@@ -116,14 +152,16 @@ export default function PageName() {
         shop: shop_url,
       })
       .then((response) => {
-        console.log("getDiscountsDetails");
-        console.log(response);
+        // console.log("getDiscountsDetails");
+        // console.log(response);
+        setShopData(response.data.data.shop_data);
         setLoading(false);
       });
   };
 
   // SAVE DATA IN THE DATABSE
   const handleSave = () => {
+    setLoading(true);
     const productsWithDiscounts = products.map((product, index) => ({
       ...product,
       discounts: (selectedOptions[index] || []).map((option) => option.value),
@@ -136,17 +174,20 @@ export default function PageName() {
       })
       .then((response) => {
         {
-          notify;
+          notify();
         }
-        console.log(response.data);
+        // console.log(response.data);
+        setLoading(false);
       })
       .catch((error) => {
         console.error("Error saving data:", error);
+        setLoading(false);
       });
   };
 
   // SHOPIFY PRODUCT API
   const getProducts = async (req, res) => {
+    setLoading(true);
     try {
       const response = await appFetch("/api/getProducts", {
         shop: shop_url,
@@ -163,10 +204,12 @@ export default function PageName() {
     } catch (error) {
       console.error("An error occurred while fetching products:", error);
     }
+    setLoading(false);
   };
 
   // SHOPIFY PRICERULE API
   const getPriceRules = async (req, res) => {
+    setLoading(true);
     try {
       const response = await appFetch("/api/pricerules", {
         shop: shop_url,
@@ -183,6 +226,7 @@ export default function PageName() {
     } catch (error) {
       console.error("An error occurred while fetching price rules:", error);
     }
+    setLoading(false);
   };
 
   // PAGINATION LOGIC START
@@ -206,7 +250,7 @@ export default function PageName() {
   };
   // PAGINATION LOGIC END
 
-  if (loading === false) {
+  if (loading === false || products.length > 0) {
     return (
       <div className="customization_page">
         <div className="fullscreenbar_div">
@@ -249,11 +293,11 @@ export default function PageName() {
             </div>
           </FullscreenBar>
         </div>
+        <ToastContainer />
         <Page>
           <LegacyCard>
             <div className="discount_table">
               <IndexTable
-                condensed={useBreakpoints().smDown}
                 resourceName={resourceName}
                 itemCount={products.length}
                 headings={[

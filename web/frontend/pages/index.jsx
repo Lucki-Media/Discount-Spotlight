@@ -100,7 +100,7 @@ export default function HomePage() {
         </Banner>
 
         {/* VIDEO BANNER */}
-        <div style={{ padding: "20px 0" }}>
+        {/* <div style={{ padding: "20px 0" }}>
           <Card sectioned>
             <div style={{ paddingBottom: 10 }}>
               <Text variant="headingMd" as="h6">
@@ -120,65 +120,67 @@ export default function HomePage() {
               </p>
             </Banner>
           </Card>
-        </div>
+        </div> */}
 
         {/* REDIRECTION BANNERS */}
-        <Layout>
-          <Layout.Section variant="oneThird">
-            <Banner
-              title="Customize Your Popup Modal"
-              icon={PaintBrushMajor}
-              action={{
-                content: "Go to Customization",
-                url: "/customization",
-              }}
-              tone="info"
-            >
-              <List>
-                <List.Item>
-                  Personalize the appearance of popup modal to match your
-                  store's branding.
-                </List.Item>
-              </List>
-            </Banner>
-          </Layout.Section>
-          <Layout.Section variant="oneThird">
-            <Banner
-              title="Discount Management"
-              icon={DiscountsMajor}
-              action={{
-                content: "Manage Discounts",
-                url: "/discounts",
-              }}
-              tone="info"
-            >
-              <List>
-                <List.Item>
-                  Manage discounts for each product with our Discount Management
-                  feature.
-                </List.Item>
-              </List>
-            </Banner>
-          </Layout.Section>
-          <Layout.Section variant="oneThird">
-            <Banner
-              title="Frequently Asked Questions"
-              icon={QuestionMarkMajor}
-              action={{
-                content: "Visit FAQ",
-                url: "/faqs",
-              }}
-              tone="info"
-            >
-              <List>
-                <List.Item>
-                  Quickly find answers to common questions about app and its
-                  features.
-                </List.Item>
-              </List>
-            </Banner>
-          </Layout.Section>
-        </Layout>
+        <div style={{ padding: "20px 0" }}>
+          <Layout>
+            <Layout.Section variant="oneThird">
+              <Banner
+                title="Customize Your Popup Modal"
+                icon={PaintBrushMajor}
+                action={{
+                  content: "Go to Customization",
+                  url: "/customization",
+                }}
+                tone="info"
+              >
+                <List>
+                  <List.Item>
+                    Personalize the appearance of popup modal to match your
+                    store's branding.
+                  </List.Item>
+                </List>
+              </Banner>
+            </Layout.Section>
+            <Layout.Section variant="oneThird">
+              <Banner
+                title="Discount Management"
+                icon={DiscountsMajor}
+                action={{
+                  content: "Manage Discounts",
+                  url: "/discounts",
+                }}
+                tone="info"
+              >
+                <List>
+                  <List.Item>
+                    Manage discounts for each product with our Discount
+                    Management feature.
+                  </List.Item>
+                </List>
+              </Banner>
+            </Layout.Section>
+            <Layout.Section variant="oneThird">
+              <Banner
+                title="Frequently Asked Questions"
+                icon={QuestionMarkMajor}
+                action={{
+                  content: "Visit FAQ",
+                  url: "/faqs",
+                }}
+                tone="info"
+              >
+                <List>
+                  <List.Item>
+                    Quickly find answers to common questions about app and its
+                    features.
+                  </List.Item>
+                </List>
+              </Banner>
+            </Layout.Section>
+          </Layout>
+        </div>
 
         {/* GRAPH */}
         <Layout>

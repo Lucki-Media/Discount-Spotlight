@@ -17,8 +17,8 @@ const ProductDiscountSchema = new mongoose.Schema(
       type: String,
     },
     discounts: {
-      type: String,
-      default: "",
+      type: [Number],
+      default: [],
     },
   },
   { timestamps: true }

@@ -2,9 +2,11 @@ import Discounts from "../db/models/Discounts.js";
 
 const getDiscountsDetails = async (request, response) => {
   const { shop, accessToken } = request.body;
-  const fetchDiscountsData = await Discounts.find({
-    shop: shop,
+  const fetchDiscountsData = await Discounts.find({ shop: shop }).populate({
+    path: "arrayField",
+    options: { strictPopulate: false },
   });
+
   try {
     return response.json({
       status: 200,
@@ -36,7 +38,7 @@ const saveDiscountsDetails = async (request, response) => {
             ? product.image.src
             : "";
         fetchProductData.product_name = product.title;
-        fetchProductData.discounts = product.discounts.join(", ");
+        fetchProductData.discounts = product.discounts;
       } else {
         // If the product doesn't exist, create a new entry
         const newProductData = new Discounts({
@@ -47,7 +49,7 @@ const saveDiscountsDetails = async (request, response) => {
               ? product.image.src
               : "",
           product_name: product.title,
-          discounts: product.discounts.join(", "),
+          discounts: product.discounts,
         });
 
         await newProductData.save();
