@@ -25,7 +25,9 @@ const saveCustomizationDetails = async (request, response) => {
   });
   try {
     if (fetchCustomizationsData.customizations_json) {
-      fetchCustomizationsData.customizations_json = JSON.stringify(request.body.transferData);
+      fetchCustomizationsData.customizations_json = JSON.stringify(
+        request.body.transferData
+      );
     }
     await fetchCustomizationsData.save();
 
@@ -42,5 +44,5 @@ const saveCustomizationDetails = async (request, response) => {
 };
 export default {
   getCustomizationDetails,
-  saveCustomizationDetails
+  saveCustomizationDetails,
 };

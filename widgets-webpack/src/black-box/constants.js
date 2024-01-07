@@ -1,3 +1,4 @@
 export const CONST = {
-  STICKY_ICON: "lm_sticky_icon",
+  OFFER_RIBBON: "ds_offer_ribbon",
+  DISCOUNT_LABEL: "ds_discount_label",
 };

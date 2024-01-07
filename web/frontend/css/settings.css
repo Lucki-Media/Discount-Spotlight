@@ -1,9 +1,6 @@
 .discount_table table tbody tr td:nth-child(3) {
     width: 50%;
 }
-.Vidhee  >div:first-child >div:first-child  >div:first-child {
-    background-color: red;
-}
 .icon_type_radio{
     height: 40px;
     width: 40px;
