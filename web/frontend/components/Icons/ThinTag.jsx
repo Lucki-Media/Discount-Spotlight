@@ -2,7 +2,7 @@ import React from "react";
 
 function ThinTag(props) {
   return (
-    <div>
+    <div style={{height:props.icon_style.size}}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 64 64"

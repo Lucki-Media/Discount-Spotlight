@@ -2,7 +2,7 @@ import React from "react";
 
 function ThinPercentageTag(props) {
   return (
-    <div>
+    <div style={{height:props.icon_style.size}}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         data-name="Layer 1"

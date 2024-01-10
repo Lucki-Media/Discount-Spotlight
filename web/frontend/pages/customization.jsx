@@ -27,6 +27,7 @@ import DisccountLabel from "../components/Preview/DiscountLabel";
 import PopupModal from "../components/Preview/PopupModal";
 import "../css/settings.css";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
 
 export default function PageName() {
   const shop_url = document.getElementById("shopOrigin").value;
@@ -36,6 +37,20 @@ export default function PageName() {
   const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
   const [activeTab, setActiveTab] = useState(1);
   const [loading, setLoading] = useState(false);
+
+  const notify = () => {
+    toast.info("Data saved successfully !", {
+      position: "bottom-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    });
+  };
+
   const tabs = [
     {
       id: "1",
@@ -85,7 +100,8 @@ export default function PageName() {
       })
       .then((response) => {
         // console.log(response.data.data.shop_data.customizations_json);
-        setTransferData(
+          notify();
+          setTransferData(
           JSON.parse(response.data.data.shop_data.customizations_json)
         );
         setAPIresponse(
@@ -150,6 +166,7 @@ export default function PageName() {
             </div>
           </FullscreenBar>
         </div>
+        <ToastContainer />
         <Page fullWidth>
           <Card>
             {/* TABS  */}

@@ -1,9 +1,3 @@
-.onclick-popup {
-    border-top: 30px solid #91D0FF;
-    border-radius: 10px;
-    background: #cccccc5e;
-    padding: 15px;
-}
 .pagewidth {
     margin: 0 auto;
     padding: 20px;
@@ -130,7 +124,7 @@
 }
 
 .onclick-popup .on-click a {
-    color: #A10000;
+    color: #5488c7;
     font-size: 18px;
     font-family: 'Inter', sans-serif;
     font-weight: 500;
@@ -178,8 +172,8 @@
 }
 
 .popup_couponcode {
-    border: 0.5px dashed #A10000;
-    color: #A10000;
+    border: 0.5px dashed #5488c7;
+    color: #5488c7;
     padding: 5px;
     max-width: fit-content;
     text-align: center;

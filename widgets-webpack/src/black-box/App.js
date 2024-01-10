@@ -54,45 +54,45 @@ const App = () => {
       }
     });
   }
-
-  // // FETCH DETAILS
-  // const getCustomization = async () => {
-  //   let payLoad = {
-  //     shop: window.Shopify.shop,
-  //   };
-  //   const response = await axios.get(
-  //     `${process.env.REACT_APP_API_URL}getCustomization`,
-  //     {
-  //       data: payLoad,
-  //     }
-  //   );
-  //   console.log(response.data);
-  //   // setTransferData(
-  //   //   JSON.parse(response.data.data.shop_data.customizations_json)
-  //   // );
-  // };
+  const getCustomization = async () => {
+    let payLoad = {
+      shop: window.Shopify.shop,
+    };
+    const response = await axios.post(
+      `${process.env.REACT_APP_API_URL}getCustomization`,
+      {
+        data: payLoad,
+      }
+    );
+    // console.log("response.data");
+    // console.log(JSON.parse(response.data.data.customizations_json));
+    setTransferData(JSON.parse(response.data.data.customizations_json));
+  };
 
   // // GET DISCOUNT DATA FROM THE DATABSE
-  // const getDiscountsDetails = async () => {
-  //   let payLoad = {
-  //     shop: window.Shopify.shop,
-  //   };
-  //   const response = await axios.post(
-  //     `${process.env.REACT_APP_API_URL}getCustomization`,
-  //     {
-  //       data: payLoad,
-  //     }
-  //   );
-  //   console.log("getDiscountsDetails");
-  //   console.log(response);
-  //   // setShopData(response.data.data.shop_data);
-  // };
+  const getDiscountsDetails = async () => {
+    let payLoad = {
+      shop: window.Shopify.shop,
+    };
+    const response = await axios.post(
+      `${process.env.REACT_APP_API_URL}getDiscounts`,
+      {
+        data: payLoad,
+      }
+    );
+    // console.log("getDiscounts");
+    // console.log(response.data);
+    setShopData(response.data.data);
+  };
+
+  useEffect(() => {
+    getDiscountsDetails();
+    getCustomization();
+  }, []);
 
   useEffect(() => {
     setClassToButton();
-    // getCustomization();
-    // getDiscountsDetails();
-  }, []);
+  }, [shopData]);
 
   return (
     <>
@@ -107,7 +107,7 @@ const App = () => {
       {/* ṛender offer ribbon */}
       {getHandle.map((data) => {
         return ReactDOM.createPortal(
-          <OfferRibbon productHandle={data} json_style_data={transferData} />,
+          <OfferRibbon productHandle={data} json_style_data={transferData} shopData={shopData} />,
           document.getElementById(data)
         );
       })}

@@ -16,10 +16,6 @@ const DiscountLabel = (props) => {
     setModalOpen(true);
   };
 
-  const handleCloseModal = () => {
-    setModalOpen(false);
-  };
-
   // Product API
   const productAPI = async () => {
     const productAPIResponse = await axios.get(window.location.href + ".json");
@@ -84,7 +80,6 @@ const DiscountLabel = (props) => {
           <a
             href="javascript:;"
             onClick={handleOpenModal}
-            // onClick={handleOpenModal}
             style={{
               color:
                 props.json_style_data.discount_label_settings.label_style.color,
@@ -98,7 +93,13 @@ const DiscountLabel = (props) => {
         </div>
       </div>
 
-      {isModalOpen && <PopupModal json_style_data={props.json_style_data} />}
+      {isModalOpen === true && (
+        <PopupModal
+          json_style_data={props.json_style_data}
+          openPopup={isModalOpen}
+          handleCloseModal={() => setModalOpen(false)}
+        />
+      )}
     </div>
   );
 };

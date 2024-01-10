@@ -52,6 +52,27 @@ export default function PageName() {
     plural: "products",
   };
 
+    // PAGINATION LOGIC START
+    const itemsPerPage = 10;
+
+    // Calculate the start and end index for the current page
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+  
+    // Filter the products based on the current page
+    const productsToDisplay = products.slice(startIndex, endIndex);
+  
+    const handleNextPage = () => {
+      // Update the current page when the "Next" button is clicked
+      setCurrentPage((prevPage) => prevPage + 1);
+    };
+  
+    const handlePrevPage = () => {
+      // Update the current page when the "Previous" button is clicked
+      setCurrentPage((prevPage) => Math.max(1, prevPage - 1));
+    };
+    // PAGINATION LOGIC END
+
   // DISCOUNT COMBOBOX LOGIC START
   useEffect(() => {
     const newOptions = discounts.map((discount) => ({
@@ -136,14 +157,18 @@ export default function PageName() {
   // USEEFFECT, GET ALL DATA ON LOAD
   useEffect(() => {
     setLoading(true);
-    getDiscountsDetails();
     getPriceRules();
     getProducts();
+    getDiscountsDetails();
     setTimeout(() => {
       setLoading(false);
     }, 2000);
   }, []);
 
+  useEffect(() => {
+    rowMarkup(productsToDisplay);
+  }, [productsToDisplay]);
+  
   // GET DATA FROM THE DATABSE
   const getDiscountsDetails = async () => {
     setLoading(true);
@@ -228,27 +253,6 @@ export default function PageName() {
     }
     setLoading(false);
   };
-
-  // PAGINATION LOGIC START
-  const itemsPerPage = 10;
-
-  // Calculate the start and end index for the current page
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-
-  // Filter the products based on the current page
-  const productsToDisplay = products.slice(startIndex, endIndex);
-
-  const handleNextPage = () => {
-    // Update the current page when the "Next" button is clicked
-    setCurrentPage((prevPage) => prevPage + 1);
-  };
-
-  const handlePrevPage = () => {
-    // Update the current page when the "Previous" button is clicked
-    setCurrentPage((prevPage) => Math.max(1, prevPage - 1));
-  };
-  // PAGINATION LOGIC END
 
   if (loading === false || products.length > 0) {
     return (

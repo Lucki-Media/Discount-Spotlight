@@ -42,7 +42,20 @@ const saveCustomizationDetails = async (request, response) => {
     console.log(error);
   }
 };
+
+const getCustomization = async (request, response) => {
+  const { shop } = request.body.data;
+  const fetchCustomizationsData = await Customizations.findOne({
+    shop: shop,
+  });
+  return response.json({
+    status: 200,
+    success: true,
+    data: fetchCustomizationsData,
+  });
+};
 export default {
   getCustomizationDetails,
   saveCustomizationDetails,
+  getCustomization
 };

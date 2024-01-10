@@ -30,7 +30,6 @@ const saveDiscountsDetails = async (request, response) => {
         shop: shop,
         product_id: product.id,
       });
-
       if (fetchProductData) {
         // If the product exists, update its data
         fetchProductData.product_image =
@@ -38,7 +37,7 @@ const saveDiscountsDetails = async (request, response) => {
             ? product.image.src
             : "";
         fetchProductData.product_name = product.title;
-        fetchProductData.discounts = product.discounts;
+        fetchProductData.discounts = product.discounts ? product.discounts : [];
       } else {
         // If the product doesn't exist, create a new entry
         const newProductData = new Discounts({
@@ -49,7 +48,7 @@ const saveDiscountsDetails = async (request, response) => {
               ? product.image.src
               : "",
           product_name: product.title,
-          discounts: product.discounts,
+          discounts: product.discounts ? product.discounts : [],
         });
 
         await newProductData.save();
@@ -76,7 +75,20 @@ const saveDiscountsDetails = async (request, response) => {
   }
 };
 
+const getDiscounts = async (request, response) => {
+  const { shop } = request.body.data;
+  const fetchDiscountsData = await Discounts.find({ shop: shop }).populate({
+    path: "arrayField",
+    options: { strictPopulate: false },
+  });
+  return response.json({
+    status: 200,
+    success: true,
+    data: fetchDiscountsData,
+  });
+};
 export default {
+  getDiscounts,
   getDiscountsDetails,
   saveDiscountsDetails,
 };

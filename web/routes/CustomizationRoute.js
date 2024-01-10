@@ -9,4 +9,7 @@ router.post("/api/getCustomizationDetails", CustomizationController.getCustomiza
 // SAVE DETAILS API 
 router.post("/api/saveCustomizationDetails", CustomizationController.saveCustomizationDetails);
 
+// FRONTEND API
+router.post("/api/getCustomization", CustomizationController.getCustomization);
+
 export default router;

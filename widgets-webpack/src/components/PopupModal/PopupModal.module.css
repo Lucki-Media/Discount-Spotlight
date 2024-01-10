@@ -1,128 +1,16 @@
-.onclick-popup {
-    border-top: 30px solid #91D0FF;
-    border-radius: 10px;
-    background: #cccccc5e;
-    padding: 50px;
-}
-.pagewidth {
-    margin: 0 auto;
-    padding: 20px;
-    max-width: 1300px;
-}
-
-.ds_product_details {
-    width: 100%;
-
-}
-
-.ds_product_details_main {
-    display: flex;
-    align-items: center;
-}
-
-.ds_product_details_main .product_image img {
-    border: 1px solid #Dfdfdf;
-    border-radius: 5px;
-    width: 100%;
-    margin: 0 auto;
-}
-
-
 .onclick-popup .icon-with-text {
     display: flex;
     align-items: center;
+    position: absolute;
+    top: 264px;
     text-align: center;
-    margin: 0 0 10px 0;
-}
-
-.p_details {
-    margin-left: 50px;
-}
-
-.p_details p {
-    font-family: 'Inter', sans-serif;
-    font-size: 14px;
-    font-weight: 500;
-    color: #1C1D1D;
-    margin: 0 0 10px 0;
-}
-
-.p_details h2 {
-    font-family: 'Inter', sans-serif;
-    font-size: 30px;
-    font-weight: 500;
-    color: #1C1D1D;
-    margin: 0 0 10px 0;
-}
-
-.p_details h3 {
-    font-family: 'Inter', sans-serif;
-    font-size: 18px;
-    font-weight: 500;
-    color: #1C1D1D;
-    margin: 0 0 5px 0;
-
-}
-
-.p_details .quantity_btns span {
-    font-family: 'Inter', sans-serif;
-    font-size: 14px;
-    font-weight: 400;
-    color: #1C1D1D;
-    margin: 0 0 5px;
-    display: block;
-}
-
-.quantity_numbers {
-    display: flex;
-    border: 1px solid #1C1D1D;
-    padding: 5px;
-    border-radius: 3px;
-    max-width: 80px;
     justify-content: center;
+    right: 33.33%;
+    overflow: hidden;
 }
 
-.quantity_numbers .numbers {
-    margin: 0 20px;
-}
-
-.addtocartbtn {
-    max-width: 400px;
-    background: #000;
-    color: #fff;
-    text-align: center;
-    border-radius: 5px;
-    padding: 10px 5px 10px 5px;
-    font-size: 18px;
-    font-weight: 500;
-    font-family: 'Inter', sans-serif;
-    text-decoration: none;
-    display: block;
-    margin: 20px 0 20px 0;
-}
-
-.buynowbtn {
-    max-width: 400px;
-    background: transparent;
-    color: #1C1D1D;
-    text-align: center;
-    border: 1px solid #1C1D1D;
-    border-radius: 5px;
-    padding: 10px 5px 10px 5px;
-    font-size: 18px;
-    font-weight: 500;
-    font-family: 'Inter', sans-serif;
-    text-decoration: none;
-    display: block;
-    margin: 0px 0 20px 0;
-}
-
-.product_content {
-    max-width: 700px;
-    font-family: 'Inter', sans-serif;
-    font-size: 14px;
-    color: #1C1D1D;
-    line-height: 25px;
+.onclick-popup .bgimage {
+    position: relative;
 }
 
 .onclick-popup .bgimage img {
@@ -130,7 +18,7 @@
 }
 
 .onclick-popup .on-click a {
-    color: #A10000;
+    color: #5488c7;
     font-size: 18px;
     font-family: 'Inter', sans-serif;
     font-weight: 500;
@@ -156,24 +44,24 @@
 }
 
 .onclick-popup .modal-overlay {
-    /* position: fixed; */
+    position: fixed;
+    z-index: 99;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    /* background: rgba(0, 0, 0, 0.5); */
+    background: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1;
 }
 
 .onclick-popup .modal-content {
     position: relative;
     background: #F4F4F5;
     border-radius: 8px;
-    width: 80%;
-    min-height: 70%;
+    width: 50%;
+    /* min-height: 70%; */
 }
 
 .onclick-popup .close-btn {
@@ -191,8 +79,8 @@
 }
 
 .popup_couponcode {
-    border: 0.5px dashed #A10000;
-    color: #A10000;
+    border: 0.5px dashed #5488c7;
+    color: #5488c7;
     padding: 5px;
     max-width: fit-content;
     text-align: center;
@@ -220,25 +108,39 @@
 
 }
 
+.discount_tag {
+    width: fit-content;
+    padding: 5px;
+    text-align: left;
+    font-family: 'Inter', sans-serif;
+    background-color: #5488c7;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    position: relative;
+}
 
-@media (max-width: 991.98px) {
-    .ds_product_details_main {
-        display: block;
+.discount_tag::after {
+    position: absolute;
+    content: '';
+    width: 15px;
+    height: 20px;
+    border-style: solid;
+    top: -0.4px;
+    right: -18px;
+    clip-path: polygon(0 0, 0% 100%, 100% 50%) !important;
+    background: #5488c7;
+    color: #5488c7;
+}
 
-    }
-
-    .ds_product_details_main .product_image img {
-        display: block;
-        width: 80%;
-        text-align: center;
-    }
-
-    .ds_product_details_main .product_image {
-        margin: 0 0 50px 0;
-    }
-
-    .p_details {
-        margin: 0 auto;
-        width: 80%;
-    }
+.discount_tag::before {
+    content: '';
+    position: absolute;
+    clip-path: polygon(100% 0%, 64% 50%, 100% 100%, 0 100%, 0% 50%, 0 0);
+    background: #5488c7b5;
+    width: 32px;
+    height: 22px;
+    top: 0;
+    right: -30px;
 }
