@@ -1,7 +1,6 @@
 import {
   IndexTable,
   LegacyCard,
-  useBreakpoints,
   FullscreenBar,
   ButtonGroup,
   Button,
@@ -27,13 +26,11 @@ export default function PageName() {
   const shop_url = document.getElementById("shopOrigin").value;
   const appFetch = useAuthenticatedFetch();
 
-  const [shopData, setShopData] = useState([]);
   const [products, setProducts] = useState([]);
   const [discounts, setDiscounts] = useState([]);
   const [options, setOptions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedOptions, setSelectedOptions] = useState([]);
 
   const notify = () => {
     toast.info("Data saved successfully !", {
@@ -51,27 +48,27 @@ export default function PageName() {
     singular: "product",
     plural: "products",
   };
+  
+  // PAGINATION LOGIC START
+  const itemsPerPage = 10;
 
-    // PAGINATION LOGIC START
-    const itemsPerPage = 10;
+  // Calculate the start and end index for the current page
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
 
-    // Calculate the start and end index for the current page
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-  
-    // Filter the products based on the current page
-    const productsToDisplay = products.slice(startIndex, endIndex);
-  
-    const handleNextPage = () => {
-      // Update the current page when the "Next" button is clicked
-      setCurrentPage((prevPage) => prevPage + 1);
-    };
-  
-    const handlePrevPage = () => {
-      // Update the current page when the "Previous" button is clicked
-      setCurrentPage((prevPage) => Math.max(1, prevPage - 1));
-    };
-    // PAGINATION LOGIC END
+  // Filter the products based on the current page
+  const productsToDisplay = products.slice(startIndex, endIndex);
+
+  const handleNextPage = () => {
+    // Update the current page when the "Next" button is clicked
+    setCurrentPage((prevPage) => prevPage + 1);
+  };
+
+  const handlePrevPage = () => {
+    // Update the current page when the "Previous" button is clicked
+    setCurrentPage((prevPage) => Math.max(1, prevPage - 1));
+  };
+  // PAGINATION LOGIC END
 
   // DISCOUNT COMBOBOX LOGIC START
   useEffect(() => {
@@ -83,36 +80,29 @@ export default function PageName() {
     setOptions(newOptions);
   }, [discounts]);
 
-  const handleChange = (value, productId) => {
-    // Create a copy of the selectedOptions array
-    const updatedSelectedOptions = [...selectedOptions];
+  const handleChange = (selectedOptions, productId) => {
+    const updatedProducts = [...products];
+    const productToUpdate = updatedProducts.find(
+      (product) => product.id === productId
+    );
 
-    // Update the selected option for the specific product
-    updatedSelectedOptions[productId] = value;
-
-    // Check and limit the number of selected options to 3
-    if (value && value.length > 3) {
-      updatedSelectedOptions[productId] = value.slice(0, 3);
+    if (productToUpdate) {
+      const updatedDiscounts = selectedOptions
+        ? selectedOptions.map((option) => option.value)
+        : [];
+      productToUpdate.discounts = updatedDiscounts;
     }
-
-    // Update the state with the new array of selected options
-    setSelectedOptions(updatedSelectedOptions);
+    setProducts(updatedProducts);
   };
 
   // DISCOUNT COMBOBOX LOGIC END
 
   // PRODUCT DATA
   const rowMarkup = (productsToDisplay) => {
-    return productsToDisplay.map(({ id, title, image }, index) => {
+    return productsToDisplay.map(({ id, title, image, discounts }, index) => {
+      // console.log("discounts", discounts);
       // Find the product Data with matching product_id
-      const matchingObject = shopData.find(
-        (obj) => Number(obj.product_id) === Number(id)
-      );
-      let discountsValue = [];
-      if (matchingObject) {
-        discountsValue = matchingObject.discounts;
-      }
-      const defaultOptions = discountsValue.map((discountId) => {
+      const defaultOptions = discounts.map((discountId) => {
         const matchingOption = options.find(
           (option) => option.value === discountId
         );
@@ -120,7 +110,7 @@ export default function PageName() {
       });
 
       return (
-        <IndexTable.Row id={id} key={id} position={index}>
+        <IndexTable.Row key={`key-${id}`} id={id} position={index}>
           <IndexTable.Cell>
             <Thumbnail
               source={image != null && image.src != null ? image.src : noImage}
@@ -141,9 +131,8 @@ export default function PageName() {
                   },
                 }),
               }}
-              value={selectedOptions[index]}
-              defaultValue={defaultOptions}
-              onChange={(value) => handleChange(value, index)}
+              value={defaultOptions}
+              onChange={(value) => handleChange(value, id)}
               options={options}
               placeholder="Discount Codes..."
               max={3}
@@ -159,27 +148,39 @@ export default function PageName() {
     setLoading(true);
     getPriceRules();
     getProducts();
-    getDiscountsDetails();
     setTimeout(() => {
       setLoading(false);
-    }, 2000);
+    }, 3000);
   }, []);
 
   useEffect(() => {
     rowMarkup(productsToDisplay);
-  }, [productsToDisplay]);
-  
+  }, [productsToDisplay, products]);
+
   // GET DATA FROM THE DATABSE
-  const getDiscountsDetails = async () => {
+  const getDiscountsDetails = async (updatedProducts) => {
     setLoading(true);
     axios
       .post("/api/getDiscountsDetails", {
         shop: shop_url,
       })
       .then((response) => {
-        // console.log("getDiscountsDetails");
-        // console.log(response);
-        setShopData(response.data.data.shop_data);
+        // console.log(response.data.data.shop_data);
+
+        const product_data = response.data.data.shop_data;
+        const updatedProductsCopy = [...updatedProducts];
+        product_data.forEach((productData) => {
+          const productIndex = updatedProductsCopy.findIndex(
+            (product) => Number(productData.product_id) === Number(product.id)
+          );
+
+          if (productIndex !== -1) {
+            updatedProductsCopy[productIndex].discounts = productData.discounts;
+          }
+        });
+
+        // console.log("Updated Products:", updatedProductsCopy);
+        setProducts(updatedProductsCopy);
         setLoading(false);
       });
   };
@@ -187,15 +188,12 @@ export default function PageName() {
   // SAVE DATA IN THE DATABSE
   const handleSave = () => {
     setLoading(true);
-    const productsWithDiscounts = products.map((product, index) => ({
-      ...product,
-      discounts: (selectedOptions[index] || []).map((option) => option.value),
-    }));
+    // console.log(products);
 
     axios
       .post("/api/saveDiscountsDetails", {
         shop: shop_url,
-        data: productsWithDiscounts,
+        data: products,
       })
       .then((response) => {
         {
@@ -222,7 +220,19 @@ export default function PageName() {
         const responseData = await response.json();
         // console.log("getProducts");
         // console.log(responseData.data);
-        setProducts(responseData.data);
+
+        const modifiedData = responseData.data.map((item, index) => ({
+          ...item,
+          discounts: [],
+        }));
+        // console.log(modifiedData);
+
+        // Set the modified data to the state
+        setProducts(modifiedData);
+
+        // CALL API FUCTION TO GET DATA FROM DATABASE
+        getDiscountsDetails(modifiedData);
+        setLoading(false);
       } else {
         console.error("Error fetching products:", response.statusText);
       }
@@ -254,7 +264,7 @@ export default function PageName() {
     setLoading(false);
   };
 
-  if (loading === false || products.length > 0) {
+  if (loading === false) {
     return (
       <div className="customization_page">
         <div className="fullscreenbar_div">

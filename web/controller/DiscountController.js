@@ -37,10 +37,10 @@ const saveDiscountsDetails = async (request, response) => {
             ? product.image.src
             : "";
         fetchProductData.product_name = product.title;
-        fetchProductData.discounts = product.discounts ? product.discounts : [];
+        fetchProductData.discounts = product.discounts;
       } else {
         // If the product doesn't exist, create a new entry
-        const newProductData = new Discounts({
+        const fetchProductData = new Discounts({
           shop: shop,
           product_id: product.id,
           product_image:
@@ -48,11 +48,10 @@ const saveDiscountsDetails = async (request, response) => {
               ? product.image.src
               : "",
           product_name: product.title,
-          discounts: product.discounts ? product.discounts : [],
+          discounts: product.discounts,
         });
-
-        await newProductData.save();
       }
+      await fetchProductData.save();
     });
 
     // Wait for all promises to resolve
