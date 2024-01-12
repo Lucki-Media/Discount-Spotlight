@@ -1,6 +1,10 @@
 .discount_table table tbody tr td:nth-child(3) {
     width: 50%;
 }
+.discount_table table tbody tr:last-child .css-1nmdiq5-menu{
+    top: inherit;
+    bottom: 35px;
+}
 .icon_type_radio{
     height: 40px;
     width: 40px;
@@ -127,10 +131,7 @@ font-family: 'Inter', sans-serif;
         font-weight: 500;
         color: #1C1D1D;
 }
-.select_discount_code_dropdown:last-child > div:last-child {
-    top: inherit !important;
-    bottom: 35px;
-}
+
 /* FAQs Page CSS START */
 .faq_div {
     padding: 5px 0;

@@ -6,7 +6,7 @@ export default function PopupModal(props) {
     props.handleCloseModal();
   };
 
-  return (
+  return (                                                                                                                                               
     <>
       {props.openPopup && (
         <div className={style["onclick-popup"]}>

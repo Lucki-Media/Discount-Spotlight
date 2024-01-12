@@ -132,7 +132,6 @@ export default function PageName() {
                 }),
               }}
               value={defaultOptions}
-              className="select_discount_code_dropdown"
               onChange={(value) => handleChange(value, id)}
               options={options}
               placeholder="Discount Codes..."
