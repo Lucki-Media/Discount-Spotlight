@@ -14,5 +14,6 @@ router.post(
 
 // FRONTEND API
 router.post("/api/getDiscounts", DiscountController.getDiscounts);
+router.post("/api/getDiscountForProduct", DiscountController.getDiscountForProduct);
 
 export default router;

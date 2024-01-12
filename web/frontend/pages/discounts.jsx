@@ -48,7 +48,7 @@ export default function PageName() {
     singular: "product",
     plural: "products",
   };
-  
+
   // PAGINATION LOGIC START
   const itemsPerPage = 10;
 
@@ -132,6 +132,7 @@ export default function PageName() {
                 }),
               }}
               value={defaultOptions}
+              className="select_discount_code_dropdown"
               onChange={(value) => handleChange(value, id)}
               options={options}
               placeholder="Discount Codes..."

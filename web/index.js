@@ -16,7 +16,7 @@ import discountRoute from "./routes/DiscountRoute.js";
 import customizationRoute from "./routes/CustomizationRoute.js";
 import Customization from "./db/models/Customizations.js";
 import { json_style_data } from "./frontend/Static/General_settings.js";
-import axios from "axios";
+
 const PORT = parseInt(
   process.env.BACKEND_PORT || process.env.PORT || "3000",
   10
@@ -92,13 +92,6 @@ app.get("/api/pricerules", async (_req, res) => {
   });
   return res.json(discountData);
 });
-
-// app.get("/api/getDiscounts", async (_req, res) => {
-//   const discountData = await shopify.api.rest.PriceRule.count({
-//   session: res.locals.shopify.session,
-// });
-//   res.status(200).send(discountData);
-// });
 
 // INITDATA SAVE FUNCTION
 async function SaveInitCustomizationSettings(shop) {

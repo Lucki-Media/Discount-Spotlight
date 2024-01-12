@@ -51,7 +51,7 @@
 
 .discount_tag {
     background: rgb(161 0 0);
-
+    margin-left: -10px;
     position: absolute;
     text-transform: uppercase;
     color: #fff;

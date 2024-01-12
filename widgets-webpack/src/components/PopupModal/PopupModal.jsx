@@ -5,12 +5,16 @@ export default function PopupModal(props) {
   const handleCloseModal = () => {
     props.handleCloseModal();
   };
-  
+
   return (
     <>
-      {props.openPopup  && (
+      {props.openPopup && (
         <div className={style["onclick-popup"]}>
-          <div className={style["modal-overlay"]} onClick={handleCloseModal}>
+          <div
+            className={style["modal-overlay"]}
+            onClick={handleCloseModal}
+            id="DS_modal_popup"
+          >
             <div
               className={style["modal-content"]}
               onClick={(e) => e.stopPropagation()}
@@ -52,132 +56,62 @@ export default function PopupModal(props) {
                 >
                   {props.json_style_data.popup_modal_settings.text.titleText}
                 </div>
-                <div
-                  className={style["popupcoupon"]}
-                  style={{
-                    background:
-                      props.json_style_data.popup_modal_settings.color
-                        .bGContentColor,
-                  }}
-                >
-                  <div
-                    className={style["popup_couponcode"]}
-                    style={{
-                      fontSize:
-                        props.json_style_data.popup_modal_settings.fontSize
-                          .discountCodeFontSize,
-                      color:
-                        props.json_style_data.popup_modal_settings.color
-                          .discountCodeTextColor,
-                      background:
-                        props.json_style_data.popup_modal_settings.color
-                          .discountCodeBGColor,
-                      borderColor:
-                        props.json_style_data.popup_modal_settings.color
-                          .discountCodeBorderColor,
-                    }}
-                  >
-                    DISCOUNT SPORTLIGHT001234
-                  </div>
-                  <div
-                    className={style["popup_couponcode-details"]}
-                    style={{
-                      fontSize:
-                        props.json_style_data.popup_modal_settings.fontSize
-                          .discountTaCFontSize,
-                      color:
-                        props.json_style_data.popup_modal_settings.color
-                          .discountTaCTextColor,
-                    }}
-                  >
-                    <span> Rs. 200 off on minimum purchase of Rs. 749 .</span>
-                    <span>Expires on: 31st December 2023 | 05:30 AM</span>
-                  </div>
-                </div>
-                <div
-                  className={style["popupcoupon"]}
-                  style={{
-                    background:
-                      props.json_style_data.popup_modal_settings.color
-                        .bGContentColor,
-                  }}
-                >
-                  <div
-                    className={style["popup_couponcode"]}
-                    style={{
-                      fontSize:
-                        props.json_style_data.popup_modal_settings.fontSize
-                          .discountCodeFontSize,
-                      color:
-                        props.json_style_data.popup_modal_settings.color
-                          .discountCodeTextColor,
-                      background:
-                        props.json_style_data.popup_modal_settings.color
-                          .discountCodeBGColor,
-                      borderColor:
-                        props.json_style_data.popup_modal_settings.color
-                          .discountCodeBorderColor,
-                    }}
-                  >
-                    DISCOUNT SPORTLIGHT001234
-                  </div>
-                  <div
-                    className={style["popup_couponcode-details"]}
-                    style={{
-                      fontSize:
-                        props.json_style_data.popup_modal_settings.fontSize
-                          .discountTaCFontSize,
-                      color:
-                        props.json_style_data.popup_modal_settings.color
-                          .discountTaCTextColor,
-                    }}
-                  >
-                    <span> Rs. 200 off on minimum purchase of Rs. 749 .</span>
-                    <span>Expires on: 31st December 2023 | 05:30 AM</span>
-                  </div>
-                </div>
-                <div
-                  className={style["popupcoupon"]}
-                  style={{
-                    background:
-                      props.json_style_data.popup_modal_settings.color
-                        .bGContentColor,
-                  }}
-                >
-                  <div
-                    className={style["popup_couponcode"]}
-                    style={{
-                      fontSize:
-                        props.json_style_data.popup_modal_settings.fontSize
-                          .discountCodeFontSize,
-                      color:
-                        props.json_style_data.popup_modal_settings.color
-                          .discountCodeTextColor,
-                      background:
-                        props.json_style_data.popup_modal_settings.color
-                          .discountCodeBGColor,
-                      borderColor:
-                        props.json_style_data.popup_modal_settings.color
-                          .discountCodeBorderColor,
-                    }}
-                  >
-                    DISCOUNT SPORTLIGHT001234
-                  </div>
-                  <div
-                    className={style["popup_couponcode-details"]}
-                    style={{
-                      fontSize:
-                        props.json_style_data.popup_modal_settings.fontSize
-                          .discountTaCFontSize,
-                      color:
-                        props.json_style_data.popup_modal_settings.color
-                          .discountTaCTextColor,
-                    }}
-                  >
-                    <span> Rs. 200 off on minimum purchase of Rs. 749 .</span>
-                    <span>Expires on: 31st December 2023 | 05:30 AM</span>
-                  </div>
-                </div>
+
+                {props.discounts.map(
+                  (discount) => (
+                    (
+                      <div
+                        className={style["popupcoupon"]}
+                        style={{
+                          background:
+                            props.json_style_data.popup_modal_settings.color
+                              .bGContentColor,
+                        }}
+                      >
+                        <div
+                          className={style["popup_couponcode"]}
+                          style={{
+                            fontSize:
+                              props.json_style_data.popup_modal_settings
+                                .fontSize.discountCodeFontSize,
+                            color:
+                              props.json_style_data.popup_modal_settings.color
+                                .discountCodeTextColor,
+                            background:
+                              props.json_style_data.popup_modal_settings.color
+                                .discountCodeBGColor,
+                            borderColor:
+                              props.json_style_data.popup_modal_settings.color
+                                .discountCodeBorderColor,
+                          }}
+                        >
+                          {discount.title}
+                        </div>
+                        <div
+                          className={style["popup_couponcode-details"]}
+                          style={{
+                            fontSize:
+                              props.json_style_data.popup_modal_settings
+                                .fontSize.discountTaCFontSize,
+                            color:
+                              props.json_style_data.popup_modal_settings.color
+                                .discountTaCTextColor,
+                          }}
+                        >
+                          {discount.terms.map(
+                            (term) => (
+                              (
+                                <span>
+                                  {term}
+                                </span>
+                              )
+                            )
+                          )}
+                        </div>
+                      </div>
+                    )
+                  )
+                )}
               </div>
             </div>
           </div>

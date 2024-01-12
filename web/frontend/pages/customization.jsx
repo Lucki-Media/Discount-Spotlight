@@ -166,7 +166,6 @@ export default function PageName() {
             </div>
           </FullscreenBar>
         </div>
-        <ToastContainer />
         <Page fullWidth>
           <Card>
             {/* TABS  */}
@@ -240,6 +239,7 @@ export default function PageName() {
             </Layout>
           </Card>
         </Page>
+        <ToastContainer />
       </div>
     );
   } else {

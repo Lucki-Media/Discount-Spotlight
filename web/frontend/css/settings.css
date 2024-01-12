@@ -127,7 +127,10 @@ font-family: 'Inter', sans-serif;
         font-weight: 500;
         color: #1C1D1D;
 }
-
+.select_discount_code_dropdown:last-child > div:last-child {
+    top: inherit !important;
+    bottom: 35px;
+}
 /* FAQs Page CSS START */
 .faq_div {
     padding: 5px 0;

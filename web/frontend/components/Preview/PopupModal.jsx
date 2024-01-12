@@ -82,8 +82,8 @@ export default function PopupModal(props) {
                       .discountTaCTextColor,
                 }}
               >
-                <span> Rs. 200 off on minimum purchase of Rs. 749 .</span>
-                <span>Expires on: 31st December 2023 | 05:30 AM</span>
+                <span> 20% off on minimum purchase of 749 .</span>
+                <span>Expires on: 31st December {new Date().getFullYear()} | 05:30 AM</span>
               </div>
             </div>
             <div
@@ -124,8 +124,8 @@ export default function PopupModal(props) {
                       .discountTaCTextColor,
                 }}
               >
-                <span> Rs. 200 off on minimum purchase of Rs. 749 .</span>
-                <span>Expires on: 31st December 2023 | 05:30 AM</span>
+                <span> 20% off on minimum purchase of 749 .</span>
+                <span>Expires on: 31st December {new Date().getFullYear()} | 05:30 AM</span>
               </div>
             </div>
             <div
@@ -166,8 +166,8 @@ export default function PopupModal(props) {
                       .discountTaCTextColor,
                 }}
               >
-                <span> Rs. 200 off on minimum purchase of Rs. 749 .</span>
-                <span>Expires on: 31st December 2023 | 05:30 AM</span>
+                <span> 20% off on minimum purchase of 749 .</span>
+                <span>Expires on: 31st December {new Date().getFullYear()} | 05:30 AM</span>
               </div>
             </div>
           </div>
