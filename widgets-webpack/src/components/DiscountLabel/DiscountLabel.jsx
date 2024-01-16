@@ -13,8 +13,21 @@ const DiscountLabel = (props) => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [discounts, setDiscounts] = useState([]);
 
-  const handleOpenModal = () => {
+  const handleOpenModal = async () => {
     setModalOpen(true);
+
+    // CALL API TO INCREASE COUNT ON CLICK
+    let payLoad = {
+      shop: window.Shopify.shop,
+    };
+    const response = await axios.post(
+      `${process.env.REACT_APP_API_URL}countOfLabelClick`,
+      {
+        data: payLoad,
+      }
+    );
+    // console.log("countOfLabelClick");
+    // console.log(response.data);
   };
 
   // FOR POPUP CLOSE
@@ -43,8 +56,8 @@ const DiscountLabel = (props) => {
           data: payLoad,
         }
       );
-      console.log("getDiscountForProduct");
-      console.log(response.data);
+      // console.log("getDiscountForProduct");
+      // console.log(response.data);
 
       if (response.data.data) {
         setDiscounts(response.data.data);

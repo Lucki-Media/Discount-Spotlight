@@ -6,7 +6,33 @@ export default function PopupModal(props) {
     props.handleCloseModal();
   };
 
-  return (                                                                                                                                               
+  const [copiedText, setCopiedText] = useState(null);
+
+  // Click to Copy
+  const copyText = (index) => {
+    const couponCodeElement = document.getElementById(`couponCode-${index}`);
+
+    if (couponCodeElement) {
+      let couponCode = "";
+
+      // Iterate over child nodes and extract text content
+      for (const node of couponCodeElement.childNodes) {
+        if (node.nodeType === Node.TEXT_NODE) {
+          couponCode += node.textContent;
+        }
+      }
+
+      couponCode = couponCode.trim();
+      navigator.clipboard.writeText(couponCode).then(() => {
+        setCopiedText(couponCode);
+        setTimeout(() => {
+          setCopiedText(null);
+        }, 1000);
+      });
+    }
+  };
+
+  return (
     <>
       {props.openPopup && (
         <div className={style["onclick-popup"]}>
@@ -57,61 +83,58 @@ export default function PopupModal(props) {
                   {props.json_style_data.popup_modal_settings.text.titleText}
                 </div>
 
-                {props.discounts.map(
-                  (discount) => (
-                    (
-                      <div
-                        className={style["popupcoupon"]}
-                        style={{
-                          background:
-                            props.json_style_data.popup_modal_settings.color
-                              .bGContentColor,
-                        }}
-                      >
-                        <div
-                          className={style["popup_couponcode"]}
-                          style={{
-                            fontSize:
-                              props.json_style_data.popup_modal_settings
-                                .fontSize.discountCodeFontSize,
-                            color:
-                              props.json_style_data.popup_modal_settings.color
-                                .discountCodeTextColor,
-                            background:
-                              props.json_style_data.popup_modal_settings.color
-                                .discountCodeBGColor,
-                            borderColor:
-                              props.json_style_data.popup_modal_settings.color
-                                .discountCodeBorderColor,
-                          }}
-                        >
-                          {discount.title}
-                        </div>
-                        <div
-                          className={style["popup_couponcode-details"]}
-                          style={{
-                            fontSize:
-                              props.json_style_data.popup_modal_settings
-                                .fontSize.discountTaCFontSize,
-                            color:
-                              props.json_style_data.popup_modal_settings.color
-                                .discountTaCTextColor,
-                          }}
-                        >
-                          {discount.terms.map(
-                            (term) => (
-                              (
-                                <span>
-                                  {term}
-                                </span>
-                              )
-                            )
-                          )}
-                        </div>
-                      </div>
-                    )
-                  )
-                )}
+                {props.discounts.map((discount, index) => (
+                  <div
+                    className={style["popupcoupon"]}
+                    style={{
+                      background:
+                        props.json_style_data.popup_modal_settings.color
+                          .bGContentColor,
+                    }}
+                  >
+                    <div
+                      onClick={() => copyText(index)}
+                      id={`couponCode-${index}`}
+                      className={style["popup_couponcode"]}
+                      style={{
+                        fontSize:
+                          props.json_style_data.popup_modal_settings.fontSize
+                            .discountCodeFontSize,
+                        color:
+                          props.json_style_data.popup_modal_settings.color
+                            .discountCodeTextColor,
+                        background:
+                          props.json_style_data.popup_modal_settings.color
+                            .discountCodeBGColor,
+                        borderColor:
+                          props.json_style_data.popup_modal_settings.color
+                            .discountCodeBorderColor,
+                      }}
+                    >
+                      {discount.title}
+                      <span className={style["tooltip"]}>
+                        {copiedText !== null
+                          ? `Copied: ${copiedText}`
+                          : "Click to copy"}
+                      </span>
+                    </div>
+                    <div
+                      className={style["popup_couponcode-details"]}
+                      style={{
+                        fontSize:
+                          props.json_style_data.popup_modal_settings.fontSize
+                            .discountTaCFontSize,
+                        color:
+                          props.json_style_data.popup_modal_settings.color
+                            .discountTaCTextColor,
+                      }}
+                    >
+                      {discount.terms.map((term) => (
+                        <span>{term}</span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>

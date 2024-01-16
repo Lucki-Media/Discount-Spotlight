@@ -1,6 +1,33 @@
+import { useState } from "react";
 import style from "../../css/PopupModal.module.css";
 
 export default function PopupModal(props) {
+  const [copiedText, setCopiedText] = useState(null);
+
+  // Click to Copy
+  const copyText = (index) => {
+    const couponCodeElement = document.getElementById(`couponCode-${index}`);
+
+    if (couponCodeElement) {
+      let couponCode = "";
+
+      // Iterate over child nodes and extract text content
+      for (const node of couponCodeElement.childNodes) {
+        if (node.nodeType === Node.TEXT_NODE) {
+          couponCode += node.textContent;
+        }
+      }
+
+      couponCode = couponCode.trim();
+      navigator.clipboard.writeText(couponCode).then(() => {
+        setCopiedText(couponCode);
+        setTimeout(() => {
+          setCopiedText(null);
+        }, 1000);
+      });
+    }
+  };
+
   return (
     <div className={style["onclick-popup"]}>
       <div className={style["modal-overlay"]}>
@@ -44,132 +71,63 @@ export default function PopupModal(props) {
             >
               {props.json_style_data.popup_modal_settings.text.titleText}
             </div>
-            <div
-              className={style["popupcoupon"]}
-              style={{
-                background:
-                  props.json_style_data.popup_modal_settings.color
-                    .bGContentColor,
-              }}
-            >
+
+            {Array.from({ length: 3 }, (_, index) => (
               <div
-                className={style["popup_couponcode"]}
+                key={index}
+                className={style["popupcoupon"]}
                 style={{
-                  fontSize:
-                    props.json_style_data.popup_modal_settings.fontSize
-                      .discountCodeFontSize,
-                  color:
-                    props.json_style_data.popup_modal_settings.color
-                      .discountCodeTextColor,
                   background:
                     props.json_style_data.popup_modal_settings.color
-                      .discountCodeBGColor,
-                  borderColor:
-                    props.json_style_data.popup_modal_settings.color
-                      .discountCodeBorderColor,
+                      .bGContentColor,
                 }}
               >
-                DISCOUNT SPORTLIGHT001234
+                <div
+                  onClick={() => copyText(index)}
+                  id={`couponCode-${index}`}
+                  className={style["popup_couponcode"]}
+                  style={{
+                    fontSize:
+                      props.json_style_data.popup_modal_settings.fontSize
+                        .discountCodeFontSize,
+                    color:
+                      props.json_style_data.popup_modal_settings.color
+                        .discountCodeTextColor,
+                    background:
+                      props.json_style_data.popup_modal_settings.color
+                        .discountCodeBGColor,
+                    borderColor:
+                      props.json_style_data.popup_modal_settings.color
+                        .discountCodeBorderColor,
+                    position: "relative", // Add position property
+                  }}
+                >
+                  DISCOUNT_SPORTLIGHT_00{index}
+                  <span className={style["tooltip"]}>
+                    {copiedText !== null
+                      ? `Copied: ${copiedText}`
+                      : "Click to copy"}
+                  </span>
+                </div>
+                <div
+                  className={style["popup_couponcode-details"]}
+                  style={{
+                    fontSize:
+                      props.json_style_data.popup_modal_settings.fontSize
+                        .discountTaCFontSize,
+                    color:
+                      props.json_style_data.popup_modal_settings.color
+                        .discountTaCTextColor,
+                  }}
+                >
+                  <span> 20% off on a minimum purchase of 749.</span>
+                  <span>
+                    Expires on: 31st December {new Date().getFullYear()} | 05:30
+                    AM
+                  </span>
+                </div>
               </div>
-              <div
-                className={style["popup_couponcode-details"]}
-                style={{
-                  fontSize:
-                    props.json_style_data.popup_modal_settings.fontSize
-                      .discountTaCFontSize,
-                  color:
-                    props.json_style_data.popup_modal_settings.color
-                      .discountTaCTextColor,
-                }}
-              >
-                <span> 20% off on minimum purchase of 749 .</span>
-                <span>Expires on: 31st December {new Date().getFullYear()} | 05:30 AM</span>
-              </div>
-            </div>
-            <div
-              className={style["popupcoupon"]}
-              style={{
-                background:
-                  props.json_style_data.popup_modal_settings.color
-                    .bGContentColor,
-              }}
-            >
-              <div
-                className={style["popup_couponcode"]}
-                style={{
-                  fontSize:
-                    props.json_style_data.popup_modal_settings.fontSize
-                      .discountCodeFontSize,
-                  color:
-                    props.json_style_data.popup_modal_settings.color
-                      .discountCodeTextColor,
-                  background:
-                    props.json_style_data.popup_modal_settings.color
-                      .discountCodeBGColor,
-                  borderColor:
-                    props.json_style_data.popup_modal_settings.color
-                      .discountCodeBorderColor,
-                }}
-              >
-                DISCOUNT SPORTLIGHT001234
-              </div>
-              <div
-                className={style["popup_couponcode-details"]}
-                style={{
-                  fontSize:
-                    props.json_style_data.popup_modal_settings.fontSize
-                      .discountTaCFontSize,
-                  color:
-                    props.json_style_data.popup_modal_settings.color
-                      .discountTaCTextColor,
-                }}
-              >
-                <span> 20% off on minimum purchase of 749 .</span>
-                <span>Expires on: 31st December {new Date().getFullYear()} | 05:30 AM</span>
-              </div>
-            </div>
-            <div
-              className={style["popupcoupon"]}
-              style={{
-                background:
-                  props.json_style_data.popup_modal_settings.color
-                    .bGContentColor,
-              }}
-            >
-              <div
-                className={style["popup_couponcode"]}
-                style={{
-                  fontSize:
-                    props.json_style_data.popup_modal_settings.fontSize
-                      .discountCodeFontSize,
-                  color:
-                    props.json_style_data.popup_modal_settings.color
-                      .discountCodeTextColor,
-                  background:
-                    props.json_style_data.popup_modal_settings.color
-                      .discountCodeBGColor,
-                  borderColor:
-                    props.json_style_data.popup_modal_settings.color
-                      .discountCodeBorderColor,
-                }}
-              >
-                DISCOUNT SPORTLIGHT001234
-              </div>
-              <div
-                className={style["popup_couponcode-details"]}
-                style={{
-                  fontSize:
-                    props.json_style_data.popup_modal_settings.fontSize
-                      .discountTaCFontSize,
-                  color:
-                    props.json_style_data.popup_modal_settings.color
-                      .discountTaCTextColor,
-                }}
-              >
-                <span> 20% off on minimum purchase of 749 .</span>
-                <span>Expires on: 31st December {new Date().getFullYear()} | 05:30 AM</span>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>

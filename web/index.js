@@ -14,6 +14,7 @@ dotenv.config();
 import shopifySessionRoute from "./routes/ShopifySessions.js";
 import discountRoute from "./routes/DiscountRoute.js";
 import customizationRoute from "./routes/CustomizationRoute.js";
+import countRoute from "./routes/CountRoute.js";
 import Customization from "./db/models/Customizations.js";
 import { json_style_data } from "./frontend/Static/General_settings.js";
 
@@ -39,6 +40,7 @@ app.use(cors());
 app.use("/", shopifySessionRoute);
 app.use("/", discountRoute);
 app.use("/", customizationRoute);
+app.use("/", countRoute);
 
 // Set up Shopify authentication and webhook handling
 app.get(shopify.config.auth.path, shopify.auth.begin());

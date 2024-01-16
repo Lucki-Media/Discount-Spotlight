@@ -202,6 +202,7 @@
     font-family: 'Inter', sans-serif;
     font-weight: 600;
     background-color: #fff;
+    cursor: pointer;
 }
 
 .popup_couponcode-details {
@@ -242,3 +243,30 @@
         width: 80%;
     }
 }
+/* COUPONCODE TOOLTIP */
+.popup_couponcode {
+    position: relative;
+  }
+  
+  .tooltip {
+    position: absolute;
+    top: 50%;
+    left: 100%; /* Position the tooltip to the right of the coupon code */
+    transform: translateY(-50%);
+    padding: 8px;
+    background-color: #333;
+    color: #fff;
+    border-radius: 4px;
+    font-size: 12px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    width: max-content;
+    margin: 0 5px ;
+  }
+  
+  .popup_couponcode:hover .tooltip {
+    opacity: 1;
+    visibility: visible;
+  }
+  
