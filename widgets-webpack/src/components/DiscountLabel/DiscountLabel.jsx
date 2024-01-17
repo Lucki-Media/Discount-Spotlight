@@ -72,7 +72,7 @@ const DiscountLabel = (props) => {
     <>
       {discounts.length > 0 && (
         <div className={style["onclick-popup"]}>
-          <div className={style["icon-with-text"]} onClick={handleOpenModal}>
+          <div className={style["icon-with-text"]} onClick={handleOpenModal}  id="animatedDiv">
             {props.json_style_data.discount_label_settings.icon_style
               .iconType === "1" && (
               <ThinTag
