@@ -27,18 +27,17 @@ export default function HomePage() {
   const shop_url = document.getElementById("shopOrigin").value;
   const appFetch = useAuthenticatedFetch();
 
-  const [graphArray, setGraphArray] = useState([
-    12, 34, 43, 5, 25, 36, 22, 35, 47, 20, 99, 54,
-  ]);
+  const [year, setYear] = useState(new Date().getFullYear());
+  const [graphArray, setGraphArray] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
 
-  console.log(shop_url);
   const fetchDashboardData = async () => {
     axios
       .post("/api/shopify_session_data", {
         shop: shop_url,
       })
       .then((response) => {
-        console.log(response);
+        setGraphArray(response.data.data.count_data);
+        setYear(response.data.data.year);
       });
   };
   useEffect(() => {
@@ -206,7 +205,7 @@ export default function HomePage() {
                     ],
                     datasets: [
                       {
-                        label: "Clicks on Discount Label",
+                        label: `Clicks on Discount Label (Year ${year})`,
                         backgroundColor: "#5488C7 ",
                         data: graphArray,
                       },
