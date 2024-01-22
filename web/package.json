@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "license": "UNLICENSED",
-  "proxy": "https://pig-striking-snipe.ngrok-free.app/",
+  "proxy": "https://nodejs.luckimediadevelopment.com/",
   "scripts": {
     "debug": "node --inspect-brk index.js",
     "dev": "cross-env NODE_ENV=development nodemon index.js --ignore ./frontend",
@@ -30,7 +30,8 @@
     "node-cron": "^3.0.3",
     "react-refresh": "^0.14.0",
     "serve-static": "^1.14.1",
-    "shopify-api-node": "^3.12.7"
+    "shopify-api-node": "^3.12.7",
+    "tinycolor2": "^1.6.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.15",

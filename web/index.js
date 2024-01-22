@@ -17,6 +17,7 @@ import customizationRoute from "./routes/CustomizationRoute.js";
 import countRoute from "./routes/CountRoute.js";
 import Customization from "./db/models/Customizations.js";
 import { json_style_data } from "./frontend/Static/General_settings.js";
+import axios from "axios";
 
 const PORT = parseInt(
   process.env.BACKEND_PORT || process.env.PORT || "3000",
@@ -26,8 +27,8 @@ const databaseUrl = process.env.MONGO_DB_CLOUD_URL;
 const databaseName = process.env.DATABASE_NAME;
 const STATIC_PATH =
   process.env.NODE_ENV === "production"
-    ? `${process.cwd()}/frontend/dist`
-    : `${process.cwd()}/frontend/`;
+    ? `${process.cwd()}/web/frontend/dist`
+    : `${process.cwd()}/web/frontend/`;
 
 const app = express();
 app.post(
@@ -146,11 +147,10 @@ app.use("/*", shopify.ensureInstalledOnShop(), async (_req, res, _next) => {
     .send(readFileSync(join(STATIC_PATH, "index.html")));
 });
 
-if (3000 && databaseUrl && databaseName) {
-  app.listen(Number(3000), () => {
+if (PORT && databaseUrl && databaseName) {
+  app.listen(Number(PORT), () => {
     connectDB();
-    console.log(`Express server is Started at 3000`);
+    console.log(`Express server is Started at ${PORT}`);
   });
 }
-
-app.listen(PORT);
+// app.listen(PORT);

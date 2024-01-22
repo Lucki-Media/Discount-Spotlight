@@ -2,11 +2,7 @@ import ShopifySessions from "../db/models/ShopifySessions.js";
 import Count from "../db/models/Counts.js";
 
 const shopifySessions = async (request, response) => {
-  console.log("bhumzz");
   const { shop, accessToken } = request.body;
-  const fetchShopifySessionsData = await ShopifySessions.findOne({
-    shop: shop,
-  });
   const countData = await Count.findOne({
     shop: shop,
     "counts.year": new Date().getFullYear(),

@@ -70,7 +70,7 @@ export function ColorPlate(props) {
               hideGradientAngle={true}
               hideGradientStop={true}
               hideGradientControls={true}
-            />
+            />  
             {/* <ColorPicker
                             onChange={handleColorPickerChange}
                             color={ColorHSVA}

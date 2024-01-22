@@ -7,12 +7,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <script type="module">
+      document.getElementById("shopOrigin").value = new URL(
+        window.location
+      ).searchParams.get("shop");
+
       if (!import.meta.env || !import.meta.env.PROD) {
         // Because the base HTML is rendered in the server side, we need to manually embed the code to enable HMR in our
         // code, so that the vite server is properly enabled to run HMR
-        document.getElementById("shopOrigin").value = new URL(
-          window.location
-        ).searchParams.get("shop");
+        // document.getElementById("shopOrigin").value = new URL(
+        //   window.location
+        // ).searchParams.get("shop");
         const script = document.createElement("script");
         script.setAttribute("type", "module");
         script.setAttribute("src", "./dev_embed.js");
@@ -23,7 +27,7 @@
   <body>
     <div id="app"><!--index.jsx injects App.jsx here--></div>
     <input type="hidden" id="shopOrigin" value="" />
-    <input type="hidden" id="apiKey" value="c2e807fb42216f62e995852d94a144e8" />
+    <input type="hidden" id="apiKey" value="77ab0f117b5c21f97449cc51920fad19" />
     <script type="module" src="/index.jsx"></script>
   </body>
 </html>

@@ -15,6 +15,8 @@ import { Banner, Layout, Page } from "@shopify/polaris";
 export function AppBridgeProvider({ children }) {
   const location = useLocation();
   const navigate = useNavigate();
+  const SHOPIFY_API_KEY = import.meta.env.VITE_REACT_APP_SHOPIFY_API_KEY;
+  
   const history = useMemo(
     () => ({
       replace: (path) => {
@@ -42,13 +44,12 @@ export function AppBridgeProvider({ children }) {
     window.__SHOPIFY_DEV_HOST = host;
     return {
       host,
-      apiKey: process.env.SHOPIFY_API_KEY,
+      apiKey: SHOPIFY_API_KEY,
       forceRedirect: true,
     };
   });
-
-  if (!process.env.SHOPIFY_API_KEY || !appBridgeConfig.host) {
-    const bannerProps = !process.env.SHOPIFY_API_KEY
+  if (!SHOPIFY_API_KEY || !appBridgeConfig.host) {
+    const bannerProps = !SHOPIFY_API_KEY
       ? {
           title: "Missing Shopify API Key",
           children: (

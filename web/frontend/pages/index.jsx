@@ -36,6 +36,7 @@ export default function HomePage() {
         shop: shop_url,
       })
       .then((response) => {
+        // console.log('response' , response);
         setGraphArray(response.data.data.count_data);
         setYear(response.data.data.year);
       });

@@ -2,7 +2,7 @@
 
 name = "Discount Spotlight"
 client_id = "77ab0f117b5c21f97449cc51920fad19"
-application_url = "https://pig-striking-snipe.ngrok-free.app"
+application_url = "https://nodejs.luckimediadevelopment.com"
 embedded = true
 
 [access_scopes]
@@ -12,10 +12,10 @@ use_legacy_install_flow = true
 
 [auth]
 redirect_urls = [
-  "https://pig-striking-snipe.ngrok-free.app/auth/callback",
-  "https://pig-striking-snipe.ngrok-free.app/auth/shopify/callback",
-  "https://pig-striking-snipe.ngrok-free.app/api/auth/callback",
-  "https://pig-striking-snipe.ngrok-free.app/.shopify/graphiql/auth/callback"
+  "https://nodejs.luckimediadevelopment.com/auth/callback",
+  "https://nodejs.luckimediadevelopment.com/auth/shopify/callback",
+  "https://nodejs.luckimediadevelopment.com/api/auth/callback",
+  "https://nodejs.luckimediadevelopment.com/.shopify/graphiql/auth/callback"
 ]
 
 [webhooks]
