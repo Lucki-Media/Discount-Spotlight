@@ -1,10 +1,64 @@
-@keyframes slideRight {
-  0% {
-    left: 0;
+@-webkit-keyframes shake {
+  10%, 90% {
+    -webkit-transform: translate3d(-1px, 0, 0);
+            transform: translate3d(-1px, 0, 0);
   }
-  100% {
-    left: calc(100% - 100px);
+  20%, 80% {
+    -webkit-transform: translate3d(2px, 0, 0);
+            transform: translate3d(2px, 0, 0);
   }
+  30%, 50%, 70% {
+    -webkit-transform: translate3d(-4px, 0, 0);
+            transform: translate3d(-4px, 0, 0);
+  }
+  40%, 60% {
+    -webkit-transform: translate3d(4px, 0, 0);
+            transform: translate3d(4px, 0, 0);
+  }
+}
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25%, 75% {
+    transform: translateX(-10px);
+  }
+  50% {
+    transform: translateX(10px);
+  }
+}
+
+@keyframes shake {
+  10%, 90% {
+    -webkit-transform: translate3d(-1px, 0, 0);
+            transform: translate3d(-1px, 0, 0);
+  }
+  20%, 80% {
+    -webkit-transform: translate3d(2px, 0, 0);
+            transform: translate3d(2px, 0, 0);
+  }
+  30%, 50%, 70% {
+    -webkit-transform: translate3d(-4px, 0, 0);
+            transform: translate3d(-4px, 0, 0);
+  }
+  40%, 60% {
+    -webkit-transform: translate3d(4px, 0, 0);
+            transform: translate3d(4px, 0, 0);
+  }
+}
+
+@keyframes zoomOut {
+  from {
+      transform: scale(1);
+      opacity: 1;
+  }
+  to {
+      transform: scale(0);
+      opacity: 0;
+  }
+}
+.zoom_out {
+  animation: zoomOut 1s ease !important;
 }
 
 .pagewidth {
@@ -35,7 +89,7 @@
   text-align: center;
   margin: 0 0 10px 0;
   position: relative;
-  animation: slideRight 2s ease-in-out;
+  animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
 }
 
 .p_details {
@@ -49,7 +103,6 @@
   color: #1c1d1d;
   margin: 0 0 10px 0;
 }
-
 .p_details h2 {
   font-family: "Inter", sans-serif;
   font-size: 30px;
@@ -166,7 +219,7 @@
 .onclick-popup .close-btn {
   cursor: pointer;
   position: absolute;
-  top: 20px;
+  top: 16px;
   right: 20px;
 }
 

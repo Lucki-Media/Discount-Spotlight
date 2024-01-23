@@ -33,22 +33,21 @@ const DiscountLabel = (props) => {
   // FOR POPUP CLOSE
   const handlePopupClose = () => {
     const popup = document.querySelector("#DS_modal_popup");
-    popup.classList.add(`${style.zoom_out}`);
+    popup.classList.add(style.zoom_out);
     setTimeout(() => {
       setModalOpen(false);
     }, 700);
-};
+  };
+
   // Product API
   const productAPI = async () => {
-    // GET PRODUCT ID FROM HANDLE
-    const productAPIResponse = await axios.get(window.location.href + ".json");
-    // console.log(productAPIResponse.data.product.id);
-
+    // console.log('window.meta.product.id');
+    // console.log(window.meta.product.id);
     // GET DATA STORED IN DATABASE
-    if (productAPIResponse && productAPIResponse.data.product.id) {
+    if (window.meta.product.id) {
       let payLoad = {
         shop: window.Shopify.shop,
-        product_id: productAPIResponse.data.product.id,
+        product_id: window.meta.product.id,
       };
       const response = await axios.post(
         `${process.env.REACT_APP_API_URL}getDiscountForProduct`,
@@ -72,7 +71,7 @@ const DiscountLabel = (props) => {
     <>
       {discounts.length > 0 && (
         <div className={style["onclick-popup"]}>
-          <div className={style["icon-with-text"]} onClick={handleOpenModal}  id="animatedDiv">
+          <div className={style["icon-with-text"]} onClick={handleOpenModal}>
             {props.json_style_data.discount_label_settings.icon_style
               .iconType === "1" && (
               <ThinTag

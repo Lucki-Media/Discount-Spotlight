@@ -36,13 +36,10 @@ export default function PopupModal(props) {
     <>
       {props.openPopup && (
         <div className={style["onclick-popup"]}>
-          <div
-            className={style["modal-overlay"]}
-            onClick={handleCloseModal}
-            id="DS_modal_popup"
-          >
+          <div className={style["modal-overlay"]} onClick={handleCloseModal}>
             <div
               className={style["modal-content"]}
+              id="DS_modal_popup"
               onClick={(e) => e.stopPropagation()}
             >
               <span className={style["close-btn"]} onClick={handleCloseModal}>
