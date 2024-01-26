@@ -81,18 +81,31 @@ export default function PageName() {
   }, [discounts]);
 
   const handleChange = (selectedOptions, productId) => {
-    const updatedProducts = [...products];
-    const productToUpdate = updatedProducts.find(
-      (product) => product.id === productId
-    );
+    if (selectedOptions.length <= 3) {
+      const updatedProducts = [...products];
+      const productToUpdate = updatedProducts.find(
+        (product) => product.id === productId
+      );
 
-    if (productToUpdate) {
-      const updatedDiscounts = selectedOptions
-        ? selectedOptions.map((option) => option.value)
-        : [];
-      productToUpdate.discounts = updatedDiscounts;
+      if (productToUpdate) {
+        const updatedDiscounts = selectedOptions
+          ? selectedOptions.map((option) => option.value)
+          : [];
+        productToUpdate.discounts = updatedDiscounts;
+      }
+      setProducts(updatedProducts);
+    } else {
+      toast.error("You can select up to 3 options only!", {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
     }
-    setProducts(updatedProducts);
   };
 
   // DISCOUNT COMBOBOX LOGIC END
@@ -135,7 +148,6 @@ export default function PageName() {
               onChange={(value) => handleChange(value, id)}
               options={options}
               placeholder="Discount Codes..."
-              max={3}
             />
           </IndexTable.Cell>
         </IndexTable.Row>
