@@ -12,9 +12,12 @@ import {
   TextContainer,
   Card,
   Thumbnail,
+  IndexFilters,
+  useSetIndexFiltersMode,
+  useIndexResourceState,
 } from "@shopify/polaris";
 import Select from "react-select";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import "../css/settings.css";
 import axios from "axios";
 import { useAuthenticatedFetch } from "../hooks";
@@ -32,18 +35,17 @@ export default function PageName() {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const notify = () => {
-    toast.info("Data saved successfully !", {
-      position: "bottom-center",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "dark",
-    });
-  };
+  const [selected, setSelected] = useState(0);
+  const { mode, setMode } = useSetIndexFiltersMode();
+  const onHandleCancel = () => {};
+  const [queryValue, setQueryValue] = useState("");
+  const handleFiltersQueryChange = useCallback(
+    (value) => setQueryValue(value),
+    []
+  );
+  const { selectedResources, allResourcesSelected, handleSelectionChange } =
+    useIndexResourceState(products);
+
   const resourceName = {
     singular: "product",
     plural: "products",
@@ -123,7 +125,12 @@ export default function PageName() {
       });
 
       return (
-        <IndexTable.Row key={`key-${id}`} id={id} position={index}>
+        <IndexTable.Row
+          key={`key-${id}`}
+          id={id}
+          selected={selectedResources.includes(id)}
+          position={index}
+        >
           <IndexTable.Cell>
             <Thumbnail
               source={image != null && image.src != null ? image.src : noImage}
@@ -208,9 +215,16 @@ export default function PageName() {
         data: products,
       })
       .then((response) => {
-        {
-          notify();
-        }
+        toast.info("Data saved successfully !", {
+          position: "bottom-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
         // console.log(response.data);
         setLoading(false);
       })
@@ -323,7 +337,30 @@ export default function PageName() {
         <Page>
           <LegacyCard>
             <div className="discount_table">
+              <IndexFilters
+                queryValue={queryValue}
+                queryPlaceholder="Searching in all"
+                filteringAccessibilityTooltip="Search (F)"
+                onQueryChange={handleFiltersQueryChange}
+                onQueryClear={() => setQueryValue("")}
+                cancelAction={{
+                  onAction: onHandleCancel,
+                  disabled: false,
+                  loading: false,
+                }}
+                tabs={[]}
+                selected={selected}
+                onSelect={setSelected}
+                filters={[]}
+                hideFilters
+                mode={mode}
+                setMode={setMode}
+              />
               <IndexTable
+                selectedItemsCount={
+                  allResourcesSelected ? "All" : selectedResources.length
+                }
+                onSelectionChange={handleSelectionChange}
                 resourceName={resourceName}
                 itemCount={products.length}
                 headings={[
@@ -331,7 +368,6 @@ export default function PageName() {
                   { title: "Product" },
                   { title: "Discounts" },
                 ]}
-                selectable={false}
                 pagination={{
                   hasNext: endIndex < products.length,
                   hasPrevious: currentPage > 1,

@@ -23,16 +23,20 @@ export default function App() {
             <NavigationMenu
               navigationLinks={[
                 {
-                  label: "Customization",
-                  destination: "/customization",
-                },
-                {
                   label: "Discounts",
                   destination: "/discounts",
                 },
                 {
+                  label: "Customization",
+                  destination: "/customization",
+                },
+                {
                   label: "FAQs",
                   destination: "/faqs",
+                },
+                {
+                  label: "Test",
+                  destination: "/test",
                 },
               ]}
             />

@@ -8,7 +8,7 @@ import {
   Collapsible,
   FullscreenBar,
 } from "@shopify/polaris";
-import { ChevronRightMinor, ChevronDownMinor } from "@shopify/polaris-icons";
+import { ChevronRightIcon, ChevronDownIcon } from "@shopify/polaris-icons";
 import { TitleBar } from "@shopify/app-bridge-react";
 import DataFAQ from "../Static/DataFAQ";
 import { useState } from "react";
@@ -63,9 +63,9 @@ export default function PageName() {
                     <span className="show_span">{item.question}</span>
                     <span>
                       {expanded === item.panel ? (
-                        <Icon source={ChevronDownMinor} />
+                        <Icon source={ChevronDownIcon} />
                       ) : (
-                        <Icon source={ChevronRightMinor} />
+                        <Icon source={ChevronRightIcon} />
                       )}
                     </span>
                   </div>
