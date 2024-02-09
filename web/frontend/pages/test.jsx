@@ -15,6 +15,8 @@ import {
 import { useAuthenticatedFetch } from "../hooks";
 import { useState, useCallback, useEffect } from "react";
 import noImage from "../assets/noImage.jpeg";
+import "../css/index.css";
+import DiscountCombobox from "../components/DiscountCombobox";
 
 function IndexFiltersWithFilteringModeExample() {
   const shop_url = document.getElementById("shopOrigin").value;
@@ -24,11 +26,17 @@ function IndexFiltersWithFilteringModeExample() {
   const [filterLoading, setfilterLoading] = useState(false);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState(0);
+  const [discounts, setDiscounts] = useState([]);
   const [products, setProducts] = useState([]);
   const [pagination, setPagination] = useState({
     hasNextPage: false,
     hasPreviousPage: false,
   });
+
+  // TO PREVENT CLICK EVENT OF CHECKBOX ON COMBOBOX
+  const handleComboboxClick = (event) => {
+    event.stopPropagation();
+  };
 
   // SEARCH FIELD CODE START
   const handleFiltersQueryChange = useCallback((value) => {
@@ -40,6 +48,7 @@ function IndexFiltersWithFilteringModeExample() {
   // TO LOAD INIT DATA
   useEffect(() => {
     getData();
+    getPriceRules();
   }, []);
 
   // INIT API
@@ -66,6 +75,32 @@ function IndexFiltersWithFilteringModeExample() {
     }
   };
 
+  const getPriceRules = async () => {
+    setfilterLoading(true);
+    try {
+      const response = await appFetch("/api/getPriceRules", {
+        shop: shop_url,
+      });
+
+      if (response.ok) {
+        const responseData = await response.json();
+        // console.log("getPriceRules");
+        // console.log(responseData);
+
+        const newOptions = responseData.data.map((discount) => ({
+          value: discount.id,
+          label: discount.title,
+        }));
+        setDiscounts(newOptions);
+        setfilterLoading(false);
+        setLoading(false);
+      } else {
+        console.error("Error fetching PriceRules:", response);
+      }
+    } catch (error) {
+      console.error("An error occurred while fetching PriceRules:", error);
+    }
+  };
   // FILTER PRODUCT API & PAGINATION START
   const handleFilterProducts = async (first, searchValue) => {
     setfilterLoading(true);
@@ -83,7 +118,6 @@ function IndexFiltersWithFilteringModeExample() {
         // console.log(responseData.response.products);
         setProducts(responseData.response.products.edges);
         setPagination(responseData.response.products.pageInfo);
-        // setDiscounts(responseData.data);
         setfilterLoading(false);
       } else {
         console.error("Error fetching filter Products:", response);
@@ -111,7 +145,6 @@ function IndexFiltersWithFilteringModeExample() {
         // console.log(responseData);
         setProducts(responseData.response.products.edges);
         setPagination(responseData.response.products.pageInfo);
-        // setDiscounts(responseData.data);
         setfilterLoading(false);
       } else {
         console.error("Error fetching Next Page Products:", response);
@@ -142,7 +175,6 @@ function IndexFiltersWithFilteringModeExample() {
         // console.log(responseData);
         setProducts(responseData.response.products.edges);
         setPagination(responseData.response.products.pageInfo);
-        // setDiscounts(responseData.data);
         setfilterLoading(false);
       } else {
         console.error("Error fetching Prev Page Products:", response);
@@ -193,23 +225,10 @@ function IndexFiltersWithFilteringModeExample() {
         />
       </IndexTable.Cell>
       <IndexTable.Cell>{node.title}</IndexTable.Cell>
-      <IndexTable.Cell style={{ width: "50%" }}>
-        {/* <Select
-          isMulti
-          styles={{
-            multiValueRemove: (styles) => ({
-              ...styles,
-              ":hover": {
-                backgroundColor: "#5488c7",
-                color: "white",
-              },
-            }),
-          }}
-          // value={defaultOptions}
-          onChange={(value) => handleChange(value, id)}
-          options={options}
-          placeholder="Discount Codes..."
-        /> */}
+      <IndexTable.Cell>
+        <div onClick={handleComboboxClick}>
+          <DiscountCombobox discounts={discounts} />
+        </div>
       </IndexTable.Cell>
     </IndexTable.Row>
   ));
@@ -217,65 +236,67 @@ function IndexFiltersWithFilteringModeExample() {
 
   if (loading === false) {
     return (
-      <LegacyCard>
-        <IndexFilters
-          queryValue={queryValue}
-          queryPlaceholder="Searching in all"
-          filteringAccessibilityTooltip="Search (F)"
-          onQueryChange={handleFiltersQueryChange}
-          onQueryClear={() => {
-            setQueryValue("");
-            getData();
-          }}
-          cancelAction={{
-            onAction: () => {
+      <div className="discount_index_table">
+        <LegacyCard>
+          <IndexFilters
+            queryValue={queryValue}
+            queryPlaceholder="Searching in all"
+            filteringAccessibilityTooltip="Search (F)"
+            onQueryChange={handleFiltersQueryChange}
+            onQueryClear={() => {
               setQueryValue("");
               getData();
-            },
-            disabled: false,
-            loading: false,
-          }}
-          tabs={[]}
-          selected={selected}
-          onSelect={setSelected}
-          filters={[]}
-          hideFilters
-          mode={mode}
-          setMode={setMode}
-          loading={filterLoading}
-        />
-        <IndexTable
-          resourceName={resourceName}
-          itemCount={products.length}
-          selectedItemsCount={
-            allResourcesSelected ? "All" : selectedResources.length
-          }
-          onSelectionChange={handleSelectionChange}
-          headings={[
-            { title: "Image" },
-            { title: "Product" },
-            { title: "Discounts" },
-          ]}
-          pagination={{
-            hasNext: pagination.hasNextPage,
-            hasPrevious: pagination.hasPreviousPage,
-            onNext: () =>
-              handleNextPage(
-                10,
-                pagination.endCursor ? pagination.endCursor : "",
-                queryValue
-              ),
-            onPrevious: () =>
-              handlePrevPage(
-                10,
-                pagination.startCursor ? pagination.startCursor : "",
-                queryValue
-              ),
-          }}
-        >
-          {rowMarkup}
-        </IndexTable>
-      </LegacyCard>
+            }}
+            cancelAction={{
+              onAction: () => {
+                setQueryValue("");
+                getData();
+              },
+              disabled: false,
+              loading: false,
+            }}
+            tabs={[]}
+            selected={selected}
+            onSelect={setSelected}
+            filters={[]}
+            hideFilters
+            mode={mode}
+            setMode={setMode}
+            loading={filterLoading}
+          />
+          <IndexTable
+            resourceName={resourceName}
+            itemCount={products.length}
+            selectedItemsCount={
+              allResourcesSelected ? "All" : selectedResources.length
+            }
+            onSelectionChange={handleSelectionChange}
+            headings={[
+              { title: "Image" },
+              { title: "Product" },
+              { title: "Discounts" },
+            ]}
+            pagination={{
+              hasNext: pagination.hasNextPage,
+              hasPrevious: pagination.hasPreviousPage,
+              onNext: () =>
+                handleNextPage(
+                  10,
+                  pagination.endCursor ? pagination.endCursor : "",
+                  queryValue
+                ),
+              onPrevious: () =>
+                handlePrevPage(
+                  10,
+                  pagination.startCursor ? pagination.startCursor : "",
+                  queryValue
+                ),
+            }}
+          >
+            {rowMarkup}
+          </IndexTable>
+        </LegacyCard>
+      </div>
     );
   } else {
     return (

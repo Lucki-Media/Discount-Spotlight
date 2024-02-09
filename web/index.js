@@ -12,6 +12,7 @@ import getFilterProducts from "./graphQL/getFilterProducts.js";
 import getPrevPageProducts from "./graphQL/getPrevPageProducts.js";
 import getNextPageProducts from "./graphQL/getNextPageProducts.js";
 import getProducts from "./graphQL/getProducts.js";
+import getPriceRules from "./graphQL/getPriceRules.js";
 import GDPRWebhookHandlers from "./gdpr.js";
 import dotenv from "dotenv";
 dotenv.config();
@@ -84,24 +85,32 @@ app.get("/api/products/create", async (_req, res) => {
   res.status(status).send({ success: status === 200, error });
 });
 
-// app.get("/api/getProducts", async (_req, res) => {
-//   const productData = await shopify.api.rest.Product.all({
-//     session: res.locals.shopify.session,
-//     fields: "id,image,title",
-//   });
-//   res.status(200).send(productData);
-// });
-
-// Endpoint to fetch price rules
-app.get("/api/pricerules", async (_req, res) => {
+// DISCOUNT PAGE GRAPHQL API START
+app.get("/api/getPriceRules", async (_req, res) => {
   const discountData = await shopify.api.rest.PriceRule.all({
     session: res.locals.shopify.session,
   });
   return res.json(discountData);
+  // let status = 200;
+  // let error = null;
+
+  // try {
+  //   const response = await getPriceRules(res.locals.shopify.session);
+  //   res.status(status).send({ success: status === 200, response });
+  // } catch (e) {
+  //   console.log(`Failed to getPriceRules: ${e.message}`);
+  //   status = 500;
+  //   error = e.message;
+  //   res.status(status).send({ success: status === 200, error });
+  // }
 });
 
-// DISCOUNT PAGE GRAPHQL API START
 app.get("/api/getProducts", async (_req, res) => {
+  //   const productData = await shopify.api.rest.Product.all({
+  //     session: res.locals.shopify.session,
+  //     fields: "id,image,title",
+  //   });
+  //   res.status(200).send(productData);
   let status = 200;
   let error = null;
 
@@ -122,9 +131,9 @@ app.get("/api/getNextPageProducts", async (_req, res) => {
   try {
     const response = await getNextPageProducts({
       session: res.locals.shopify.session,
-      first : _req.query.first,
-      after : _req.query.after,
-      searchValue : _req.query.searchValue,
+      first: _req.query.first,
+      after: _req.query.after,
+      searchValue: _req.query.searchValue,
     });
     res.status(status).send({ success: status === 200, response });
   } catch (e) {
@@ -141,9 +150,9 @@ app.get("/api/getPrevPageProducts", async (_req, res) => {
   try {
     const response = await getPrevPageProducts({
       session: res.locals.shopify.session,
-      last : _req.query.last,
-      before : _req.query.before,
-      searchValue : _req.query.searchValue,
+      last: _req.query.last,
+      before: _req.query.before,
+      searchValue: _req.query.searchValue,
     });
     res.status(status).send({ success: status === 200, response });
   } catch (e) {
@@ -160,8 +169,8 @@ app.get("/api/getFilterProducts", async (_req, res) => {
   try {
     const response = await getFilterProducts({
       session: res.locals.shopify.session,
-      first : _req.query.first,
-      searchValue : _req.query.searchValue,
+      first: _req.query.first,
+      searchValue: _req.query.searchValue,
     });
     res.status(status).send({ success: status === 200, response });
   } catch (e) {

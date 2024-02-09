@@ -7,7 +7,7 @@ embedded = true
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
-scopes = "write_products, read_price_rules"
+scopes = "read_price_rules,read_products"
 use_legacy_install_flow = true
 
 [auth]

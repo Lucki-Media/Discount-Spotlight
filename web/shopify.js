@@ -27,7 +27,7 @@ const shopify = shopifyApp({
     apiKey: process.env.SHOPIFY_API_KEY,
     apiSecretKey: process.env.SHOPIFY_API_SECRET,
     scopes: [
-      'write_products',
+      'read_products',
       'read_price_rules'
     ],
     hostName: process.env.HOST_NAME,  
