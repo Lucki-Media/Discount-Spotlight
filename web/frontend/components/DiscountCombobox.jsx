@@ -11,8 +11,8 @@ import { useState, useCallback, useMemo, useEffect } from "react";
 function DiscountCombobox(props) {
   //   console.log("discounts", props.discounts);
   const deselectedOptions = useMemo(() => props.discounts, []);
-  console.log(deselectedOptions);
-  const [selectedOptions, setSelectedOptions] = useState([]);
+  // console.log(deselectedOptions);
+  const [selectedOptions, setSelectedOptions] = useState(props.selectedOptions);
   const [inputValue, setInputValue] = useState("");
   const [options, setOptions] = useState(deselectedOptions);
 
@@ -36,9 +36,9 @@ function DiscountCombobox(props) {
 
   const updateSelection = useCallback(
     (selected) => {
-      if (selectedOptions.includes(selected)) {
+      if (selectedOptions.includes(Number(selected))) {
         setSelectedOptions(
-          selectedOptions.filter((option) => option !== Number(selected))
+          selectedOptions.filter((option) => Number(option) !== Number(selected))
         );
       } else {
         setSelectedOptions([...selectedOptions, Number(selected)]);
@@ -61,23 +61,19 @@ function DiscountCombobox(props) {
   const tagsMarkup =
     selectedOptions.length > 0 ? (
       <LegacyStack spacing="extraTight" alignment="center">
-        {selectedOptions.map(
-          (selectedOption) => (
-            console.log(selectedOption, typeof selectedOption),
-            (
-              <Tag
-                key={`option-${selectedOption}`}
-                onRemove={removeTag(Number(selectedOption))}
-              >
-                {
-                  deselectedOptions.find(
-                    (option) => option.value === Number(selectedOption)
-                  )?.label
-                }
-              </Tag>
-            )
-          )
-        )}
+        {selectedOptions.map((selectedOption) => (
+          // console.log(selectedOption, typeof selectedOption),
+          <Tag
+            key={`option-${Number(selectedOption)}`}
+            onRemove={removeTag(Number(selectedOption))}
+          >
+            {
+              deselectedOptions.find(
+                (option) => Number(option.value) === Number(selectedOption)
+              )?.label
+            }
+          </Tag>
+        ))}
       </LegacyStack>
     ) : null;
 
@@ -98,16 +94,17 @@ function DiscountCombobox(props) {
           );
         })
       : null;
+
   return (
     <Combobox
       allowMultiple
       activator={
         <Combobox.TextField
           onChange={updateText}
-          label="Search tags"
+          label="Search discounts"
           labelHidden
           value={inputValue}
-          placeholder="Search tags"
+          placeholder="Search discounts"
           verticalContent={tagsMarkup}
           autoComplete="off"
           clearButton

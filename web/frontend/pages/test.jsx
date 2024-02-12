@@ -11,12 +11,18 @@ import {
   SkeletonBodyText,
   SkeletonDisplayText,
   TextContainer,
+  Page,
+  FullscreenBar,
+  ButtonGroup,
+  Button,
 } from "@shopify/polaris";
+import { ToastContainer, toast } from "react-toastify";
 import { useAuthenticatedFetch } from "../hooks";
 import { useState, useCallback, useEffect } from "react";
 import noImage from "../assets/noImage.jpeg";
 import "../css/index.css";
 import DiscountCombobox from "../components/DiscountCombobox";
+import axios from "axios";
 
 function IndexFiltersWithFilteringModeExample() {
   const shop_url = document.getElementById("shopOrigin").value;
@@ -28,6 +34,7 @@ function IndexFiltersWithFilteringModeExample() {
   const [selected, setSelected] = useState(0);
   const [discounts, setDiscounts] = useState([]);
   const [products, setProducts] = useState([]);
+  const [discountProducts, setDiscountProducts] = useState([]);
   const [pagination, setPagination] = useState({
     hasNextPage: false,
     hasPreviousPage: false,
@@ -41,18 +48,20 @@ function IndexFiltersWithFilteringModeExample() {
   // SEARCH FIELD CODE START
   const handleFiltersQueryChange = useCallback((value) => {
     setQueryValue(value);
-    value === "" ? getData() : handleFilterProducts(10, value);
-  }, []);
+    value === "" ? getData(discountProducts) : handleFilterProducts(10, value, discountProducts);
+  }, [discountProducts]);
+  
   // SEARCH FIELD CODE END
 
   // TO LOAD INIT DATA
   useEffect(() => {
-    getData();
+    // get data from the database after call product api
+    getDiscountsDetails();
     getPriceRules();
   }, []);
 
   // INIT API
-  const getData = async () => {
+  const getData = async (discountData) => {
     setfilterLoading(true);
     try {
       const response = await appFetch("/api/getProducts", {
@@ -62,8 +71,25 @@ function IndexFiltersWithFilteringModeExample() {
       if (response.ok) {
         const responseData = await response.json();
         // console.log("getData");
-        // console.log(responseData);
-        setProducts(responseData.response.products.edges);
+        // console.log(discountData);
+
+        const updatedProductsCopy = responseData.response.products.edges; // Data from GQL API
+        const product_data = [...discountData]; // Data from Database
+
+        // GET SELECTED DISCOUNTS FOR EACH PRODUCT
+        updatedProductsCopy.forEach((product) => {
+          const productIndex = product_data.findIndex(
+            (productData) =>
+              Number(product.node.id.match(/\d+/)[0]) ===
+              Number(productData.product_id)
+          );
+
+          product.node.discounts =
+            productIndex !== -1 ? product_data[productIndex].discounts : [];
+        });
+        // console.log("Updated Products:", updatedProductsCopy);
+
+        setProducts(updatedProductsCopy);
         setPagination(responseData.response.products.pageInfo);
         setfilterLoading(false);
         setLoading(false);
@@ -101,8 +127,56 @@ function IndexFiltersWithFilteringModeExample() {
       console.error("An error occurred while fetching PriceRules:", error);
     }
   };
+
+  // GET DATA FROM THE DATABSE
+  const getDiscountsDetails = async () => {
+    setLoading(true);
+    await axios
+      .post("/api/getDiscountsDetails", {
+        shop: shop_url,
+      })
+      .then((response) => {
+        // console.log(response.data.data.shop_data);
+        setDiscountProducts(response.data.data.shop_data);
+        setLoading(false);
+
+        // CALL PRODUCT GQL API
+        getData(response.data.data.shop_data);
+      });
+  };
+
+  // SAVE DATA IN THE DATABSE
+  const handleSave = () => {
+    // setLoading(true);
+    console.log("products");
+
+    // axios
+    //   .post("/api/saveDiscountsDetails", {
+    //     shop: shop_url,
+    //     data: products,
+    //   })
+    //   .then((response) => {
+    //     toast.info("Data saved successfully !", {
+    //       position: "bottom-center",
+    //       autoClose: 5000,
+    //       hideProgressBar: false,
+    //       closeOnClick: true,
+    //       pauseOnHover: true,
+    //       draggable: true,
+    //       progress: undefined,
+    //       theme: "dark",
+    //     });
+    //     // console.log(response.data);
+    //     setLoading(false);
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error saving data:", error);
+    //     setLoading(false);
+    //   });
+  };
+
   // FILTER PRODUCT API & PAGINATION START
-  const handleFilterProducts = async (first, searchValue) => {
+  const handleFilterProducts = async (first, searchValue, discountProducts) => {
     setfilterLoading(true);
     try {
       const response = await appFetch(
@@ -116,7 +190,26 @@ function IndexFiltersWithFilteringModeExample() {
         const responseData = await response.json();
         // console.log("getFilterProducts");
         // console.log(responseData.response.products);
-        setProducts(responseData.response.products.edges);
+        // console.log("getFilterProducts", discountProducts);
+
+        const updatedProductsCopy = responseData.response.products.edges; // Data from GQL API
+        const product_data = [...discountProducts]; // Data from Database
+
+        // GET SELECTED DISCOUNTS FOR EACH PRODUCT
+        updatedProductsCopy.forEach((product) => {
+          const productIndex = product_data.findIndex(
+            (productData) =>
+              Number(product.node.id.match(/\d+/)[0]) ===
+              Number(productData.product_id)
+          );
+          // console.log("product", product);
+          // console.log("productIndex", productIndex);
+          product.node.discounts =
+            productIndex !== -1 ? product_data[productIndex].discounts : [];
+        });
+        // console.log("Filtered Products:", updatedProductsCopy);
+
+        setProducts(updatedProductsCopy);
         setPagination(responseData.response.products.pageInfo);
         setfilterLoading(false);
       } else {
@@ -143,7 +236,25 @@ function IndexFiltersWithFilteringModeExample() {
         const responseData = await response.json();
         // console.log("getNextPageProducts");
         // console.log(responseData);
-        setProducts(responseData.response.products.edges);
+        // console.log("getNextPageProducts", discountProducts);
+
+        const updatedProductsCopy = responseData.response.products.edges; // Data from GQL API
+        const product_data = [...discountProducts]; // Data from Database
+
+        // GET SELECTED DISCOUNTS FOR EACH PRODUCT
+        updatedProductsCopy.forEach((product) => {
+          const productIndex = product_data.findIndex(
+            (productData) =>
+              Number(product.node.id.match(/\d+/)[0]) ===
+              Number(productData.product_id)
+          );
+
+          product.node.discounts =
+            productIndex !== -1 ? product_data[productIndex].discounts : [];
+        });
+        // console.log("Updated Products:", updatedProductsCopy);
+
+        setProducts(updatedProductsCopy);
         setPagination(responseData.response.products.pageInfo);
         setfilterLoading(false);
       } else {
@@ -173,7 +284,25 @@ function IndexFiltersWithFilteringModeExample() {
         const responseData = await response.json();
         // console.log("getPrevPageProducts");
         // console.log(responseData);
-        setProducts(responseData.response.products.edges);
+        // console.log("getPrevPageProducts", discountProducts);
+
+        const updatedProductsCopy = responseData.response.products.edges; // Data from GQL API
+        const product_data = [...discountProducts]; // Data from Database
+
+        // GET SELECTED DISCOUNTS FOR EACH PRODUCT
+        updatedProductsCopy.forEach((product) => {
+          const productIndex = product_data.findIndex(
+            (productData) =>
+              Number(product.node.id.match(/\d+/)[0]) ===
+              Number(productData.product_id)
+          );
+
+          product.node.discounts =
+            productIndex !== -1 ? product_data[productIndex].discounts : [];
+        });
+        // console.log("Updated Products:", updatedProductsCopy);
+
+        setProducts(updatedProductsCopy);
         setPagination(responseData.response.products.pageInfo);
         setfilterLoading(false);
       } else {
@@ -227,7 +356,10 @@ function IndexFiltersWithFilteringModeExample() {
       <IndexTable.Cell>{node.title}</IndexTable.Cell>
       <IndexTable.Cell>
         <div onClick={handleComboboxClick}>
-          <DiscountCombobox discounts={discounts} />
+          <DiscountCombobox
+            discounts={discounts}
+            selectedOptions={node.discounts}
+          />
         </div>
       </IndexTable.Cell>
     </IndexTable.Row>
@@ -236,66 +368,111 @@ function IndexFiltersWithFilteringModeExample() {
 
   if (loading === false) {
     return (
-      <div className="discount_index_table">
-        <LegacyCard>
-          <IndexFilters
-            queryValue={queryValue}
-            queryPlaceholder="Searching in all"
-            filteringAccessibilityTooltip="Search (F)"
-            onQueryChange={handleFiltersQueryChange}
-            onQueryClear={() => {
-              setQueryValue("");
-              getData();
-            }}
-            cancelAction={{
-              onAction: () => {
-                setQueryValue("");
-                getData();
-              },
-              disabled: false,
-              loading: false,
-            }}
-            tabs={[]}
-            selected={selected}
-            onSelect={setSelected}
-            filters={[]}
-            hideFilters
-            mode={mode}
-            setMode={setMode}
-            loading={filterLoading}
-          />
-          <IndexTable
-            resourceName={resourceName}
-            itemCount={products.length}
-            selectedItemsCount={
-              allResourcesSelected ? "All" : selectedResources.length
-            }
-            onSelectionChange={handleSelectionChange}
-            headings={[
-              { title: "Image" },
-              { title: "Product" },
-              { title: "Discounts" },
-            ]}
-            pagination={{
-              hasNext: pagination.hasNextPage,
-              hasPrevious: pagination.hasPreviousPage,
-              onNext: () =>
-                handleNextPage(
-                  10,
-                  pagination.endCursor ? pagination.endCursor : "",
-                  queryValue
-                ),
-              onPrevious: () =>
-                handlePrevPage(
-                  10,
-                  pagination.startCursor ? pagination.startCursor : "",
-                  queryValue
-                ),
-            }}
-          >
-            {rowMarkup}
-          </IndexTable>
-        </LegacyCard>
+      <div className="customization_page">
+        <div className="fullscreenbar_div">
+          <FullscreenBar>
+            <div
+              style={{
+                display: "flex",
+                flexGrow: 1,
+                justifyContent: "space-between",
+                alignItems: "center",
+                paddingLeft: "1rem",
+                paddingRight: "1rem",
+                background: "#fff",
+                transition: "background 0.5s ease-out 0s",
+              }}
+            >
+              <div
+                style={{
+                  flexGrow: 1,
+                }}
+              >
+                <p
+                  className="fullscreenbar_headertitle"
+                  style={{
+                    color: "#000",
+                  }}
+                >
+                  Discount Management
+                </p>
+              </div>
+              <ButtonGroup>
+                <Button
+                  variant="primary"
+                  onClick={handleSave}
+                  loading={loading}
+                >
+                  Save
+                </Button>
+              </ButtonGroup>
+            </div>
+          </FullscreenBar>
+        </div>
+        <ToastContainer />
+        <Page>
+          <div className="discount_index_table">
+            <LegacyCard>
+              <IndexFilters
+                queryValue={queryValue}
+                queryPlaceholder="Searching in all"
+                filteringAccessibilityTooltip="Search (F)"
+                onQueryChange={handleFiltersQueryChange}
+                onQueryClear={() => {
+                  setQueryValue("");
+                  getData(discountProducts);
+                }}
+                cancelAction={{
+                  onAction: () => {
+                    setQueryValue("");
+                    getData(discountProducts);
+                  },
+                  disabled: false,
+                  loading: false,
+                }}
+                tabs={[]}
+                selected={selected}
+                onSelect={setSelected}
+                filters={[]}
+                hideFilters
+                mode={mode}
+                setMode={setMode}
+                loading={filterLoading}
+              />
+              <IndexTable
+                resourceName={resourceName}
+                itemCount={products.length}
+                selectedItemsCount={
+                  allResourcesSelected ? "All" : selectedResources.length
+                }
+                onSelectionChange={handleSelectionChange}
+                headings={[
+                  { title: "Image" },
+                  { title: "Product" },
+                  { title: "Discounts" },
+                ]}
+                pagination={{
+                  hasNext: pagination.hasNextPage,
+                  hasPrevious: pagination.hasPreviousPage,
+                  onNext: () =>
+                    handleNextPage(
+                      10,
+                      pagination.endCursor ? pagination.endCursor : "",
+                      queryValue
+                    ),
+                  onPrevious: () =>
+                    handlePrevPage(
+                      10,
+                      pagination.startCursor ? pagination.startCursor : "",
+                      queryValue
+                    ),
+                }}
+              >
+                {rowMarkup}
+              </IndexTable>
+            </LegacyCard>
+          </div>
+        </Page>
       </div>
     );
   } else {
