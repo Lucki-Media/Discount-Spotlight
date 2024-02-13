@@ -7,6 +7,7 @@ import {
   AutoSelection,
 } from "@shopify/polaris";
 import { useState, useCallback, useMemo, useEffect } from "react";
+import { ToastContainer, toast } from "react-toastify";
 
 function DiscountCombobox(props) {
   //   console.log("discounts", props.discounts);
@@ -37,11 +38,27 @@ function DiscountCombobox(props) {
   const updateSelection = useCallback(
     (selected) => {
       if (selectedOptions.includes(Number(selected))) {
-        setSelectedOptions(
-          selectedOptions.filter((option) => Number(option) !== Number(selected))
+        let again_selected = selectedOptions.filter(
+          (option) => Number(option) !== Number(selected)
         );
+        setSelectedOptions(again_selected);
       } else {
-        setSelectedOptions([...selectedOptions, Number(selected)]);
+        if (selectedOptions.length < 3) {
+          let new_selected = [...selectedOptions, Number(selected)];
+          setSelectedOptions(new_selected);
+        } else {
+          toast.error("You can select up to 3 options only!", {
+            position: "bottom-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+          });
+    
+        }
       }
 
       updateText("");
@@ -95,31 +112,41 @@ function DiscountCombobox(props) {
         })
       : null;
 
+  // callback whenever selected option changes
+  useEffect(() => {
+    props.discountCallback(props.product_id, selectedOptions);
+  }, [selectedOptions]);
+
   return (
-    <Combobox
-      allowMultiple
-      activator={
-        <Combobox.TextField
-          onChange={updateText}
-          label="Search discounts"
-          labelHidden
-          value={inputValue}
-          placeholder="Search discounts"
-          verticalContent={tagsMarkup}
-          autoComplete="off"
-          clearButton
-          onClearButtonClick={() => {
-            setInputValue("");
-          }}
-        />
-      }
-    >
-      {optionsMarkup ? (
-        <Listbox autoSelection={AutoSelection.None} onSelect={updateSelection}>
-          {optionsMarkup}
-        </Listbox>
-      ) : null}
-    </Combobox>
+    <>
+      <Combobox
+        allowMultiple
+        activator={
+          <Combobox.TextField
+            onChange={updateText}
+            label="Search discounts"
+            labelHidden
+            value={inputValue}
+            placeholder="Search discounts"
+            verticalContent={tagsMarkup}
+            autoComplete="off"
+            clearButton
+            onClearButtonClick={() => {
+              setInputValue("");
+            }}
+          />
+        }
+      >
+        {optionsMarkup ? (
+          <Listbox
+            autoSelection={AutoSelection.None}
+            onSelect={updateSelection}
+          >
+            {optionsMarkup}
+          </Listbox>
+        ) : null}
+      </Combobox>
+    </>
   );
 }
 

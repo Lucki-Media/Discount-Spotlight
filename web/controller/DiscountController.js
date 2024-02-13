@@ -24,32 +24,27 @@ const getDiscountsDetails = async (request, response) => {
 
 const saveDiscountsDetails = async (request, response) => {
   const { shop, accessToken, data } = request.body;
-
   try {
     // Use map to loop through the data array and perform asynchronous operations
     const promises = data.map(async (product) => {
-      const fetchProductData = await Discounts.findOne({
+      let fetchProductData = await Discounts.findOne({
         shop: shop,
-        product_id: product.id,
+        product_id: product.product_id,
       });
       if (fetchProductData) {
         // If the product exists, update its data
         fetchProductData.product_image =
-          product.image != null && product.image.src != null
-            ? product.image.src
-            : "";
-        fetchProductData.product_name = product.title;
+          product.product_image != null ? product.product_image : "";
+        fetchProductData.product_name = product.product_name;
         fetchProductData.discounts = product.discounts;
       } else {
         // If the product doesn't exist, create a new entry
-        const fetchProductData = new Discounts({
+        fetchProductData = new Discounts({
           shop: shop,
-          product_id: product.id,
+          product_id: product.product_id,
           product_image:
-            product.image != null && product.image.src != null
-              ? product.image.src
-              : "",
-          product_name: product.title,
+            product.product_image != null ? product.product_image : "",
+          product_name: product.product_name,
           discounts: product.discounts,
         });
       }
@@ -75,6 +70,7 @@ const saveDiscountsDetails = async (request, response) => {
     });
   }
 };
+
 
 const getDiscounts = async (request, response) => {
   const { shop } = request.body.data;
@@ -167,7 +163,10 @@ const getDiscountForProduct = async (request, response) => {
           priceRule.prerequisite_to_entitlement_quantity_ratio
             .entitled_quantity;
 
-        if (prerequisiteQuantity !== null && prerequisiteQuantity !== undefined) {
+        if (
+          prerequisiteQuantity !== null &&
+          prerequisiteQuantity !== undefined
+        ) {
           if (entitledQuantity !== null && entitledQuantity !== undefined) {
             discountTaC.push(
               `Get ${entitledQuantity} on minimum purchase of ${prerequisiteQuantity}`
@@ -182,12 +181,12 @@ const getDiscountForProduct = async (request, response) => {
           priceRule.prerequisite_to_entitlement_quantity_ratio
             .prerequisite_amount;
 
-        if (prerequisiteAmount !== null  && prerequisiteAmount !== undefined) {
+        if (prerequisiteAmount !== null && prerequisiteAmount !== undefined) {
           discountTaC.push(`Minimum purchase of $${prerequisiteAmount}`);
         }
 
         // SET COUPON CODE END DURATION
-        if (priceRule.ends_at !== null  && priceRule.ends_at !== undefined) {
+        if (priceRule.ends_at !== null && priceRule.ends_at !== undefined) {
           const expirationDate = new Date(priceRule.ends_at).toLocaleString(
             "en-US",
             { timeZoneName: "short" }

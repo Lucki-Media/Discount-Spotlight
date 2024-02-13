@@ -40,17 +40,54 @@ function IndexFiltersWithFilteringModeExample() {
     hasPreviousPage: false,
   });
 
+  // COMBOBOX CALLBACK FUNCTION
+  const handleDiscountCallback = (id, value) => {
+    const product_data = [...discountProducts]; // Data from Database
+    const productIndex = product_data.findIndex(
+      // find index of product array
+      (productData) =>
+        Number(id.match(/\d+/)[0]) === Number(productData.product_id)
+    );
+    if (productIndex !== -1) {
+      // update discount array of particular product
+      product_data[productIndex].discounts = value;
+    } else {
+      // add new product array which does not exist in Database
+      const found_product_detail = products.find((item) => item.node.id === id);
+
+      if (found_product_detail) {
+        product_data.push({
+          shop: shop_url,
+          product_id: id.match(/\d+/)[0],
+          product_image:
+            found_product_detail.node.featuredImage &&
+            found_product_detail.node.featuredImage.url
+              ? found_product_detail.node.featuredImage.url
+              : "",
+          discounts: value,
+          product_name: found_product_detail.node.title,
+        });
+      }
+    }
+    setDiscountProducts(product_data);
+  };
+
   // TO PREVENT CLICK EVENT OF CHECKBOX ON COMBOBOX
   const handleComboboxClick = (event) => {
     event.stopPropagation();
   };
 
   // SEARCH FIELD CODE START
-  const handleFiltersQueryChange = useCallback((value) => {
-    setQueryValue(value);
-    value === "" ? getData(discountProducts) : handleFilterProducts(10, value, discountProducts);
-  }, [discountProducts]);
-  
+  const handleFiltersQueryChange = useCallback(
+    (value) => {
+      setQueryValue(value);
+      value === ""
+        ? getData(discountProducts)
+        : handleFilterProducts(10, value, discountProducts);
+    },
+    [discountProducts]
+  );
+
   // SEARCH FIELD CODE END
 
   // TO LOAD INIT DATA
@@ -62,6 +99,7 @@ function IndexFiltersWithFilteringModeExample() {
 
   // INIT API
   const getData = async (discountData) => {
+    // console.log(discountData);
     setfilterLoading(true);
     try {
       const response = await appFetch("/api/getProducts", {
@@ -146,33 +184,37 @@ function IndexFiltersWithFilteringModeExample() {
   };
 
   // SAVE DATA IN THE DATABSE
-  const handleSave = () => {
-    // setLoading(true);
-    console.log("products");
+  const handleSave = async() => {
+    setLoading(true);
+    // console.log(discountProducts);
 
-    // axios
-    //   .post("/api/saveDiscountsDetails", {
-    //     shop: shop_url,
-    //     data: products,
-    //   })
-    //   .then((response) => {
-    //     toast.info("Data saved successfully !", {
-    //       position: "bottom-center",
-    //       autoClose: 5000,
-    //       hideProgressBar: false,
-    //       closeOnClick: true,
-    //       pauseOnHover: true,
-    //       draggable: true,
-    //       progress: undefined,
-    //       theme: "dark",
-    //     });
-    //     // console.log(response.data);
-    //     setLoading(false);
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error saving data:", error);
-    //     setLoading(false);
-    //   });
+    await axios
+      .post("/api/saveDiscountsDetails", {
+        shop: shop_url,
+        data: discountProducts,
+      })
+      .then(async (response) => {
+        await getData(response.data.data.shop_data);
+        await setDiscountProducts(response.data.data.shop_data);
+
+        toast.info("Data saved successfully !", {
+          position: "bottom-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+        // console.log('discountProducts', discountProducts);
+        // console.log('response.data.data.shop_data', response.data.data.shop_data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error saving data:", error);
+        setLoading(false);
+      });
   };
 
   // FILTER PRODUCT API & PAGINATION START
@@ -357,8 +399,10 @@ function IndexFiltersWithFilteringModeExample() {
       <IndexTable.Cell>
         <div onClick={handleComboboxClick}>
           <DiscountCombobox
+            product_id={node.id}
             discounts={discounts}
             selectedOptions={node.discounts}
+            discountCallback={handleDiscountCallback}
           />
         </div>
       </IndexTable.Cell>
@@ -415,7 +459,7 @@ function IndexFiltersWithFilteringModeExample() {
             <LegacyCard>
               <IndexFilters
                 queryValue={queryValue}
-                queryPlaceholder="Searching in all"
+                queryPlaceholder="Searching in products"
                 filteringAccessibilityTooltip="Search (F)"
                 onQueryChange={handleFiltersQueryChange}
                 onQueryClear={() => {
