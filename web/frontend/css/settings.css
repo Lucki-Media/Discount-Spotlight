@@ -17,7 +17,7 @@
 .fullscreenbar_div{
     position: sticky;
     top: 0;
-    z-index: 9999;
+    z-index: 500; /* set zindex more then other component but less then the modal shadow overlay  */
     /* margin-bottom: 10px; */
 }
 

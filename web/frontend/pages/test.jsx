@@ -21,8 +21,9 @@ import { useAuthenticatedFetch } from "../hooks";
 import { useState, useCallback, useEffect } from "react";
 import noImage from "../assets/noImage.jpeg";
 import "../css/index.css";
-import DiscountCombobox from "../components/DiscountCombobox";
+import DiscountCombobox from "../components/Discount/DiscountCombobox";
 import axios from "axios";
+import DiscountModal from "../components/Discount/DiscountModal";
 
 function IndexFiltersWithFilteringModeExample() {
   const shop_url = document.getElementById("shopOrigin").value;
@@ -30,6 +31,7 @@ function IndexFiltersWithFilteringModeExample() {
 
   const [queryValue, setQueryValue] = useState("");
   const [filterLoading, setfilterLoading] = useState(false);
+  const [addDiscountModal, openAddDiscountModal] = useState(false);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState(0);
   const [discounts, setDiscounts] = useState([]);
@@ -39,6 +41,15 @@ function IndexFiltersWithFilteringModeExample() {
     hasNextPage: false,
     hasPreviousPage: false,
   });
+
+  // BULK EDIT OPTION CODE START
+  const promotedBulkActions = [
+    {
+      content: "Add discount",
+      onAction: () => openAddDiscountModal(true),
+    },
+  ];
+  // BULK EDIT OPTION CODE EDIT
 
   // COMBOBOX CALLBACK FUNCTION
   const handleDiscountCallback = (id, value) => {
@@ -99,7 +110,7 @@ function IndexFiltersWithFilteringModeExample() {
 
   // INIT API
   const getData = async (discountData) => {
-    // console.log(discountData);
+    clearSelection(); // To clear the data store merchant has selected
     setfilterLoading(true);
     try {
       const response = await appFetch("/api/getProducts", {
@@ -108,9 +119,6 @@ function IndexFiltersWithFilteringModeExample() {
 
       if (response.ok) {
         const responseData = await response.json();
-        // console.log("getData");
-        // console.log(discountData);
-
         const updatedProductsCopy = responseData.response.products.edges; // Data from GQL API
         const product_data = [...discountData]; // Data from Database
 
@@ -125,7 +133,6 @@ function IndexFiltersWithFilteringModeExample() {
           product.node.discounts =
             productIndex !== -1 ? product_data[productIndex].discounts : [];
         });
-        // console.log("Updated Products:", updatedProductsCopy);
 
         setProducts(updatedProductsCopy);
         setPagination(responseData.response.products.pageInfo);
@@ -148,9 +155,6 @@ function IndexFiltersWithFilteringModeExample() {
 
       if (response.ok) {
         const responseData = await response.json();
-        // console.log("getPriceRules");
-        // console.log(responseData);
-
         const newOptions = responseData.data.map((discount) => ({
           value: discount.id,
           label: discount.title,
@@ -184,9 +188,9 @@ function IndexFiltersWithFilteringModeExample() {
   };
 
   // SAVE DATA IN THE DATABSE
-  const handleSave = async() => {
+  const handleSave = async () => {
+    clearSelection(); // To clear the data store merchant has selected
     setLoading(true);
-    // console.log(discountProducts);
 
     await axios
       .post("/api/saveDiscountsDetails", {
@@ -207,8 +211,6 @@ function IndexFiltersWithFilteringModeExample() {
           progress: undefined,
           theme: "dark",
         });
-        // console.log('discountProducts', discountProducts);
-        // console.log('response.data.data.shop_data', response.data.data.shop_data);
         setLoading(false);
       })
       .catch((error) => {
@@ -219,6 +221,7 @@ function IndexFiltersWithFilteringModeExample() {
 
   // FILTER PRODUCT API & PAGINATION START
   const handleFilterProducts = async (first, searchValue, discountProducts) => {
+    clearSelection(); // To clear the data store merchant has selected
     setfilterLoading(true);
     try {
       const response = await appFetch(
@@ -230,10 +233,6 @@ function IndexFiltersWithFilteringModeExample() {
 
       if (response.ok) {
         const responseData = await response.json();
-        // console.log("getFilterProducts");
-        // console.log(responseData.response.products);
-        // console.log("getFilterProducts", discountProducts);
-
         const updatedProductsCopy = responseData.response.products.edges; // Data from GQL API
         const product_data = [...discountProducts]; // Data from Database
 
@@ -244,12 +243,10 @@ function IndexFiltersWithFilteringModeExample() {
               Number(product.node.id.match(/\d+/)[0]) ===
               Number(productData.product_id)
           );
-          // console.log("product", product);
-          // console.log("productIndex", productIndex);
+
           product.node.discounts =
             productIndex !== -1 ? product_data[productIndex].discounts : [];
         });
-        // console.log("Filtered Products:", updatedProductsCopy);
 
         setProducts(updatedProductsCopy);
         setPagination(responseData.response.products.pageInfo);
@@ -265,6 +262,7 @@ function IndexFiltersWithFilteringModeExample() {
 
   // NEXT PAGE PRODUCT API & PAGINATION START
   const handleNextPage = async (first, after, searchValue) => {
+    clearSelection(); // To clear the data store merchant has selected
     setfilterLoading(true);
     try {
       const response = await appFetch(
@@ -276,10 +274,6 @@ function IndexFiltersWithFilteringModeExample() {
 
       if (response.ok) {
         const responseData = await response.json();
-        // console.log("getNextPageProducts");
-        // console.log(responseData);
-        // console.log("getNextPageProducts", discountProducts);
-
         const updatedProductsCopy = responseData.response.products.edges; // Data from GQL API
         const product_data = [...discountProducts]; // Data from Database
 
@@ -294,7 +288,6 @@ function IndexFiltersWithFilteringModeExample() {
           product.node.discounts =
             productIndex !== -1 ? product_data[productIndex].discounts : [];
         });
-        // console.log("Updated Products:", updatedProductsCopy);
 
         setProducts(updatedProductsCopy);
         setPagination(responseData.response.products.pageInfo);
@@ -313,6 +306,7 @@ function IndexFiltersWithFilteringModeExample() {
 
   // PREV PAGE PRODUCT API & PAGINATION START
   const handlePrevPage = async (last, before, searchValue) => {
+    clearSelection(); // To clear the data store merchant has selected
     setfilterLoading(true);
     try {
       const response = await appFetch(
@@ -324,10 +318,6 @@ function IndexFiltersWithFilteringModeExample() {
 
       if (response.ok) {
         const responseData = await response.json();
-        // console.log("getPrevPageProducts");
-        // console.log(responseData);
-        // console.log("getPrevPageProducts", discountProducts);
-
         const updatedProductsCopy = responseData.response.products.edges; // Data from GQL API
         const product_data = [...discountProducts]; // Data from Database
 
@@ -342,7 +332,6 @@ function IndexFiltersWithFilteringModeExample() {
           product.node.discounts =
             productIndex !== -1 ? product_data[productIndex].discounts : [];
         });
-        // console.log("Updated Products:", updatedProductsCopy);
 
         setProducts(updatedProductsCopy);
         setPagination(responseData.response.products.pageInfo);
@@ -370,10 +359,14 @@ function IndexFiltersWithFilteringModeExample() {
     return products.node.id;
   };
 
-  const { selectedResources, allResourcesSelected, handleSelectionChange } =
-    useIndexResourceState(products, {
-      resourceIDResolver,
-    });
+  const {
+    selectedResources,
+    allResourcesSelected,
+    handleSelectionChange,
+    clearSelection,
+  } = useIndexResourceState(products, {
+    resourceIDResolver,
+  });
   // INDEX TABLE CODE END
 
   // PRODUCT TABLE DATA LOOP CODE START
@@ -408,116 +401,136 @@ function IndexFiltersWithFilteringModeExample() {
       </IndexTable.Cell>
     </IndexTable.Row>
   ));
+
   // PRODUCT TABLE DATA LOOP CODE END
 
   if (loading === false) {
     return (
-      <div className="customization_page">
-        <div className="fullscreenbar_div">
-          <FullscreenBar>
-            <div
-              style={{
-                display: "flex",
-                flexGrow: 1,
-                justifyContent: "space-between",
-                alignItems: "center",
-                paddingLeft: "1rem",
-                paddingRight: "1rem",
-                background: "#fff",
-                transition: "background 0.5s ease-out 0s",
-              }}
-            >
+      <>
+        {/* MODAL FOR DISCOUNT ADD  */}
+        {addDiscountModal && (
+          <DiscountModal
+            discounts={discounts}
+            title={`Add discounts to ${
+              allResourcesSelected ? "All" : selectedResources.length
+            } product(s)`}
+            callbackClose={() => openAddDiscountModal(false)}
+            returnSelected={() => console.log('returned...')}
+            primaryButtonText="Add Discounts"
+          />
+        )}
+
+        <div className="customization_page">
+          <div className="fullscreenbar_div">
+            <FullscreenBar>
               <div
                 style={{
+                  display: "flex",
                   flexGrow: 1,
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  paddingLeft: "1rem",
+                  paddingRight: "1rem",
+                  background: "#fff",
+                  transition: "background 0.5s ease-out 0s",
                 }}
               >
-                <p
-                  className="fullscreenbar_headertitle"
+                <div
                   style={{
-                    color: "#000",
+                    flexGrow: 1,
                   }}
                 >
-                  Discount Management
-                </p>
+                  <p
+                    className="fullscreenbar_headertitle"
+                    style={{
+                      color: "#000",
+                    }}
+                  >
+                    Discount Management
+                  </p>
+                </div>
+                <ButtonGroup>
+                  <Button
+                    variant="primary"
+                    onClick={handleSave}
+                    loading={loading}
+                  >
+                    Save
+                  </Button>
+                </ButtonGroup>
               </div>
-              <ButtonGroup>
-                <Button
-                  variant="primary"
-                  onClick={handleSave}
-                  loading={loading}
-                >
-                  Save
-                </Button>
-              </ButtonGroup>
-            </div>
-          </FullscreenBar>
-        </div>
-        <ToastContainer />
-        <Page>
-          <div className="discount_index_table">
-            <LegacyCard>
-              <IndexFilters
-                queryValue={queryValue}
-                queryPlaceholder="Searching in products"
-                filteringAccessibilityTooltip="Search (F)"
-                onQueryChange={handleFiltersQueryChange}
-                onQueryClear={() => {
-                  setQueryValue("");
-                  getData(discountProducts);
-                }}
-                cancelAction={{
-                  onAction: () => {
+            </FullscreenBar>
+          </div>
+          <ToastContainer />
+          <Page>
+            <div className="discount_index_table">
+              <LegacyCard>
+                <IndexFilters
+                  queryValue={queryValue}
+                  queryPlaceholder="Searching in products"
+                  filteringAccessibilityTooltip="Search (F)"
+                  onQueryChange={handleFiltersQueryChange}
+                  onQueryClear={() => {
                     setQueryValue("");
                     getData(discountProducts);
-                  },
-                  disabled: false,
-                  loading: false,
-                }}
-                tabs={[]}
-                selected={selected}
-                onSelect={setSelected}
-                filters={[]}
-                hideFilters
-                mode={mode}
-                setMode={setMode}
-                loading={filterLoading}
-              />
-              <IndexTable
-                resourceName={resourceName}
-                itemCount={products.length}
-                selectedItemsCount={
-                  allResourcesSelected ? "All" : selectedResources.length
-                }
-                onSelectionChange={handleSelectionChange}
-                headings={[
-                  { title: "Image" },
-                  { title: "Product" },
-                  { title: "Discounts" },
-                ]}
-                pagination={{
-                  hasNext: pagination.hasNextPage,
-                  hasPrevious: pagination.hasPreviousPage,
-                  onNext: () =>
-                    handleNextPage(
-                      10,
-                      pagination.endCursor ? pagination.endCursor : "",
-                      queryValue
-                    ),
-                  onPrevious: () =>
-                    handlePrevPage(
-                      10,
-                      pagination.startCursor ? pagination.startCursor : "",
-                      queryValue
-                    ),
-                }}
-              >
-                {rowMarkup}
-              </IndexTable>
-            </LegacyCard>
-          </div>
-        </Page>
-      </div>
+                  }}
+                  cancelAction={{
+                    onAction: () => {
+                      setQueryValue("");
+                      getData(discountProducts);
+                    },
+                    disabled: false,
+                    loading: false,
+                  }}
+                  tabs={[]}
+                  selected={selected}
+                  onSelect={setSelected}
+                  filters={[]}
+                  hideFilters
+                  mode={mode}
+                  setMode={setMode}
+                  loading={filterLoading}
+                />
+                <div className="index_table_parent_div">
+                  <IndexTable
+                    resourceName={resourceName}
+                    itemCount={products.length}
+                    selectedItemsCount={
+                      allResourcesSelected ? "All" : selectedResources.length
+                    }
+                    hasMoreItems
+                    onSelectionChange={handleSelectionChange}
+                    promotedBulkActions={promotedBulkActions}
+                    headings={[
+                      { title: "Image" },
+                      { title: "Product" },
+                      { title: "Discounts" },
+                    ]}
+                    pagination={{
+                      hasNext: pagination.hasNextPage,
+                      hasPrevious: pagination.hasPreviousPage,
+                      onNext: () =>
+                        handleNextPage(
+                          10,
+                          pagination.endCursor ? pagination.endCursor : "",
+                          queryValue
+                        ),
+                      onPrevious: () =>
+                        handlePrevPage(
+                          10,
+                          pagination.startCursor ? pagination.startCursor : "",
+                          queryValue
+                        ),
+                    }}
+                  >
+                    {rowMarkup}
+                  </IndexTable>
+                </div>
+              </LegacyCard>
+            </div>
+          </Page>
+        </div>
+      </>
     );
   } else {
     return (
@@ -543,5 +556,4 @@ function IndexFiltersWithFilteringModeExample() {
     );
   }
 }
-
 export default IndexFiltersWithFilteringModeExample;
