@@ -12,7 +12,6 @@ import getFilterProducts from "./graphQL/getFilterProducts.js";
 import getPrevPageProducts from "./graphQL/getPrevPageProducts.js";
 import getNextPageProducts from "./graphQL/getNextPageProducts.js";
 import getProducts from "./graphQL/getProducts.js";
-import getPriceRules from "./graphQL/getPriceRules.js";
 import GDPRWebhookHandlers from "./gdpr.js";
 import dotenv from "dotenv";
 dotenv.config();
@@ -123,6 +122,14 @@ app.get("/api/getProducts", async (_req, res) => {
     error = e.message;
     res.status(status).send({ success: status === 200, error });
   }
+});
+
+app.get("/api/getAllProducts", async (_req, res) => {
+    const productData = await shopify.api.rest.Product.all({
+      session: res.locals.shopify.session,
+      fields: "id,image,title",
+    });
+    res.status(200).send(productData);
 });
 
 app.get("/api/getNextPageProducts", async (_req, res) => {

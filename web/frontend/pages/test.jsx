@@ -25,13 +25,14 @@ import DiscountCombobox from "../components/Discount/DiscountCombobox";
 import axios from "axios";
 import DiscountModal from "../components/Discount/DiscountModal";
 
-function IndexFiltersWithFilteringModeExample() {
+function DiscountsManagement() {
   const shop_url = document.getElementById("shopOrigin").value;
   const appFetch = useAuthenticatedFetch();
 
   const [queryValue, setQueryValue] = useState("");
   const [filterLoading, setfilterLoading] = useState(false);
   const [addDiscountModal, openAddDiscountModal] = useState(false);
+  const [removeDiscountModal, openRemoveDiscountModal] = useState(false);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState(0);
   const [discounts, setDiscounts] = useState([]);
@@ -42,14 +43,99 @@ function IndexFiltersWithFilteringModeExample() {
     hasPreviousPage: false,
   });
 
-  // BULK EDIT OPTION CODE START
+  // BULK ACTION OPTION CODE START
   const promotedBulkActions = [
     {
-      content: "Add discount",
+      content: "Add discounts",
       onAction: () => openAddDiscountModal(true),
     },
+    {
+      content: "Remove discounts",
+      onAction: () => openRemoveDiscountModal(true),
+    },
   ];
-  // BULK EDIT OPTION CODE EDIT
+  // BULK ACTION OPTION CODE END
+
+  // ADD DISCOUNT IN BULK CODE START
+  const addDiscountInBulk = async (discountArray) => {
+    console.log("allResourcesSelected", allResourcesSelected);
+    console.log("selectedResources", selectedResources);
+    let product_data = [];
+
+    // GET PRODUCT LIST IN WHICH YOU HAVE TO ADD DISCOUNT
+    if (allResourcesSelected) {
+      // Merchant selects all product
+      const response = await appFetch("/api/getAllProducts", {
+        shop: shop_url,
+      });
+
+      if (response.ok) {
+        const responseData = await response.json();
+        // console.log("responseData", responseData.data);
+        const idArray = Object.values(responseData.data)
+          .filter((obj) => obj && obj.id)
+          .map((obj) => Number(obj.id));
+        product_data = [...idArray]; // IDs of all products of store
+      } else {
+        product_data = [];
+      }
+    } else {
+      // Merchant selects custom selection product
+      const idArray = selectedResources.map((str) =>
+        Number(str.match(/\d+/)[0])
+      );
+      product_data = [...idArray]; // selected product ids
+    }
+
+    discountArray.map((discountCode) => {
+      console.log("discountCode", discountCode);
+
+      // // check that product data exist in discountProducts or not, if not then add
+      // const updatedProductsCopy = [...discountProducts];
+      // updatedProductsCopy.forEach((product) => {
+      //   const productIndex = product_data.findIndex((productId) => {
+      //     Number(product.productId) === Number(productId),
+      //       console.log(productId);
+      //   });
+      //   console.log(productIndex);
+      //   if (productIndex !== -1) {
+      //     // update discount array of particular product
+      //     // updatedProductsCopy[productIndex].discounts = value;
+      //     console.log(updatedProductsCopy[productIndex].discounts);
+      //   } else {
+      //     // add new product array which does not exist in Database
+      //     // const found_product_detail = discountProducts.find(
+      //     //   (item) => item.node.id === id
+      //     // );
+      //     // if (found_product_detail) {
+      //     //   updatedProductsCopy.push({
+      //     //     shop: shop_url,
+      //     //     product_id: id.match(/\d+/)[0],
+      //     //     product_image:
+      //     //       found_product_detail.node.featuredImage &&
+      //     //       found_product_detail.node.featuredImage.url
+      //     //         ? found_product_detail.node.featuredImage.url
+      //     //         : "",
+      //     //     discounts: [discountCode],
+      //     //     product_name: found_product_detail.node.title,
+      //     //   });
+      //     // }
+      //   }
+      //   setDiscountProducts(updatedProductsCopy);
+      // });
+    });
+
+    console.log(discountProducts);
+  };
+  // ADD DISCOUNT IN BULK CODE END
+
+  // REMOVE DISCOUNT IN BULK CODE START
+  const removeDiscountInBulk = (value) => {
+    console.log("removeDiscountInBulk", value);
+    console.log("allResourcesSelected", allResourcesSelected);
+    console.log("selectedResources", selectedResources);
+  };
+  // REMOVE DISCOUNT IN BULK CODE END
 
   // COMBOBOX CALLBACK FUNCTION
   const handleDiscountCallback = (id, value) => {
@@ -98,7 +184,6 @@ function IndexFiltersWithFilteringModeExample() {
     },
     [discountProducts]
   );
-
   // SEARCH FIELD CODE END
 
   // TO LOAD INIT DATA
@@ -401,7 +486,6 @@ function IndexFiltersWithFilteringModeExample() {
       </IndexTable.Cell>
     </IndexTable.Row>
   ));
-
   // PRODUCT TABLE DATA LOOP CODE END
 
   if (loading === false) {
@@ -415,8 +499,21 @@ function IndexFiltersWithFilteringModeExample() {
               allResourcesSelected ? "All" : selectedResources.length
             } product(s)`}
             callbackClose={() => openAddDiscountModal(false)}
-            returnSelected={() => console.log('returned...')}
+            returnSelected={addDiscountInBulk}
             primaryButtonText="Add Discounts"
+          />
+        )}
+
+        {/* MODAL FOR DISCOUNT REMOVE  */}
+        {removeDiscountModal && (
+          <DiscountModal
+            discounts={discounts}
+            title={`Remove discounts from ${
+              allResourcesSelected ? "All" : selectedResources.length
+            } product(s)`}
+            callbackClose={() => openRemoveDiscountModal(false)}
+            returnSelected={removeDiscountInBulk}
+            primaryButtonText="Remove Discounts"
           />
         )}
 
@@ -556,4 +653,4 @@ function IndexFiltersWithFilteringModeExample() {
     );
   }
 }
-export default IndexFiltersWithFilteringModeExample;
+export default DiscountsManagement;

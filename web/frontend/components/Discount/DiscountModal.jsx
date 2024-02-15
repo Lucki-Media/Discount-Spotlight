@@ -11,6 +11,7 @@ import {
 } from "@shopify/polaris";
 import { useState, useCallback } from "react";
 import { SearchIcon } from "@shopify/polaris-icons";
+import { ToastContainer, toast } from "react-toastify";
 
 function DiscountModal(props) {
   const [inputValue, setInputValue] = useState("");
@@ -35,6 +36,33 @@ function DiscountModal(props) {
     },
     [props.discounts]
   );
+  // console.log(selected);
+  const handleSelected = useCallback(
+    (value) => {
+      if (selected.length < 3) {
+        setSelected(value);
+      } else {
+        const slicedArray = value.slice(-3);
+        if (slicedArray.length !== 3) {
+          setSelected(slicedArray);
+        } else {
+          toast.error("You can select up to 3 options only!", {
+            position: "bottom-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+          });
+        }
+      }
+  
+      updateText("");
+    },
+    [selected, updateText]
+  );
 
   return (
     <Modal
@@ -44,7 +72,6 @@ function DiscountModal(props) {
       primaryAction={{
         content: props.primaryButtonText,
         onAction: () => {
-          console.log("first");
           props.returnSelected(selected);
           setModalLoading(true);
         },
@@ -59,8 +86,15 @@ function DiscountModal(props) {
       <div style={{ height: 430, minHeight: 430 }}>
         <Modal.Section>
           {modalLoading ? (
-            <div style={{ display: "flex", justifyContent: "center"}}>
-            <Spinner size="large" /></div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                margin: "20px auto",
+              }}
+            >
+              <Spinner size="large" />
+            </div>
           ) : (
             <LegacyStack vertical>
               {/* Search Field */}
@@ -83,7 +117,7 @@ function DiscountModal(props) {
               {/* Discount Option List */}
               <LegacyStack.Item>
                 <OptionList
-                  onChange={setSelected}
+                  onChange={handleSelected}
                   sections={[
                     {
                       options: options,
