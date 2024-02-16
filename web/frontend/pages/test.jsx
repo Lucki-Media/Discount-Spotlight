@@ -58,8 +58,6 @@ function DiscountsManagement() {
 
   // ADD DISCOUNT IN BULK CODE START
   const addDiscountInBulk = async (discountArray) => {
-    console.log("allResourcesSelected", allResourcesSelected);
-    console.log("selectedResources", selectedResources);
     let product_data = [];
 
     // GET PRODUCT LIST IN WHICH YOU HAVE TO ADD DISCOUNT
@@ -71,7 +69,6 @@ function DiscountsManagement() {
 
       if (response.ok) {
         const responseData = await response.json();
-        // console.log("responseData", responseData.data);
         const idArray = Object.values(responseData.data)
           .filter((obj) => obj && obj.id)
           .map((obj) => Number(obj.id));
@@ -86,48 +83,51 @@ function DiscountsManagement() {
       );
       product_data = [...idArray]; // selected product ids
     }
+    console.log(product_data);
 
-    discountArray.map((discountCode) => {
-      console.log("discountCode", discountCode);
+    for (const discountCode of discountArray) {
+      const updatedProductsCopy = [...discountProducts];
 
-      // // check that product data exist in discountProducts or not, if not then add
-      // const updatedProductsCopy = [...discountProducts];
-      // updatedProductsCopy.forEach((product) => {
-      //   const productIndex = product_data.findIndex((productId) => {
-      //     Number(product.productId) === Number(productId),
-      //       console.log(productId);
-      //   });
-      //   console.log(productIndex);
-      //   if (productIndex !== -1) {
-      //     // update discount array of particular product
-      //     // updatedProductsCopy[productIndex].discounts = value;
-      //     console.log(updatedProductsCopy[productIndex].discounts);
-      //   } else {
-      //     // add new product array which does not exist in Database
-      //     // const found_product_detail = discountProducts.find(
-      //     //   (item) => item.node.id === id
-      //     // );
-      //     // if (found_product_detail) {
-      //     //   updatedProductsCopy.push({
-      //     //     shop: shop_url,
-      //     //     product_id: id.match(/\d+/)[0],
-      //     //     product_image:
-      //     //       found_product_detail.node.featuredImage &&
-      //     //       found_product_detail.node.featuredImage.url
-      //     //         ? found_product_detail.node.featuredImage.url
-      //     //         : "",
-      //     //     discounts: [discountCode],
-      //     //     product_name: found_product_detail.node.title,
-      //     //   });
-      //     // }
-      //   }
-      //   setDiscountProducts(updatedProductsCopy);
-      // });
-    });
+      for (const productId of product_data) {
+        const productIndex = updatedProductsCopy.findIndex(
+          (product) => Number(product.product_id) === Number(productId)
+        );
 
-    console.log(discountProducts);
+        if (productIndex !== -1) {
+          if (
+            updatedProductsCopy[productIndex].discounts.length < 3 &&
+            !updatedProductsCopy[productIndex].discounts.includes(discountCode)
+          ) {
+            updatedProductsCopy[productIndex].discounts.push(discountCode);
+          }
+        } else {
+          const response = await appFetch(
+            `/api/getProductById?productId=${productId}`,
+            {
+              shop: shop_url,
+            }
+          );
+
+          if (response.ok) {
+            const responseData = await response.json();
+            updatedProductsCopy.push({
+              shop: shop_url,
+              product_id: productId,
+              product_image:
+                responseData.image && responseData.image.src
+                  ? responseData.image.src
+                  : "",
+              discounts: [discountCode],
+              product_name: responseData.title,
+            });
+          }
+        }
+      }
+      setDiscountProducts(updatedProductsCopy);
+    }
   };
   // ADD DISCOUNT IN BULK CODE END
+  console.log(discountProducts);
 
   // REMOVE DISCOUNT IN BULK CODE START
   const removeDiscountInBulk = (value) => {

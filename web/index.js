@@ -125,11 +125,21 @@ app.get("/api/getProducts", async (_req, res) => {
 });
 
 app.get("/api/getAllProducts", async (_req, res) => {
-    const productData = await shopify.api.rest.Product.all({
-      session: res.locals.shopify.session,
-      fields: "id,image,title",
-    });
-    res.status(200).send(productData);
+  const productData = await shopify.api.rest.Product.all({
+    session: res.locals.shopify.session,
+    fields: "id,image,title",
+  });
+  res.status(200).send(productData);
+});
+
+app.get("/api/getProductById", async (_req, res) => {
+  const productData = await shopify.api.rest.Product.find({
+    session: res.locals.shopify.session,
+    id: _req.query.productId,
+    fields: "id,image,title",
+  });
+  // console.log('productData', productData);
+  res.status(200).send(productData);
 });
 
 app.get("/api/getNextPageProducts", async (_req, res) => {
