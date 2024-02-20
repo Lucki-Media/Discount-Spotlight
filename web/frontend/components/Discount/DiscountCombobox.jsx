@@ -57,7 +57,6 @@ function DiscountCombobox(props) {
             progress: undefined,
             theme: "dark",
           });
-    
         }
       }
 
@@ -116,6 +115,10 @@ function DiscountCombobox(props) {
   useEffect(() => {
     props.discountCallback(props.product_id, selectedOptions);
   }, [selectedOptions]);
+
+  useEffect(() => {
+    setSelectedOptions(props.selectedOptions);
+  }, [props.selectedOptions]);
 
   return (
     <>

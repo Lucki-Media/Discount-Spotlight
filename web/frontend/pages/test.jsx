@@ -83,17 +83,16 @@ function DiscountsManagement() {
       );
       product_data = [...idArray]; // selected product ids
     }
-    console.log(product_data);
+    const updatedProductsCopy = [...discountProducts];
 
     for (const discountCode of discountArray) {
-      const updatedProductsCopy = [...discountProducts];
-
       for (const productId of product_data) {
         const productIndex = updatedProductsCopy.findIndex(
           (product) => Number(product.product_id) === Number(productId)
         );
 
         if (productIndex !== -1) {
+          // if product exist in updatedProductsCopy && not reached at limit and discount not add then add it
           if (
             updatedProductsCopy[productIndex].discounts.length < 3 &&
             !updatedProductsCopy[productIndex].discounts.includes(discountCode)
@@ -101,6 +100,7 @@ function DiscountsManagement() {
             updatedProductsCopy[productIndex].discounts.push(discountCode);
           }
         } else {
+          // if product does not exist then get detail of the product add it product array in updatedProductsCopy
           const response = await appFetch(
             `/api/getProductById?productId=${productId}`,
             {
@@ -123,17 +123,92 @@ function DiscountsManagement() {
           }
         }
       }
+      // update Products
       setDiscountProducts(updatedProductsCopy);
     }
+
+    // update combobox values which is showing now on the screen (products state)
+    const currentProducts = [...products];
+    for (const current of currentProducts) {
+      const productIndex = updatedProductsCopy.findIndex(
+        (product) =>
+          Number(product.product_id) === Number(current.node.id.match(/\d+/)[0])
+      );
+      current.node.discounts = updatedProductsCopy[productIndex].discounts;
+    }
+
+    setProducts(currentProducts); // UPDATE CURRENT PRODUCT LIST
+    clearSelection(); // To clear the data store merchant has selected
+    openAddDiscountModal(false);
   };
   // ADD DISCOUNT IN BULK CODE END
-  console.log(discountProducts);
 
   // REMOVE DISCOUNT IN BULK CODE START
-  const removeDiscountInBulk = (value) => {
-    console.log("removeDiscountInBulk", value);
-    console.log("allResourcesSelected", allResourcesSelected);
-    console.log("selectedResources", selectedResources);
+  const removeDiscountInBulk = async (discountArray) => {
+    let product_data = [];
+
+    // GET PRODUCT LIST IN WHICH YOU HAVE TO ADD DISCOUNT
+    if (allResourcesSelected) {
+      // Merchant selects all product
+      const response = await appFetch("/api/getAllProducts", {
+        shop: shop_url,
+      });
+
+      if (response.ok) {
+        const responseData = await response.json();
+        const idArray = Object.values(responseData.data)
+          .filter((obj) => obj && obj.id)
+          .map((obj) => Number(obj.id));
+        product_data = [...idArray]; // IDs of all products of store
+      } else {
+        product_data = [];
+      }
+    } else {
+      // Merchant selects custom selection product
+      const idArray = selectedResources.map((str) =>
+        Number(str.match(/\d+/)[0])
+      );
+      product_data = [...idArray]; // selected product ids
+    }
+    const updatedProductsCopy = [...discountProducts];
+
+    for (const discountCode of discountArray) {
+      for (const productId of product_data) {
+        const productIndex = updatedProductsCopy.findIndex(
+          (product) => Number(product.product_id) === Number(productId)
+        );
+
+        if (productIndex !== -1) {
+          // if discountCode exists in it,  remove from discounts variable
+          if (
+            updatedProductsCopy[productIndex] &&
+            updatedProductsCopy[productIndex].discounts &&
+            updatedProductsCopy[productIndex].discounts.includes(discountCode)
+          ) {
+            updatedProductsCopy[productIndex].discounts = updatedProductsCopy[
+              productIndex
+            ].discounts.filter((item) => item !== discountCode);
+          }
+        }
+      }
+      // update Products
+      setDiscountProducts(updatedProductsCopy);
+    }
+
+    // update combobox values which is showing now on the screen (products state)
+    const currentProducts = [...products];
+    for (const current of currentProducts) {
+      const productIndex = updatedProductsCopy.findIndex(
+        (product) =>
+          Number(product.product_id) === Number(current.node.id.match(/\d+/)[0])
+      );
+      if (productIndex !== -1) {
+        current.node.discounts = updatedProductsCopy[productIndex].discounts;
+      }
+    }
+    setProducts(currentProducts); // UPDATE CURRENT PRODUCT LIST
+    clearSelection(); // To clear the data store merchant has selected
+    openRemoveDiscountModal(false);
   };
   // REMOVE DISCOUNT IN BULK CODE END
 
