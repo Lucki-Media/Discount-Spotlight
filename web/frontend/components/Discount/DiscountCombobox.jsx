@@ -127,10 +127,10 @@ function DiscountCombobox(props) {
         activator={
           <Combobox.TextField
             onChange={updateText}
-            label="Search discounts"
+            label="Search Discounts"
             labelHidden
             value={inputValue}
-            placeholder="Search discounts"
+            placeholder="Search Discounts"
             verticalContent={tagsMarkup}
             autoComplete="off"
             clearButton

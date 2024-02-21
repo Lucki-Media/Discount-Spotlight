@@ -32,7 +32,7 @@ export default function OfferRibbon(props) {
                     props.json_style_data.offer_ribbon_settings.bgColor,
                   fontSize:
                     props.json_style_data.offer_ribbon_settings.fontSize,
-                  [props.json_style_data.offer_ribbon_settings.position === "1"
+                  [props.json_style_data.offer_ribbon_settings.position === "top"
                     ? "top"
                     : "bottom"]:
                     props.json_style_data.offer_ribbon_settings.offset,

@@ -1,7 +1,5 @@
-import { RadioButton, Text } from "@shopify/polaris";
-import React, { useCallback, useEffect, useState } from "react";
-import TooltipSlider from "rc-slider";
-import "rc-slider/assets/index.css";
+import { RadioButton, RangeSlider, Text } from "@shopify/polaris";
+import React, { useState, useCallback, useEffect } from "react";
 import "../../css/settings.css";
 import { ColorPlate } from "../colorPlate";
 
@@ -52,10 +50,10 @@ function OfferRibbonSettings(props) {
   // CALLBACK FUNCTION TO SEND PROPS END
 
   // HANDLE FUNCTIONS START
-  const handleRibbonPosition = useCallback((newValue) => {
-    setRibbonPosition(newValue.target.value);
-    [];
-  });
+  const handleRibbonPosition = useCallback(
+    (_, newValue) => setRibbonPosition(newValue),
+    []
+  );
 
   const handleRibbonOffset = (val) => {
     setRibbonOffset(val);
@@ -81,44 +79,45 @@ function OfferRibbonSettings(props) {
     <div>
       {/* RIBBON POSITION RADIO BUTTON */}
       <div>
-        <Text>Position</Text>
+        <Text as="p" fontWeight="semibold">
+          Position
+        </Text>
         <div className="radiio_group">
           <div className="radio_div">
-            <input
-              type="radio"
+            <RadioButton
+              label="Top"
+              checked={ribbonPosition === "top"}
+              id="top"
+              value="top"
               name="position"
-              id="positionTop"
-              checked={ribbonPosition === "1"}
               onChange={handleRibbonPosition}
-              value="1"
             />
-            <label htmlFor="positionTop">Top</label>
           </div>
           <div className="radio_div">
-            <input
-              type="radio"
+            <RadioButton
+              label="Bottom"
+              checked={ribbonPosition === "bottom"}
+              id="bottom"
+              value="bottom"
               name="position"
-              id="positionBottom"
-              checked={ribbonPosition === "2"}
               onChange={handleRibbonPosition}
-              value="2"
             />
-            <label htmlFor="positionBottom">Bottom</label>
           </div>
         </div>
       </div>
 
       {/* RIBBON OFFSET SETTING */}
       <div className="style__wrapper_div">
-        <Text>Offset</Text>
-        <Text variant="headingSm" as="h6">
-          {ribbonOffset}px
+        <Text as="p" fontWeight="semibold">
+          Offset
         </Text>
-        <div className="settings_range_slider">
-          <TooltipSlider
-            value={ribbonOffset}
+        <div className="input_field_div">
+          <RangeSlider
+            output
+            label={`${ribbonOffset}px`}
             min={0}
             max={100}
+            value={ribbonOffset}
             onChange={handleRibbonOffset}
           />
         </div>
@@ -131,15 +130,16 @@ function OfferRibbonSettings(props) {
     <div>
       {/* RIBBON FONT SIZE*/}
       <div className="style__wrapper_div">
-        <Text>Ribbon Font Size</Text>
-        <Text variant="headingSm" as="h6">
-          {ribbonFontSize}px
+        <Text as="p" fontWeight="semibold">
+          Ribbon Font Size
         </Text>
-        <div className="settings_range_slider">
-          <TooltipSlider
-            value={ribbonFontSize}
+        <div className="input_field_div">
+          <RangeSlider
+            output
+            label={`${ribbonFontSize}px`}
             min={8}
             max={20}
+            value={ribbonFontSize}
             onChange={handleRibbonFontSize}
           />
         </div>
@@ -152,7 +152,9 @@ function OfferRibbonSettings(props) {
     <div>
       {/* FONT COLOR FOR LABEL */}
       <div className="style__wrapper_div">
-        <Text>Color</Text>
+        <Text as="p" fontWeight="semibold">
+          Color
+        </Text>
         <div className="color_column_container">
           <ColorPlate
             defaultColor={ribbonTextColor}

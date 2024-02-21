@@ -1,9 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { ColorPlate } from "../colorPlate";
-import TooltipSlider from "rc-slider";
-import "rc-slider/assets/index.css";
 import "../../css/settings.css";
-import { Card, InlineGrid, Text } from "@shopify/polaris";
+import { RangeSlider, Text, TextField } from "@shopify/polaris";
 import ThinTag from "../Icons/ThinTag";
 import SolidTag from "../Icons/SolidTag";
 import ThinDoubleTags from "../Icons/ThinDoubleTags";
@@ -53,7 +51,7 @@ function DiscountLabelSettings(props) {
   var icon_style = {
     iconType: "6",
     size: 25,
-    color: "#5488C7",
+    color: "#000000",
   };
   const icons = [
     {
@@ -103,7 +101,7 @@ function DiscountLabelSettings(props) {
 
   // HANDLE FUNCTION START
   const handleLabelText = (val) => {
-    setLabelText(val.target.value);
+    setLabelText(val);
   };
 
   const handleLabelFontSize = (val) => {
@@ -129,7 +127,9 @@ function DiscountLabelSettings(props) {
   //  RENDER SETTINGS RELATED TO ICONS
   const renderIconSettings = () => (
     <div>
-      <Text>Label Icon</Text>
+      <Text as="p" fontWeight="semibold">
+        Label Icon
+      </Text>
       <div style={{ display: "flex", flexWrap: "wrap" }}>
         {icons.map((tab, index) => (
           <div
@@ -146,8 +146,8 @@ function DiscountLabelSettings(props) {
             <div
               className="icon_type_radio"
               style={{
-                borderColor: tab.id == labelIcon ? "#5488c5" : "#E1E1E1",
-                background: tab.id == labelIcon ? "#EAF4FF" : "transparent",
+                borderColor: tab.id == labelIcon ? "#000000" : "#E1E1E1",
+                background: tab.id == labelIcon ? "#EBEBEB" : "transparent",
               }}
             >
               {tab.component}
@@ -163,15 +163,26 @@ function DiscountLabelSettings(props) {
     <div>
       {/* LABEL TEXT */}
       <div className="style__wrapper_div">
-        <Text>Label Text</Text>
+        <Text as="p" fontWeight="semibold">
+          Label Text
+        </Text>
         <div className="input_field_div">
-          <input
-            type="text"
+          <TextField
+            label="Label Text"
+            labelHidden
             name="labelText"
             id="labelText"
             value={labelText}
             onChange={handleLabelText}
-            className="settings_input_field"
+            placeholder="Example: Apply Coupons"
+            maxLength={20}
+            showCharacterCount
+            autoComplete="off"
+            error={
+              labelText === "" || labelText.length > 20
+                ? "Enter Valid Label Text"
+                : ""
+            }
           />
         </div>
       </div>
@@ -183,15 +194,16 @@ function DiscountLabelSettings(props) {
     <div>
       {/* ICON  FONT SIZE*/}
       <div className="style__wrapper_div">
-        <Text>Icon Size</Text>
-        <Text variant="headingSm" as="h6">
-          {labelIconSize}px
+        <Text as="p" fontWeight="semibold">
+          Icon Size
         </Text>
-        <div className="settings_range_slider">
-          <TooltipSlider
-            value={labelIconSize}
+        <div className="input_field_div">
+          <RangeSlider
+            output
+            label={`${labelIconSize}px`}
             min={20}
             max={40}
+            value={labelIconSize}
             onChange={handleLabelIconSize}
           />
         </div>
@@ -199,15 +211,16 @@ function DiscountLabelSettings(props) {
 
       {/* LABEL  FONT SIZE*/}
       <div className="style__wrapper_div">
-        <Text>Label Font Size</Text>
-        <Text variant="headingSm" as="h6">
-          {labelFontSize}px
+        <Text as="p" fontWeight="semibold">
+          Label Font Size
         </Text>
-        <div className="settings_range_slider">
-          <TooltipSlider
-            value={labelFontSize}
+        <div className="input_field_div">
+          <RangeSlider
+            output
+            label={`${labelFontSize}px`}
             min={12}
             max={32}
+            value={labelFontSize}
             onChange={handleLabelFontSize}
           />
         </div>
@@ -220,7 +233,9 @@ function DiscountLabelSettings(props) {
     <div>
       {/* FONT COLOR FOR LABEL */}
       <div className="style__wrapper_div">
-        <Text>Color</Text>
+        <Text as="p" fontWeight="semibold">
+          Color
+        </Text>
         <div className="color_column_container">
           <ColorPlate
             defaultColor={labelIconColor}

@@ -8,6 +8,7 @@ import {
   Icon,
   OptionList,
   Spinner,
+  Text,
 } from "@shopify/polaris";
 import { useState, useCallback } from "react";
 import { SearchIcon } from "@shopify/polaris-icons";
@@ -58,7 +59,7 @@ function DiscountModal(props) {
           });
         }
       }
-  
+
       updateText("");
     },
     [selected, updateText]
@@ -101,7 +102,7 @@ function DiscountModal(props) {
               <LegacyStack.Item>
                 <TextField
                   onChange={updateText}
-                  label="Search discounts"
+                  label="Search Discounts"
                   labelHidden
                   value={inputValue}
                   placeholder="Search to find discounts"
@@ -126,6 +127,22 @@ function DiscountModal(props) {
                   selected={selected}
                   allowMultiple
                 />
+              </LegacyStack.Item>
+
+              {/* Description Notes */}
+              <LegacyStack.Item>
+                <Text as="p" tone="subdued">
+                  <div
+                    style={{
+                      position: "absolute",
+                      bottom: "10px",
+                      textAlign: "justify",
+                      marginRight: "15px",
+                    }}
+                  >
+                    {props.descriptionNote}
+                  </div>
+                </Text>
               </LegacyStack.Item>
             </LegacyStack>
           )}

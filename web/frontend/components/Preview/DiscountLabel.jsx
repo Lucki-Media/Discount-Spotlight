@@ -90,7 +90,7 @@ export default function DisccountLabel(props) {
               </div>
               <h3>RS.2000</h3>
               <div className={style.quantity_btns}>
-                <span>quantity</span>
+                <span>Quantity</span>
                 <div className={style.quantity_numbers}>
                   <div className={style.plus}>+</div>
                   <div className={style.numbers}>1</div>

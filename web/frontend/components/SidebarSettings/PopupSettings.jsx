@@ -1,9 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { ColorPlate } from "../colorPlate";
-import TooltipSlider from "rc-slider";
-import "rc-slider/assets/index.css";
 import "../../css/settings.css";
-import { Text } from "@shopify/polaris";
+import { RangeSlider, Text, TextField } from "@shopify/polaris";
 
 function PopupSettings(props) {
   const [titleText, setTitleText] = useState(
@@ -94,7 +92,7 @@ function PopupSettings(props) {
 
   // HANDLE FUNCTION START
   const handleTitleText = (val) => {
-    setTitleText(val.target.value);
+    setTitleText(val);
   };
 
   const handleTitleFontSize = (val) => {
@@ -152,15 +150,26 @@ function PopupSettings(props) {
     <div>
       {/* LABEL TEXT */}
       <div className="style__wrapper_div">
-        <Text>Title Text</Text>
+        <Text as="p" fontWeight="semibold">
+          Title Text
+        </Text>
         <div className="input_field_div">
-          <input
-            type="text"
+          <TextField
+            label="Title Text"
+            labelHidden
             name="labelText"
             id="labelText"
             value={titleText}
             onChange={handleTitleText}
-            className="settings_input_field"
+            placeholder="Example: Available Coupons"
+            maxLength={30}
+            showCharacterCount
+            autoComplete="off"
+            error={
+              titleText === "" || titleText.length > 30
+                ? "Enter Valid Title Text"
+                : ""
+            }
           />
         </div>
       </div>
@@ -172,15 +181,16 @@ function PopupSettings(props) {
     <div>
       {/* TITLE FONT SIZE*/}
       <div className="style__wrapper_div">
-        <Text>TItle Font Size</Text>
-        <Text variant="headingSm" as="h6">
-          {titleFontSize}px
+        <Text as="p" fontWeight="semibold">
+          Title Font Size
         </Text>
-        <div className="settings_range_slider">
-          <TooltipSlider
-            value={titleFontSize}
+        <div className="input_field_div">
+          <RangeSlider
+            output
+            label={`${titleFontSize}px`}
             min={12}
             max={40}
+            value={titleFontSize}
             onChange={handleTitleFontSize}
           />
         </div>
@@ -188,15 +198,16 @@ function PopupSettings(props) {
 
       {/* DISCOUNT CODE FONT SIZE*/}
       <div className="style__wrapper_div">
-        <Text>Discount Font Size</Text>
-        <Text variant="headingSm" as="h6">
-          {discountCodeFontSize}px
+        <Text as="p" fontWeight="semibold">
+          Discount Font Size
         </Text>
-        <div className="settings_range_slider">
-          <TooltipSlider
-            value={discountCodeFontSize}
+        <div className="input_field_div">
+          <RangeSlider
+            output
+            label={`${discountCodeFontSize}px`}
             min={8}
             max={25}
+            value={discountCodeFontSize}
             onChange={handleDiscountCodeFontSize}
           />
         </div>
@@ -204,15 +215,16 @@ function PopupSettings(props) {
 
       {/* TERMS & CONDITIONS FONT SIZE*/}
       <div className="style__wrapper_div">
-        <Text>Terms & Conditions Font Size</Text>
-        <Text variant="headingSm" as="h6">
-          {discountTaCFontSize}px
+        <Text as="p" fontWeight="semibold">
+          Terms & Conditions Font Size
         </Text>
-        <div className="settings_range_slider">
-          <TooltipSlider
-            value={discountTaCFontSize}
+        <div className="input_field_div">
+          <RangeSlider
+            output
+            label={`${discountTaCFontSize}px`}
             min={8}
             max={25}
+            value={discountTaCFontSize}
             onChange={handleDisccountTaCFontSize}
           />
         </div>
@@ -225,7 +237,9 @@ function PopupSettings(props) {
     <div>
       {/* FONT COLOR FOR LABEL */}
       <div className="style__wrapper_div">
-        <Text>Color</Text>
+        <Text as="p" fontWeight="semibold">
+          Color
+        </Text>
         <div className="color_column_container">
           <ColorPlate
             defaultColor={titleTextColor}

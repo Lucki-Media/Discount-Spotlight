@@ -134,7 +134,7 @@ export default function PageName() {
                 alignItems: "center",
                 paddingLeft: "1rem",
                 paddingRight: "1rem",
-                background: isSaveButtonDisabled ? "#fff" : "#5488c7",
+                background: isSaveButtonDisabled ? "#fff" : "#000000",
                 transition: "background 0.5s ease-out 0s",
               }}
             >

@@ -1,3 +1,9 @@
-.discount_index_table  table th:last-child{
-    width: 50%;
+.discount_index_table table th:last-child {
+  width: 50%;
+}
+.bottom_border {
+  margin: 15px 0;
+}
+.input_field_div {
+  margin: 5px 0;
 }
