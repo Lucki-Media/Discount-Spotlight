@@ -1,8 +1,15 @@
 .onclick-popup {
-    border-top: 30px solid #000000;
+    /* border-top: 30px solid #000000; */
     border-radius: 10px;
     background: #cccccc5e;
-    padding: 15px;
+    /* padding: 15px; */
+}
+.PreviewTopbar{
+    height: 38px;
+    padding: 12px;
+    display: flex;
+    background-color:#000;
+    border-radius: 10px 10px 0 0;
 }
 .pagewidth {
     margin: 0 auto;
@@ -18,6 +25,7 @@
 .ds_product_details_main {
     display: flex;
     align-items: center;
+    padding:30px 0;
 }
 
 .ds_product_details_main .product_image img {
@@ -32,7 +40,7 @@
     display: flex;
     align-items: center;
     text-align: center;
-    margin: 0 0 10px 0;
+    margin: 0 0 23px 0;
 }
 
 .p_details {
@@ -44,15 +52,15 @@
     font-size: 14px;
     font-weight: 500;
     color: #1C1D1D;
-    margin: 0 0 10px 0;
+    margin: 0 0 15px 0;
 }
 
 .p_details h2 {
     font-family: 'Inter', sans-serif;
     font-size: 30px;
-    font-weight: 500;
+    font-weight: 700;
     color: #1C1D1D;
-    margin: 0 0 10px 0;
+    margin: 0 0 23px 0;
 }
 
 .p_details h3 {
@@ -60,7 +68,7 @@
     font-size: 18px;
     font-weight: 500;
     color: #1C1D1D;
-    margin: 0 0 5px 0;
+    margin: 0 0 23px 0;
 
 }
 
@@ -69,7 +77,7 @@
     font-size: 14px;
     font-weight: 400;
     color: #1C1D1D;
-    margin: 0 0 5px;
+    margin: 0 0 23px;
     display: block;
 }
 
@@ -83,7 +91,7 @@
 }
 
 .quantity_numbers .numbers {
-    margin: 0 20px;
+    margin: 0 23px;
 }
 
 .addtocartbtn {
@@ -98,7 +106,7 @@
     font-family: 'Inter', sans-serif;
     text-decoration: none;
     display: block;
-    margin: 20px 0 20px 0;
+    margin: 23px 0 23px 0;
 }
 
 .buynowbtn {
@@ -114,7 +122,7 @@
     font-family: 'Inter', sans-serif;
     text-decoration: none;
     display: block;
-    margin: 0px 0 20px 0;
+    margin: 0px 0 23px 0;
 }
 
 .product_content {
@@ -123,6 +131,7 @@
     font-size: 14px;
     color: #1C1D1D;
     line-height: 25px;
+    text-align: justify;
 }
 
 .onclick-popup .bgimage img {
@@ -150,7 +159,7 @@
     font-style: normal;
     font-weight: 500;
     line-height: normal;
-    padding: 15px 20px;
+    padding: 15px 23px;
     margin-bottom: 1px;
 
 }
@@ -159,7 +168,7 @@
     position: relative;
     background: #F4F4F5;
     border-radius: 8px;
-    width: 50%;
+    width: 60%;
     min-height: 70%;
 }
 
@@ -174,7 +183,7 @@
 .popupcoupon {
     background-color: #fff;
     margin: 0 0 10px;
-    padding: 10px 20px;
+    padding: 15px 23px;
 }
 
 .popup_couponcode {

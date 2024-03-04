@@ -1,14 +1,17 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
-name = "Tealium Track App"
 client_id = "77ab0f117b5c21f97449cc51920fad19"
+name = "Discount Spotlight"
 application_url = "https://nodejs.luckimediadevelopment.com"
 embedded = true
+
+[build]
+include_config_on_deploy = true
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
 scopes = "read_price_rules,read_products"
-use_legacy_install_flow = true 
+use_legacy_install_flow = true
 
 [auth]
 redirect_urls = [
@@ -23,7 +26,3 @@ api_version = "2023-10"
 
 [pos]
 embedded = false
-
-[build]
-automatically_update_urls_on_dev = true
-dev_store_url = "lm-ai-seo-metatag-enhancer-store.myshopify.com"

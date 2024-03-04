@@ -28,7 +28,7 @@ const OfferRibbon = (props) => {
     if (matchingObject) {
       setDiscountsValue(matchingObject.discounts.length);
     }
-    // console.log(props.productHandle, matchingObject);
+    console.log(props.productHandle, matchingObject);
   };
 
   useEffect(() => {

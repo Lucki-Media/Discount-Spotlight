@@ -126,7 +126,7 @@ function DiscountLabelSettings(props) {
 
   //  RENDER SETTINGS RELATED TO ICONS
   const renderIconSettings = () => (
-    <div>
+    <div className="style__wrapper_div">
       <Text as="p" fontWeight="semibold">
         Label Icon
       </Text>
@@ -255,7 +255,7 @@ function DiscountLabelSettings(props) {
   );
 
   return (
-    <div>
+    <div style={{ padding: "0 15px" }}>
       {renderIconSettings()}
       {renderContentSettings()}
       {renderSizeSettings()}

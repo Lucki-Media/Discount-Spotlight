@@ -78,7 +78,7 @@ function OfferRibbonSettings(props) {
   const renderPositionSettings = () => (
     <div>
       {/* RIBBON POSITION RADIO BUTTON */}
-      <div>
+      <div className="style__wrapper_div">
         <Text as="p" fontWeight="semibold">
           Position
         </Text>
@@ -174,7 +174,7 @@ function OfferRibbonSettings(props) {
   );
 
   return (
-    <div>
+    <div style={{ padding: "0 15px" }}>
       {renderPositionSettings()}
       {renderSizeSettings()}
       {renderColorSettings()}

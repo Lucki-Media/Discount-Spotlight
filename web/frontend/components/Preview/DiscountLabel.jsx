@@ -10,6 +10,38 @@ import ThinTag from "../Icons/ThinTag";
 export default function DisccountLabel(props) {
   return (
     <div className={style["onclick-popup"]}>
+      <div className={style.PreviewTopbar}>
+        <div
+          style={{
+            height: "12px",
+            width: "12px",
+            background: "rgb(249, 139, 140)",
+            borderRadius: "50px",
+            display: "block",
+            marginRight: "12px",
+          }}
+        ></div>
+        <div
+          style={{
+            height: "12px",
+            width: "12px",
+            background: "rgb(245, 219, 164)",
+            borderRadius: "50px",
+            display: "block",
+            marginRight: "12px",
+          }}
+        ></div>
+        <div
+          style={{
+            height: "12px",
+            width: "12px",
+            background: "rgb(92, 212, 139)",
+            borderRadius: "50px",
+            display: "block",
+            marginRight: "12px",
+          }}
+        ></div>
+      </div>
       <div className={style.ds_product_details}>
         <div className={style.pagewidth}>
           <div className={style.ds_product_details_main}>
@@ -88,13 +120,13 @@ export default function DisccountLabel(props) {
                   </a>
                 </div>
               </div>
-              <h3>RS.2000</h3>
+              <h3>Rs. 2000.00</h3>
               <div className={style.quantity_btns}>
                 <span>Quantity</span>
                 <div className={style.quantity_numbers}>
-                  <div className={style.plus}>+</div>
+                  <div className={style.plus}>-</div>
                   <div className={style.numbers}>1</div>
-                  <div className={style.minus}>-</div>
+                  <div className={style.minus}>+</div>
                 </div>
               </div>
               <a className={style.addtocartbtn}>Add to cart</a>

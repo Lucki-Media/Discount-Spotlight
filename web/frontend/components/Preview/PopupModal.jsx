@@ -30,6 +30,38 @@ export default function PopupModal(props) {
 
   return (
     <div className={style["onclick-popup"]}>
+      <div className={style.PreviewTopbar}>
+        <div
+          style={{
+            height: "12px",
+            width: "12px",
+            background: "rgb(249, 139, 140)",
+            borderRadius: "50px",
+            display: "block",
+            marginRight: "12px",
+          }}
+        ></div>
+        <div
+          style={{
+            height: "12px",
+            width: "12px",
+            background: "rgb(245, 219, 164)",
+            borderRadius: "50px",
+            display: "block",
+            marginRight: "12px",
+          }}
+        ></div>
+        <div
+          style={{
+            height: "12px",
+            width: "12px",
+            background: "rgb(92, 212, 139)",
+            borderRadius: "50px",
+            display: "block",
+            marginRight: "12px",
+          }}
+        ></div>
+      </div>
       <div className={style["modal-overlay"]}>
         <div
           className={style["modal-content"]}

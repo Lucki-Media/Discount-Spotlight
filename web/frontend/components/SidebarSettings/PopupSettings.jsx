@@ -304,7 +304,7 @@ function PopupSettings(props) {
   );
 
   return (
-    <div>
+    <div style={{ padding: "0 15px" }}>
       {renderContentSettings()}
       {renderSizeSettings()}
       {renderColorSettings()}

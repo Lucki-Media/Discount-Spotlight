@@ -1,8 +1,15 @@
 .onclick-popup {
-    border-top: 30px solid #000000;
+    /* border-top: 30px solid #000000; */
     border-radius: 10px;
     background: #cccccc5e;
-    padding: 50px;
+    /* padding: 50px; */
+}
+.PreviewTopbar{
+    height: 38px;
+    padding: 12px;
+    display: flex;
+    background-color:#000;
+    border-radius: 10px 10px 0 0;
 }
 .pagewidth {
     margin: 0 auto;
@@ -50,7 +57,7 @@
 .p_details h2 {
     font-family: 'Inter', sans-serif;
     font-size: 30px;
-    font-weight: 500;
+    font-weight: 700;
     color: #1C1D1D;
     margin: 0 0 10px 0;
 }
@@ -166,13 +173,14 @@
     justify-content: center;
     align-items: center;
     z-index: 1;
+    padding:70px 0;
 }
 
 .onclick-popup .modal-content {
     position: relative;
     background: #F4F4F5;
     border-radius: 8px;
-    width: 80%;
+    width:50%;
     min-height: 70%;
 }
 
@@ -187,7 +195,7 @@
 .popupcoupon {
     background-color: #fff;
     margin: 0 0 10px;
-    padding: 10px 20px;
+    padding: 15px 20px;
 }
 
 .popup_couponcode {
