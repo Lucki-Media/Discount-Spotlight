@@ -145,16 +145,17 @@ const App = () => {
         : null}
 
       {/* ṛender offer ribbon */}
-      {getHandle.map((data) => {
-        return ReactDOM.createPortal(
-          <OfferRibbon
-            productHandle={data}
-            json_style_data={transferData}
-            shopData={shopData}
-          />,
-          document.getElementById(data)
-        );
-      })}
+      {shopData.length > 0 &&
+        getHandle.map((data) => {
+          return ReactDOM.createPortal(
+            <OfferRibbon
+              productHandle={data}
+              json_style_data={transferData}
+              shopData={shopData}
+            />,
+            document.getElementById(data)
+          );
+        })}
     </>
   );
 };

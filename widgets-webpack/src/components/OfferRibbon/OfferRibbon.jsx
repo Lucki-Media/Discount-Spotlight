@@ -4,8 +4,7 @@ import axios from "axios";
 
 const OfferRibbon = (props) => {
   const [discountsValue, setDiscountsValue] = useState(0);
-  // console.log("props");
-  // console.log(props);
+  // console.log("props",props.shopData);
 
   const bgColorMatch =
     props.json_style_data.offer_ribbon_settings.bgColor.match(/[\d.]+/g);
@@ -24,12 +23,20 @@ const OfferRibbon = (props) => {
         Number(obj.product_id) === Number(productAPIResponse.data.product.id)
       );
     });
-    
+
     if (matchingObject) {
       setDiscountsValue(matchingObject.discounts.length);
     }
-    console.log(props.productHandle, matchingObject);
+    // console.log(props.productHandle, matchingObject);
   };
+
+  // check if the badge is created for detailed product on Product Detail Page
+  var isProductDetailPage_Product = window.meta.product
+    ? window.location.href
+        .substring(window.location.href.lastIndexOf("/"))
+        .replace("/", "")
+        .split("?")[0] === props.productHandle
+    : false;
 
   useEffect(() => {
     productAPI();
@@ -37,7 +44,7 @@ const OfferRibbon = (props) => {
 
   return (
     <>
-      {discountsValue > 0 && (
+      {discountsValue > 0 && !isProductDetailPage_Product && (
         <>
           <style>
             {`
