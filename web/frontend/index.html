@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <!-- Ensures that the UI is properly scaled in the Shopify Mobile app -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <script type="module">
+      document.getElementById("shopOrigin").value = new URL(
+        window.location
+      ).searchParams.get("shop");
+
+      if (!import.meta.env || !import.meta.env.PROD) {
+        // Because the base HTML is rendered in the server side, we need to manually embed the code to enable HMR in our
+        // code, so that the vite server is properly enabled to run HMR
+        // document.getElementById("shopOrigin").value = new URL(
+        //   window.location
+        // ).searchParams.get("shop");
+        const script = document.createElement("script");
+        script.setAttribute("type", "module");
+        script.setAttribute("src", "./dev_embed.js");
+        document.getElementsByTagName("head")[0].append(script);
+      }
+    </script>
+  </head>
+  <body>
+    <div id="app"><!--index.jsx injects App.jsx here--></div>
+    <input type="hidden" id="shopOrigin" value="" />
+    <input type="hidden" id="apiKey" value="84c340413d584409f4055aea77e7b477" />
+    <script type="module" src="/index.jsx"></script>
+  </body>
+</html>

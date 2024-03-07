@@ -1,0 +1,43 @@
+{
+  "name": "my-node-app",
+  "version": "1.0.0",
+  "main": "web/index.js",
+  "proxy": "https://pig-striking-snipe.ngrok-free.app/",
+  "license": "UNLICENSED",
+  "scripts": {
+    "shopify": "shopify",
+    "build": "shopify app build",
+    "dev": "shopify app dev",
+    "info": "shopify app info",
+    "generate": "shopify app generate",
+    "deploy": "shopify app deploy"
+  },
+  "dependencies": {
+    "@coreui/react-chartjs": "^2.1.3",
+    "@shopify/app": "^3.0.0",
+    "@shopify/cli": "^3.0.0",
+    "@shopify/polaris": "^12.4.0",
+    "@shopify/shopify-app-session-storage-mongodb": "^1.0.6",
+    "@shopify/stylelint-polaris": "^15.0.5",
+    "@shopify/ui-extensions": "2023.10.0",
+    "axios": "^1.3.6",
+    "body-parser": "^1.20.2",
+    "color-convert": "^2.0.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express-graphql": "^0.12.0",
+    "graphql": "^14.7.0",
+    "knex": "^0.21.19",
+    "mime": "^3.0.0",
+    "mongodb": "^5.3.0",
+    "mongoose": "^7.1.0",
+    "nexmo": "^2.9.1",
+    "node-cron": "^3.0.3",
+    "nodemailer": "^6.9.7",
+    "rc-slider": "^10.5.0",
+    "react-hot-toast": "^2.4.1",
+    "react-select": "^5.8.0",
+    "react-toastify": "^9.1.3",
+    "twilio": "^4.19.0"
+  }
+}
