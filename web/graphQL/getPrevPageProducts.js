@@ -1,7 +1,7 @@
 import { GraphqlQueryError } from "@shopify/shopify-api";
 import shopify from "../shopify.js";
 
-export default async function getNextPageProducts(data) {
+export default async function getPrevPageProducts(data) {
   var { session, last, before, searchValue } = data;
   last = Number(last);
   const client = new shopify.api.clients.Graphql({ session });

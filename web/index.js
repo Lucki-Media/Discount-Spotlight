@@ -11,6 +11,7 @@ import productCreator from "./graphQL/product-creator.js";
 import getFilterProducts from "./graphQL/getFilterProducts.js";
 import getPrevPageProducts from "./graphQL/getPrevPageProducts.js";
 import getNextPageProducts from "./graphQL/getNextPageProducts.js";
+import createWebPixel from "./graphQL/createWebPixel.js";
 import getProducts from "./graphQL/getProducts.js";
 import GDPRWebhookHandlers from "./gdpr.js";
 import dotenv from "dotenv";
@@ -234,6 +235,27 @@ async function SaveInitCustomizationSettings(shop) {
     }
   }
 }
+
+// TO CREATE WEB PIXEL MUTATION ON MERCHANT STORE
+app.get("/api/create_web_pixel", async (_req, res) => {
+  let status = 200;
+  let error = null;
+  console.log('idhar aa gya');
+  console.log(res.locals.shopify.session);
+  try {
+    const response = await createWebPixel({
+      session: res.locals.shopify.session,
+    });
+    console.log('Success... Pixel Created');
+    res.status(status).send({ success: status === 200, response });
+  } catch (e) {
+    console.log(`Failed to createWebPixel: ${e.message}`);
+    status = 500;
+    error = e.message;
+    res.status(status).send({ success: status === 200, error });
+  }
+
+});
 
 app.use(shopify.cspHeaders());
 app.use(serveStatic(STATIC_PATH, { index: false }));

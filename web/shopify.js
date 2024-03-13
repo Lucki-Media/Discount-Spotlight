@@ -27,10 +27,12 @@ const shopify = shopifyApp({
     apiKey: process.env.SHOPIFY_API_KEY,
     apiSecretKey: process.env.SHOPIFY_API_SECRET,
     scopes: [
-      'read_products',
-      'read_price_rules'
+      "read_products",
+      "read_price_rules",
+      "write_pixels",
+      "read_customer_events",
     ],
-    hostName: process.env.HOST_NAME,  
+    hostName: process.env.HOST_NAME,
   },
   auth: {
     path: "/api/auth",

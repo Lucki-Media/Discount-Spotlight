@@ -246,6 +246,7 @@ function DiscountsManagement() {
       }
     }
     setDiscountProducts(product_data);
+    // setAPIresponse(APIresponse);
   };
 
   // TO PREVENT CLICK EVENT OF CHECKBOX ON COMBOBOX
@@ -274,11 +275,11 @@ function DiscountsManagement() {
 
   // TO ENABLE OR DISABLE SAVE BUTTON
   useEffect(() => {
+    setIsSaveButtonDisabled(isEqual(discountProducts, APIresponse));
+  }, [APIresponse, discountProducts]);
 
-    console.log("coming here");
-    //setIsSaveButtonDisabled(isEqual(discountProducts, APIresponse));
-  }, []);
   console.log("APIresponse:", APIresponse);
+  console.log("discountProducts:", discountProducts);
 
   // INIT API
   const getData = async (discountData) => {
@@ -356,7 +357,7 @@ function DiscountsManagement() {
         // CALL PRODUCT GQL API
         getData(response.data.data.shop_data);
 
-       // console.log('get API called');
+        // console.log('get API called');
         // Update APIresponse only after the getData function is called
         setAPIresponse(response.data.data.shop_data);
       });
@@ -378,8 +379,8 @@ function DiscountsManagement() {
         await getData(response.data.data.shop_data);
 
         const shopDataCopy = [...response.data.data.shop_data];
-        await setDiscountProducts(shopDataCopy);
-        // await setAPIresponse(shopDataCopy);
+        setDiscountProducts(shopDataCopy);
+        setAPIresponse(shopDataCopy);
 
         toast.info("Data saved successfully !", {
           position: "bottom-center",
