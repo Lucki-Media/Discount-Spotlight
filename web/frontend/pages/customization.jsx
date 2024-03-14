@@ -2,9 +2,7 @@ import {
   Button,
   ButtonGroup,
   Card,
-  Frame,
   FullscreenBar,
-  InlineGrid,
   Layout,
   LegacyTabs,
   Page,
@@ -12,57 +10,45 @@ import {
   SkeletonDisplayText,
   SkeletonPage,
   Tabs,
-  Text,
   TextContainer,
 } from "@shopify/polaris";
-import { TitleBar } from "@shopify/app-bridge-react";
+import React, { useEffect, useState } from "react";
+import "../css/index.css";
+import axios from "axios";
 import isEqual from "lodash/isEqual";
-import { useCallback, useEffect, useState } from "react";
-import PopupSettings from "../components/SidebarSettings/PopupSettings";
-import DiscountLabelSettings from "../components/SidebarSettings/DiscountLabelSettings";
-import OfferRibbonSettings from "../components/SidebarSettings/OfferRibbonSettings";
 import { json_style_data } from "../Static/General_settings";
-import OfferRibbon from "../components/Preview/OfferRibbon";
+import DiscountLabelSettings from "../components/SidebarSettings/DiscountLabelSettings";
+import PopupSettings from "../components/SidebarSettings/PopupSettings";
+import OfferRibbonSettings from "../components/SidebarSettings/OfferRibbonSettings";
 import DisccountLabel from "../components/Preview/DiscountLabel";
 import PopupModal from "../components/Preview/PopupModal";
-import "../css/settings.css";
-import axios from "axios";
+import OfferRibbon from "../components/Preview/OfferRibbon";
 import { ToastContainer, toast } from "react-toastify";
 
-export default function PageName() {
+function CustomizationCorner() {
   const shop_url = document.getElementById("shopOrigin").value;
 
   const [transferData, setTransferData] = useState(json_style_data);
   const [APIresponse, setAPIresponse] = useState(json_style_data);
-  const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
-  const [activeTab, setActiveTab] = useState(1);
   const [loading, setLoading] = useState(false);
-
-  const notify = () => {
-    toast.info("Data saved successfully !", {
-      position: "bottom-center",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "dark",
-    });
-  };
+  const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
+  const [activeTab, setActiveTab] = useState(0);
 
   const tabs = [
     {
+      id: "0",
+      content: "DISCOUNT LABEL",
+      panelID: "Discount-Label",
+    },
+    {
       id: "1",
-      content: "Discount Label",
+      content: "POPUP MODAL",
+      panelID: "Popup-Modal",
     },
     {
       id: "2",
-      content: "Popup Modal",
-    },
-    {
-      id: "3",
-      content: "Offer Ribbon",
+      content: "OFFER RIBBON",
+      panelID: "Offer-Ribbon",
     },
   ];
 
@@ -100,8 +86,17 @@ export default function PageName() {
       })
       .then((response) => {
         // console.log(response.data.data.shop_data.customizations_json);
-          notify();
-          setTransferData(
+        toast.info("Data saved successfully !", {
+          position: "bottom-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+        setTransferData(
           JSON.parse(response.data.data.shop_data.customizations_json)
         );
         setAPIresponse(
@@ -156,7 +151,6 @@ export default function PageName() {
               </div>
               <ButtonGroup>
                 <Button
-                  variant="primary"
                   disabled={isSaveButtonDisabled}
                   onClick={saveCustomizationDetails}
                 >
@@ -166,79 +160,60 @@ export default function PageName() {
             </div>
           </FullscreenBar>
         </div>
+
         <Page fullWidth>
           <Card>
-            {/* TABS  */}
-            <InlineGrid gap="400" columns={3}>
-              {tabs.map((tab, index) => (
-                <div
-                  key={tab.id}
-                  onClick={() => {
-                    setActiveTab(tab.id);
-                  }}
-                  style={{
-                    cursor: "pointer",
-                    border: "1px solid #EAF4FF",
-                    borderRadius: 12,
-                  }}
-                >
-                  <Card
-                    roundedAbove="md"
-                    background={
-                      tab.id == activeTab
-                        ? "bg-surface-info"
-                        : "bg-surface-secondary"
-                    }
-                  >
-                    <Text variant="headingMd" as="h6">
-                      {tab.content}
-                    </Text>
-                  </Card>
-                </div>
-              ))}
-            </InlineGrid>
+            <LegacyTabs
+              fitted
+              tabs={tabs}
+              selected={activeTab}
+              onSelect={(value) => {
+                setActiveTab(value);
+              }}
+            >
+              {/* SETTINGS FEATURE */}
+              <div style={{ marginTop: "15px" }}>
+                <Layout>
+                  {/* SIDEBAR FUNCTIONALITY */}
+                  <Layout.Section variant="oneThird">
+                    {activeTab == 0 && (
+                      <DiscountLabelSettings
+                        json_style_data={transferData}
+                        dataCallback={handleTransferData}
+                      />
+                    )}
+                    {activeTab == 1 && (
+                      <PopupSettings
+                        json_style_data={transferData}
+                        dataCallback={handleTransferData}
+                      />
+                    )}
+                    {activeTab == 2 && (
+                      <OfferRibbonSettings
+                        json_style_data={transferData}
+                        dataCallback={handleTransferData}
+                      />
+                    )}
+                  </Layout.Section>
 
-            <hr className="bottom_border" />
-
-            {/* SETTINGS FEATURE */}
-            <Layout>
-              {/* SIDEBAR FUNCTIONALITY */}
-              <Layout.Section variant="oneThird">
-                {activeTab == 1 && (
-                  <DiscountLabelSettings
-                    json_style_data={transferData}
-                    dataCallback={handleTransferData}
-                  />
-                )}
-                {activeTab == 2 && (
-                  <PopupSettings
-                    json_style_data={transferData}
-                    dataCallback={handleTransferData}
-                  />
-                )}
-                {activeTab == 3 && (
-                  <OfferRibbonSettings
-                    json_style_data={transferData}
-                    dataCallback={handleTransferData}
-                  />
-                )}
-              </Layout.Section>
-
-              {/* LIVE PREVIEW */}
-              <Layout.Section>
-                {activeTab == 1 && (
-                  <DisccountLabel json_style_data={transferData} />
-                )}
-                {activeTab == 2 && (
-                  <PopupModal json_style_data={transferData} />
-                )}
-                {activeTab == 3 && (
-                  <OfferRibbon json_style_data={transferData} />
-                )}
-              </Layout.Section>
-            </Layout>
+                  {/* LIVE PREVIEW */}
+                  <Layout.Section>
+                    {activeTab == 0 && (
+                      <DisccountLabel json_style_data={transferData} />
+                    )}
+                    {activeTab == 1 && (
+                      <PopupModal json_style_data={transferData} />
+                    )}
+                    {activeTab == 2 && (
+                      <OfferRibbon json_style_data={transferData} />
+                    )}
+                  </Layout.Section>
+                </Layout>
+              </div>
+            </LegacyTabs>
           </Card>
         </Page>
+
         <ToastContainer />
       </div>
     );
@@ -266,3 +241,5 @@ export default function PageName() {
     );
   }
 }
+
+export default CustomizationCorner;

@@ -120,7 +120,7 @@ export default function DisccountLabel(props) {
                   </a>
                 </div>
               </div>
-              <h3>Rs. 2000.00</h3>
+              <h3>$2000.00</h3>
               <div className={style.quantity_btns}>
                 <span>Quantity</span>
                 <div className={style.quantity_numbers}>

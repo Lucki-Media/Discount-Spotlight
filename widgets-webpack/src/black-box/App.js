@@ -5,29 +5,27 @@ import { config } from "../config";
 import "./custom.css";
 import "react-toastify/dist/ReactToastify.css";
 import OfferRibbon from "../components/OfferRibbon/OfferRibbon";
-import TestRenderer from "../components/TestRenderer/TestRenderer";
 import axios from "axios";
 import { json_style_data } from "../Static/General_settings";
 import DiscountLabel from "../components/DiscountLabel/DiscountLabel";
 
-const { OFFER_RIBBON, DISCOUNT_LABEL } = CONST;
+const {  DISCOUNT_LABEL } = CONST;
 
 const App = () => {
   const [getHandle, setHandle] = useState([]);
   const [transferData, setTransferData] = useState(json_style_data);
   const [shopData, setShopData] = useState([]);
 
-  const offer_ribbon = document.querySelector(
-    "." + config[OFFER_RIBBON].className
-  );
   const discount_label = document.querySelector(
     "." + config[DISCOUNT_LABEL].className
   );
 
-  //ADDING HIDE CLASS TO COLLECTION PAGE
+  //ADDING TARGET CLASS TO COLLECTION PAGE
   function setClassToButton() {
     var handleInArray = [];
-    var productSelectors = [
+
+    // DEFAULT TARGET FINDER CLASSES
+    var defaultProductSelectors = [
       '[class*="product"][class*="loop"][class*="title"]',
       '[class*="card"][class*="info"]',
       '[class*="card"][class*="content"]',
@@ -39,6 +37,19 @@ const App = () => {
       '[class*="grid"][class*="product"][class*="image"]',
     ];
 
+    // GET MERCHANT DEFINDED CLASS FROM DATA RETRIVED FROM DATABASE
+    var targetClassString = transferData.offer_ribbon_settings.targetCssClasses;
+    var addedProductSelectors =
+      targetClassString !== undefined || targetClassString !== ""
+        ? targetClassString.replace(/, /g, ",").split(",")
+        : [];
+
+    // CONCAT BOTH ARRAYS TO FIND THE TARGET TO SHOW OFFER RIBBON
+    var productSelectors = addedProductSelectors.concat(
+      defaultProductSelectors
+    ).filter(item => item.trim() !== '');
+
+    // FIND TARGET CLASSES FROM productSelectors AND ADD LM DS CLASS TO THE TARGET
     document.querySelectorAll(productSelectors.join(", ")).forEach((t) => {
       var anchorElements =
         t.querySelectorAll("a").length > 0
@@ -71,7 +82,6 @@ const App = () => {
                   t.appendChild(addToQuoteElement);
 
                   // addToQuoteElement.innerText = "Hello Vidhee";
-                  // addToQuoteElement.setAttribute("id", n + "##" + (Math.floor(Math.random() * 900000 + 100000))); // append random 6-digit number to generate unique id even same product is showing multiple times
                   addToQuoteElement.setAttribute("id", n);
                   addToQuoteElement.classList.add(
                     "ds_offer_ribbon_class_q78er"
@@ -109,7 +119,7 @@ const App = () => {
     setTransferData(JSON.parse(response.data.data.customizations_json));
   };
 
-  // GET DISCOUNT DATA FROM THE DATABSE
+  // GET DISCOUNT DATA FROM THE DATABASE
   const getDiscountsDetails = async () => {
     let payLoad = {
       shop: window.Shopify.shop,
@@ -132,7 +142,7 @@ const App = () => {
 
   useEffect(() => {
     setClassToButton();
-  }, [shopData]);
+  }, [shopData, transferData]);
 
   return (
     <>

@@ -270,16 +270,16 @@ function DiscountsManagement() {
   useEffect(() => {
     // get data from the database after call product api
     getDiscountsDetails();
+  }, [APIresponse]);
+
+  useEffect(() => {
     getPriceRules();
   }, []);
 
   // TO ENABLE OR DISABLE SAVE BUTTON
   useEffect(() => {
     setIsSaveButtonDisabled(isEqual(discountProducts, APIresponse));
-  }, [APIresponse, discountProducts]);
-
-  console.log("APIresponse:", APIresponse);
-  console.log("discountProducts:", discountProducts);
+  }, [discountProducts, APIresponse]);
 
   // INIT API
   const getData = async (discountData) => {
@@ -343,7 +343,7 @@ function DiscountsManagement() {
     }
   };
 
-  // GET DATA FROM THE DATABSE
+  // GET DATA FROM THE DATABASE
   const getDiscountsDetails = async () => {
     setLoading(true);
     await axios
@@ -353,17 +353,24 @@ function DiscountsManagement() {
       .then((response) => {
         setDiscountProducts(response.data.data.shop_data);
         setLoading(false);
+        // Set APIresponse only when fetching data initially
+        if (APIresponse.length === 0) {
+          setAPIresponse(response.data.data.shop_data);
+        }
 
         // CALL PRODUCT GQL API
         getData(response.data.data.shop_data);
-
-        // console.log('get API called');
-        // Update APIresponse only after the getData function is called
-        setAPIresponse(response.data.data.shop_data);
+      })
+      .catch((error) => {
+        console.error(
+          "An error occurred while fetching Discounts Details:",
+          error
+        );
+        setLoading(false);
       });
   };
 
-  // SAVE DATA IN THE DATABSE
+  // SAVE DATA IN THE DATABASE
   const handleSave = async () => {
     setQueryValue("");
     setMode();
@@ -378,10 +385,8 @@ function DiscountsManagement() {
       .then(async (response) => {
         await getData(response.data.data.shop_data);
 
-        const shopDataCopy = [...response.data.data.shop_data];
-        setDiscountProducts(shopDataCopy);
-        setAPIresponse(shopDataCopy);
-
+        await setDiscountProducts(response.data.data.shop_data);
+        await setAPIresponse(response.data.data.shop_data);
         toast.info("Data saved successfully !", {
           position: "bottom-center",
           autoClose: 5000,

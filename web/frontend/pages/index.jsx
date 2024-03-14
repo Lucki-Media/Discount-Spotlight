@@ -47,25 +47,6 @@ export default function HomePage() {
     fetchDashboardData();
   }, []);
 
-  // TO CREATE WEB PIXEL
-  const handleCreateWebPixel = async () => {
-    console.log("Hello Pooja");
-    console.log(shop_url);
-    try {
-      const response = await appFetch(`/api/create_web_pixel`, {
-        shop: shop_url,
-      });
-
-      if (response.ok) {
-        const responseData = await response.json();
-        console.log("responseData", responseData);
-      } else {
-        console.error("Error creating Web Pixel:", response);
-      }
-    } catch (error) {
-      console.error("An error occurred while creating Web Pixel:", error);
-    }
-  };
   const url =
     "https://" +
     document.getElementById("shopOrigin").value +
@@ -109,12 +90,6 @@ export default function HomePage() {
             variant: "primary",
             content: "Enable",
             url: url,
-            target: "_blank",
-          }}
-          secondaryAction={{
-            variant: "primary",
-            content: "Create Web Pixel",
-            onAction: handleCreateWebPixel,
             target: "_blank",
           }}
           tone="info"

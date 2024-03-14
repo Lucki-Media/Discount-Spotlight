@@ -1,9 +1,23 @@
-import { RadioButton, RangeSlider, Text } from "@shopify/polaris";
+import {
+  RadioButton,
+  RangeSlider,
+  Text,
+  InlineStack,
+  Box,
+  Card,
+  Button,
+  Badge,
+  BlockStack,
+  TextField,
+} from "@shopify/polaris";
 import React, { useState, useCallback, useEffect } from "react";
 import "../../css/settings.css";
 import { ColorPlate } from "../colorPlate";
 
 function OfferRibbonSettings(props) {
+  const [ribbonEnable, setRibbonEnabled] = useState(
+    props.json_style_data.offer_ribbon_settings.enable
+  );
   const [ribbonPosition, setRibbonPosition] = useState(
     props.json_style_data.offer_ribbon_settings.position
   );
@@ -19,17 +33,22 @@ function OfferRibbonSettings(props) {
   const [ribbonBGColor, setRibbonBGColor] = useState(
     props.json_style_data.offer_ribbon_settings.bgColor
   );
+  const [targetCssClasses, setTargetCssClasses] = useState(
+    props.json_style_data.offer_ribbon_settings.targetCssClasses
+  );
 
   // VARIABLE THAT TRANSFER DATA FROM ONE FILE TO ANOTHER
   var transfer_data = {
     discount_label_settings: props.json_style_data.discount_label_settings,
     popup_modal_settings: props.json_style_data.popup_modal_settings,
     offer_ribbon_settings: {
+      enable: ribbonEnable,
       fontSize: ribbonFontSize,
       textColor: ribbonTextColor,
       bgColor: ribbonBGColor,
       position: ribbonPosition,
       offset: ribbonOffset,
+      targetCssClasses: targetCssClasses,
     },
   };
   // CALLBACK FUNCTION TO SEND PROPS START
@@ -37,11 +56,13 @@ function OfferRibbonSettings(props) {
     callbackFunction();
   }, [
     // IT WILL SEND LATEST DATA OF ALL STATES
+    ribbonEnable,
     ribbonFontSize,
     ribbonTextColor,
     ribbonBGColor,
     ribbonPosition,
     ribbonOffset,
+    targetCssClasses,
   ]);
 
   const callbackFunction = useCallback(() => {
@@ -50,6 +71,11 @@ function OfferRibbonSettings(props) {
   // CALLBACK FUNCTION TO SEND PROPS END
 
   // HANDLE FUNCTIONS START
+  const handleToggle = useCallback(
+    () => setRibbonEnabled((enabled) => !enabled),
+    []
+  );
+
   const handleRibbonPosition = useCallback(
     (_, newValue) => setRibbonPosition(newValue),
     []
@@ -72,7 +98,56 @@ function OfferRibbonSettings(props) {
     (value) => setRibbonBGColor(value),
     []
   );
+
+  const handleTargetCssClasses = (val) => {
+    // FORMAT USER ENTERED DATA INTO VALID STRING
+    const jsonString = JSON.stringify(val);
+    const formattedString = jsonString
+      .replace(/\\n/g, "")
+      .replace(/\n/g, "")
+      .replace(/, /g, ", ")
+      .replace(/['"]/g, "");
+    // console.log(formattedString);
+    setTargetCssClasses(formattedString);
+  };
+
   // HANDLE FUNCTIONS END
+
+  //  RENDER SETTINGS RELATED TO TOGGLE (ENABLE/DISABLE)
+  const renderToggleSettings = () => (
+    <div>
+      {/* RIBBON SHOW TOGGLE BUTTON */}
+      <div className="style__wrapper_div">
+        <Card padding="400">
+          <InlineStack
+            gap="800"
+            align="space-between"
+            blockAlign="center"
+            wrap={false}
+          >
+            <Text as="p" variant="headingMd" fontWeight="semibold">
+              Do you want show Offer Ribbon on Product list? {""}
+              <Badge
+                progress="complete"
+                tone={ribbonEnable ? "success" : undefined}
+              >
+                {ribbonEnable ? "Enabled" : "Disabled"}
+              </Badge>
+            </Text>
+            <Button
+              role="switch"
+              id="offer-ribbon-toggle"
+              ariaChecked={ribbonEnable ? "true" : "false"}
+              onClick={handleToggle}
+              variant={ribbonEnable ? undefined : "primary"}
+            >
+              {ribbonEnable ? "Disable" : "Enable"}
+            </Button>
+          </InlineStack>
+        </Card>
+      </div>
+    </div>
+  );
 
   //  RENDER SETTINGS RELATED TO POSITION
   const renderPositionSettings = () => (
@@ -173,11 +248,38 @@ function OfferRibbonSettings(props) {
     </div>
   );
 
+  //  RENDER SETTINGS RELATED TO LABEL
+  const renderContentSettings = () => (
+    <div>
+      {/* CSS CLASS CONFIGURATION */}
+      <div className="style__wrapper_div">
+        <Text as="p" fontWeight="semibold">
+          Target Classes
+        </Text>
+        <div className="input_field_div">
+          <TextField
+            label="Target Classes"
+            labelHidden
+            name="targetCssClasses"
+            id="targetCssClasses"
+            value={targetCssClasses}
+            onChange={handleTargetCssClasses}
+            placeholder="Example: card__information, product-title"
+            autoComplete="off"
+            multiline={3}
+          />
+        </div>
+      </div>
+    </div>
+  );
+
   return (
     <div style={{ padding: "0 15px" }}>
+      {renderToggleSettings()}
       {renderPositionSettings()}
       {renderSizeSettings()}
       {renderColorSettings()}
+      {renderContentSettings()}
     </div>
   );
 }

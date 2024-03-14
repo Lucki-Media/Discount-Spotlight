@@ -26,12 +26,7 @@ const shopify = shopifyApp({
     billing: undefined, // or replace with billingConfig above to enable example billing
     apiKey: process.env.SHOPIFY_API_KEY,
     apiSecretKey: process.env.SHOPIFY_API_SECRET,
-    scopes: [
-      "read_products",
-      "read_price_rules",
-      "write_pixels",
-      "read_customer_events",
-    ],
+    scopes: ["read_products", "read_price_rules"],
     hostName: process.env.HOST_NAME,
   },
   auth: {

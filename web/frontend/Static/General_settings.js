@@ -32,10 +32,12 @@ export const json_style_data = {
     },
   },
   offer_ribbon_settings: {
+    enable: true,
     fontSize: 10,
     textColor: "#FFF",
     bgColor: "rgba(0, 0, 0, 1)",
     position: "bottom",
     offset: 45,
+    targetCssClasses : ""
   },
 };
