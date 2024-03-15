@@ -3,12 +3,11 @@ import {
   RangeSlider,
   Text,
   InlineStack,
-  Box,
   Card,
   Button,
   Badge,
-  BlockStack,
   TextField,
+  Modal,
 } from "@shopify/polaris";
 import React, { useState, useCallback, useEffect } from "react";
 import "../../css/settings.css";
@@ -36,6 +35,7 @@ function OfferRibbonSettings(props) {
   const [targetCssClasses, setTargetCssClasses] = useState(
     props.json_style_data.offer_ribbon_settings.targetCssClasses
   );
+  const [activeModal, setActiveModal] = useState(false);
 
   // VARIABLE THAT TRANSFER DATA FROM ONE FILE TO ANOTHER
   var transfer_data = {
@@ -111,6 +111,10 @@ function OfferRibbonSettings(props) {
     setTargetCssClasses(formattedString);
   };
 
+  const handleChangeModal = useCallback(
+    () => setActiveModal(!activeModal),
+    [activeModal]
+  );
   // HANDLE FUNCTIONS END
 
   //  RENDER SETTINGS RELATED TO TOGGLE (ENABLE/DISABLE)
@@ -253,9 +257,19 @@ function OfferRibbonSettings(props) {
     <div>
       {/* CSS CLASS CONFIGURATION */}
       <div className="style__wrapper_div">
-        <Text as="p" fontWeight="semibold">
-          Target Classes
-        </Text>
+        <InlineStack
+          align="space-between"
+          gap="400"
+          blockAlign="center"
+          wrap={false}
+        >
+          <Text as="p" fontWeight="semibold">
+            Target Classes
+          </Text>
+          <Button variant="plain" onClick={handleChangeModal}>
+            View Video Reference
+          </Button>
+        </InlineStack>
         <div className="input_field_div">
           <TextField
             label="Target Classes"
@@ -267,6 +281,22 @@ function OfferRibbonSettings(props) {
             placeholder="Example: card__information, product-title"
             autoComplete="off"
             multiline={3}
+            helpText={
+              <>
+                If the Offer Ribbon isn't displaying on your online store,
+                please enter the class names of the product cards from your
+                product grid.
+                <br />
+                You can enter multiple classes separated by commas.
+                <br />
+                If you still have any issue, Don't hesitate to contact us. We
+                are always there for you. Contact us via Email :
+                <a href="mailto:info.lmrequest@gmail.com" target="_blank">
+                  {" "}
+                  info.lmrequest@gmail.com
+                </a>
+              </>
+            }
           />
         </div>
       </div>
@@ -280,6 +310,24 @@ function OfferRibbonSettings(props) {
       {renderSizeSettings()}
       {renderColorSettings()}
       {renderContentSettings()}
+
+      {/* TARGET CLASS TOOLTIP MODAL */}
+      <Modal
+        open={activeModal}
+        onClose={handleChangeModal}
+        title="How does it work?"
+        size="large"
+      >
+        <Modal.Section>
+          <video controls style={{ width: "100%" }}>
+            <source
+              src="https://nodejs.luckimediadevelopment.com/public/target-class-acknowledgement.mp4"
+              type="video/mp4"
+            />
+            Your browser does not support the video tag.
+          </video>
+        </Modal.Section>
+      </Modal>
     </div>
   );
 }

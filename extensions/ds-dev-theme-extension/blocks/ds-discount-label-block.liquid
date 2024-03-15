@@ -1,0 +1,17 @@
+{% schema %}
+{
+  "name": "DS Discount Label",
+  "target": "section",
+  "settings": [],
+  "javascript": "DL_bundle.js",
+  "enabled_on": {
+    "templates": ["product"],
+    "groups": ["aside"]
+  }
+}
+
+{% endschema %}
+<script>console.log("Product id is   {{ product.id | escape }}");</script>
+{% comment %} {% render 'DL_bundle.js' %} {% endcomment %}
+{% comment %} {% if {{product.title || escape}} %}
+ {% endcomment %}
