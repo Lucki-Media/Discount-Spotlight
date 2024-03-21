@@ -11,7 +11,8 @@
 }
 
 {% endschema %}
-<script>console.log("Product id is   {{ product.id | escape }}");</script>
-{% comment %} {% render 'DL_bundle.js' %} {% endcomment %}
-{% comment %} {% if {{product.title || escape}} %}
- {% endcomment %}
+
+{% comment %} Created LM div with unique classname where Discount label can be shown {% endcomment %}
+<div class="lm_ds_discount_label_q78er"></div>
+
+{% comment %} <script>console.log("Product id is {{ product.id | escape }}");</script> {% endcomment %}

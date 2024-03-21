@@ -1,24 +1,15 @@
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
-import { CONST } from "./constants";
-import { config } from "../config";
 import "./custom.css";
 import "react-toastify/dist/ReactToastify.css";
 import OfferRibbon from "../components/OfferRibbon/OfferRibbon";
 import axios from "axios";
 import { json_style_data } from "../Static/General_settings";
-import DiscountLabel from "../components/DiscountLabel/DiscountLabel";
-
-const { DISCOUNT_LABEL } = CONST;
 
 const App = () => {
   const [getHandle, setHandle] = useState([]);
   const [transferData, setTransferData] = useState(json_style_data);
   const [shopData, setShopData] = useState([]);
-
-  const discount_label = document.querySelector(
-    "." + config[DISCOUNT_LABEL].className
-  );
 
   //ADDING TARGET CLASS TO COLLECTION PAGE
   function setClassToButton() {
@@ -86,7 +77,7 @@ const App = () => {
                     var addToQuoteElement = document.createElement("div");
                     t.appendChild(addToQuoteElement);
 
-                    // addToQuoteElement.innerText = "Hello Vidhee";
+                    // addToQuoteElement.innerText = "Hello There";
                     addToQuoteElement.setAttribute("id", n);
                     addToQuoteElement.classList.add(
                       "ds_offer_ribbon_class_q78er"
@@ -152,14 +143,6 @@ const App = () => {
 
   return (
     <>
-      {/* render popup modal and label on product page */}
-      {/* {discount_label && window.meta.product
-        ? ReactDOM.createPortal(
-            <DiscountLabel json_style_data={transferData} />,
-            discount_label
-          )
-        : null} */}
-
       {/* ṛender offer ribbon */}
       {shopData.length > 0 &&
         getHandle.map((data) => {
