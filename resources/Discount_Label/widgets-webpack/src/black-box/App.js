@@ -6,7 +6,7 @@ import { json_style_data } from "../Static/General_settings";
 import DiscountLabel from "../components/DiscountLabel/DiscountLabel";
 
 
-const App = () => {
+const App = (props) => {
   const [transferData, setTransferData] = useState(json_style_data);
 
  const getCustomization = async () => {
@@ -30,7 +30,7 @@ const App = () => {
   return (
     <>
       {/* render popup modal and label on product page */}
-      {<DiscountLabel json_style_data={transferData} />}
+      {<DiscountLabel json_style_data={transferData} productId={props.productId} />}
     </>
   );
 };

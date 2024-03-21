@@ -19,7 +19,9 @@ import shopifySessionRoute from "./routes/ShopifySessions.js";
 import discountRoute from "./routes/DiscountRoute.js";
 import customizationRoute from "./routes/CustomizationRoute.js";
 import countRoute from "./routes/CountRoute.js";
+import ShopifySessions from "./db/models/ShopifySessions.js";
 import Customization from "./db/models/Customizations.js";
+import Charge from "./db/models/Charges.js";
 import { json_style_data } from "./frontend/Static/General_settings.js";
 import axios from "axios";
 
@@ -199,6 +201,70 @@ app.get("/api/getFilterProducts", async (_req, res) => {
 });
 // DISCOUNT PAGE GRAPHQL API END
 
+// PRICING PLAN API START
+app.get("/api/updatePricingPlan", async (_req, res) => {
+  let status = 200;
+  let error = null;
+  try {
+    const recurring_application_charge =
+      new shopify.api.rest.RecurringApplicationCharge({
+        session: res.locals.shopify.session,
+      });
+    recurring_application_charge.name = "Basic Plan";
+    recurring_application_charge.price = 5.99;
+    recurring_application_charge.return_url =
+      "https://admin.shopify.com/store/ds-develop-store/apps/ds-devlopment/pricingPlans";
+    recurring_application_charge.test = true;
+    await recurring_application_charge.save({
+      update: true,
+    });
+    res
+      .status(status)
+      .send({ success: status === 200, recurring_application_charge });
+  } catch (e) {
+    console.log(`Failed to update Pricing Plan: ${e.message}`);
+    status = 500;
+    error = e.message;
+    res.status(status).send({ success: status === 200, error });
+  }
+});
+
+app.get("/api/getPlanData", async (_req, res) => {
+  let status = 200;
+  let error = null;
+  try {
+    const shop = _req.query.shop;
+
+    // get User Id from ShopifySessions
+    const user = await ShopifySessions.findOne({ shop });
+
+    // get Active Charge if any
+    const charges = await Charge.findOne(
+      { shop: _req.query.shop, status: "ACTIVE" },
+      { createdAt: -1 } // -1 for descending order, 1 for ascending
+    );
+
+    if(charges){
+      console.log('exist');
+    }else{
+      console.log('not exist');
+    }
+
+    console.log("charges");
+    console.log(charges);
+
+    res
+      .status(status)
+      .send({ success: status === 200, data: "recurring_application_charge" });
+  } catch (e) {
+    console.log(`Failed to update Pricing Plan: ${e.message}`);
+    status = 500;
+    error = e.message;
+    res.status(status).send({ success: status === 200, error });
+  }
+});
+// PRICING PLAN API END
+
 // INITDATA SAVE FUNCTION
 async function SaveInitCustomizationSettings(shop) {
   const customizationSettings = await Customization.findOne({ shop });
@@ -234,7 +300,6 @@ async function SaveInitCustomizationSettings(shop) {
     }
   }
 }
-
 
 app.use(shopify.cspHeaders());
 app.use(serveStatic(STATIC_PATH, { index: false }));

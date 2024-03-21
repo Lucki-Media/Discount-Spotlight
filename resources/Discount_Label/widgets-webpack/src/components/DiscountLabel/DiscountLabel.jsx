@@ -41,13 +41,13 @@ const DiscountLabel = (props) => {
 
   // Product API
   const productAPI = async () => {
-    // console.log('window.meta.product.id');
-    // console.log(window.meta.product.id);
+    // console.log('props.productId');
+    // console.log(props.productId);
     // GET DATA STORED IN DATABASE
-    if (window.meta.product.id) {
+    if (props.productId) {
       let payLoad = {
         shop: window.Shopify.shop,
-        product_id: window.meta.product.id,
+        product_id: props.productId,
       };
       const response = await axios.post(
         `${process.env.REACT_APP_API_URL}getDiscountForProduct`,

@@ -34,10 +34,10 @@ export default function App() {
                   label: "FAQs",
                   destination: "/faqs",
                 },
-                // {
-                //   label: "Test",
-                //   destination: "/test",
-                // },
+                {
+                  label: "Pricing Plans",
+                  destination: "/pricingPlans",
+                },
               ]}
             />
             <Routes pages={pages} />
