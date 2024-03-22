@@ -203,64 +203,138 @@ app.get("/api/getFilterProducts", async (_req, res) => {
 
 // PRICING PLAN API START
 app.get("/api/updatePricingPlan", async (_req, res) => {
-  let status = 200;
-  let error = null;
+  res.setHeader(
+    "Content-Security-Policy",
+    `frame-ancestors https://${_req.query.shop} https://admin.shopify.com`
+  );
+
   try {
     const recurring_application_charge =
       new shopify.api.rest.RecurringApplicationCharge({
         session: res.locals.shopify.session,
       });
-    recurring_application_charge.name = "Basic Plan";
-    recurring_application_charge.price = 5.99;
-    recurring_application_charge.return_url =
-      "https://admin.shopify.com/store/ds-develop-store/apps/ds-devlopment/pricingPlans";
+    recurring_application_charge.name = _req.query.plan_name;
+    recurring_application_charge.price = Number(_req.query.price);
+    recurring_application_charge.return_url = `https://admin.shopify.com/store/${_req.query.shop.replace(
+      ".myshopify.com",
+      ""
+    )}/apps/ds-devlopment/pricingPlans`;
     recurring_application_charge.test = true;
     await recurring_application_charge.save({
       update: true,
     });
-    res
-      .status(status)
-      .send({ success: status === 200, recurring_application_charge });
+
+    res.status(200).send({
+      success: true,
+      data: recurring_application_charge.confirmation_url,
+    });
   } catch (e) {
     console.log(`Failed to update Pricing Plan: ${e.message}`);
-    status = 500;
-    error = e.message;
-    res.status(status).send({ success: status === 200, error });
+    res.status(500).send({ success: false, error: e.message });
   }
 });
 
 app.get("/api/getPlanData", async (_req, res) => {
-  let status = 200;
-  let error = null;
+  let plan_id = 1;
+  let data = {
+    productLimit: 10,
+    discountLimit: 3,
+  };
+
   try {
-    const shop = _req.query.shop;
-
-    // get User Id from ShopifySessions
-    const user = await ShopifySessions.findOne({ shop });
-
     // get Active Charge if any
-    const charges = await Charge.findOne(
+    let charges = await Charge.findOne(
       { shop: _req.query.shop, status: "ACTIVE" },
       { createdAt: -1 } // -1 for descending order, 1 for ascending
     );
 
-    if(charges){
-      console.log('exist');
-    }else{
-      console.log('not exist');
+    if (charges) {
+      // If charges found for the store
+      plan_id = Number(charges.plan_id);
+
+      // set Limitation according to plan
+      switch (plan_id) {
+        case 1:
+          data = {
+            productLimit: 10,
+            discountLimit: 3,
+          };
+          break;
+        case 2:
+          data = {
+            productLimit: 50,
+            discountLimit: 5,
+          };
+          break;
+        case 3:
+          data = {
+            productLimit: -1,
+            discountLimit: -1,
+          };
+          break;
+
+        default:
+          data = {
+            productLimit: 10,
+            discountLimit: 3,
+          };
+          break;
+      }
+
+      // update plan details in the Database
+      charges.plan_limit = data;
+      await charges.save();
     }
 
-    console.log("charges");
-    console.log(charges);
+    // create Plan Data according to active  plan_id
+    const pricingPlanData = [
+      {
+        id: 1,
+        status: plan_id === 1 ? "Active" : "Downgrade",
+        plan_name: "Free Plan",
+        price: 0,
+      },
+      {
+        id: 2,
+        status:
+          plan_id === 2 ? "Active" : plan_id > 2 ? "Downgrade" : "Upgrade",
+        plan_name: "Basic Plan",
+        price: 5.99,
+      },
+      {
+        id: 3,
+        status: plan_id === 3 ? "Active" : "Upgrade",
+        plan_name: "Premium Plan",
+        price: 50.99,
+      },
+    ];
 
-    res
-      .status(status)
-      .send({ success: status === 200, data: "recurring_application_charge" });
+    res.status(200).send({ success: true, data: pricingPlanData });
   } catch (e) {
-    console.log(`Failed to update Pricing Plan: ${e.message}`);
-    status = 500;
-    error = e.message;
-    res.status(status).send({ success: status === 200, error });
+    console.log(`Failed to get Pricing Plan: ${e.message}`);
+    res.status(500).send({ success: false, error: e.message });
+  }
+});
+
+app.get("/api/updateCharge", async (_req, res) => {
+  try {
+    const plan = await shopify.api.rest.RecurringApplicationCharge.find({
+      session: res.locals.shopify.session,
+      id: Number(_req.query.charge_id),
+    });
+
+    // if plan is active , add it to the Database
+    if(plan && plan.status === "active"){
+      console.log('YEs');
+    }
+
+    res.status(200).send({
+      success: true,
+      data: plan,
+    });
+  } catch (e) {
+    console.log(`Failed to update Pricing Plan Charge: ${e.message}`);
+    res.status(500).send({ success: false, error: e.message });
   }
 });
 // PRICING PLAN API END

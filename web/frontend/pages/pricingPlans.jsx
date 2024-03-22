@@ -20,23 +20,62 @@ export default function pricingPlans() {
 
   const [loading, setLoading] = useState(false);
   const [planDetails, setPlanDetails] = useState([
-    { id: 1, status: "Active" },
-    { id: 2, status: "Upgrade" },
-    { id: 3, status: "Upgrade" },
+    {
+      id: 1,
+      status: "Active",
+      plan_name: "Free Plan",
+      price: 0,
+    },
+    {
+      id: 2,
+      status: "Upgrade",
+      plan_name: "Basic Plan",
+      price: 5.99,
+    },
+    {
+      id: 3,
+      status: "Upgrade",
+      plan_name: "Premium Plan",
+      price: 50.99,
+    },
   ]);
 
   //   API CALL TO UPDATE PLAN
   const handlePlanChange = async (data) => {
     if (data.status !== "Active") {
       setLoading(true);
-      const response = await appFetch(`/api/updatePricingPlan`, {
+      const response = await appFetch(
+        `/api/updatePricingPlan?shop=${shop_url}&plan_name=${data.plan_name}&price=${data.price}`,
+        {
+          shop: shop_url,
+        }
+      );
+      if (response.ok) {
+        const responseData = await response.json();
+        // console.log("responseData");
+        // console.log(responseData);
+        window.top.location.href = responseData.data;
+        // setLoading(false);
+      }
+    }
+  };
+
+  // INIT FUNCTION, Which will check from the URL, if it is redirected from Charge Activation or not...
+  // if charge_id will be caught in the URL .. need to whether check it is active or not, if yes then add it's data to the charge table
+  const updateCharge = async () => {
+    const charge_id = new URLSearchParams(window.location.search).get(
+      "charge_id"
+    );
+    if (charge_id !== null) {
+      setLoading(true);
+      const response = await appFetch(`/api/updateCharge?shop=${shop_url}&charge_id=${charge_id}`, {
         shop: shop_url,
-        id: data.id,
       });
       if (response.ok) {
         const responseData = await response.json();
         console.log("responseData");
-        console.log(responseData);
+        console.log(responseData.data);
+        // setPlanDetails(responseData.data);
         setLoading(false);
       }
     }
@@ -50,14 +89,16 @@ export default function pricingPlans() {
     });
     if (response.ok) {
       const responseData = await response.json();
-      console.log("responseData");
-      console.log(responseData);
+      // console.log("responseData");
+      // console.log(responseData.data);
+      setPlanDetails(responseData.data);
       setLoading(false);
     }
   };
 
   useEffect(() => {
     getPlanData();
+    updateCharge();
   }, []);
 
   if (loading === false) {

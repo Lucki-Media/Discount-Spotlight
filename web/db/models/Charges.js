@@ -67,6 +67,18 @@ const ChargeSchema = new mongoose.Schema(
     shop: {
       type: String,
     },
+    plan_limit: {
+      type: {
+        productLimit: {
+          type: Number,
+          default: 10,
+        },
+        discountLimit: {
+          type: Number,
+          default: 3,
+        },
+      },
+    },
   },
   { timestamps: true }
 );
