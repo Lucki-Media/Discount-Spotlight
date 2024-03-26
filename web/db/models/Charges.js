@@ -4,11 +4,14 @@ const ChargeSchema = new mongoose.Schema(
     id: {
       type: Number,
     },
+    shop: {
+      type: String,
+    },
     charge_id: {
       type: Number,
     },
     test: {
-      type: Number,
+      type: Boolean,
     },
     status: {
       type: String,
@@ -16,19 +19,7 @@ const ChargeSchema = new mongoose.Schema(
     name: {
       type: String,
     },
-    terms: {
-      type: String,
-    },
-    type: {
-      type: String,
-    },
     price: {
-      type: Number,
-    },
-    interval: {
-      type: String,
-    },
-    capped_amount: {
       type: Number,
     },
     trial_days: {
@@ -46,26 +37,8 @@ const ChargeSchema = new mongoose.Schema(
     cancelled_on: {
       type: Date,
     },
-    expires_on: {
-      type: Date,
-    },
     plan_id: {
       type: Number,
-    },
-    description: {
-      type: String,
-    },
-    reference_charge: {
-      type: Number,
-    },
-    deleted_at: {
-      type: Date,
-    },
-    user_id: {
-      type: Number,
-    },
-    shop: {
-      type: String,
     },
     plan_limit: {
       type: {

@@ -209,25 +209,57 @@ app.get("/api/updatePricingPlan", async (_req, res) => {
   );
 
   try {
-    const recurring_application_charge =
-      new shopify.api.rest.RecurringApplicationCharge({
-        session: res.locals.shopify.session,
-      });
-    recurring_application_charge.name = _req.query.plan_name;
-    recurring_application_charge.price = Number(_req.query.price);
-    recurring_application_charge.return_url = `https://admin.shopify.com/store/${_req.query.shop.replace(
-      ".myshopify.com",
-      ""
-    )}/apps/ds-devlopment/pricingPlans`;
-    recurring_application_charge.test = true;
-    await recurring_application_charge.save({
-      update: true,
-    });
+    // if Merchant downgrades with free plan, we need to get currect active plan and delete it...
+    // if they jumps to the another paid plan Shopify will automatically cancel the current active plan and active the new one
+    if (_req.query.plan_name === "Free Plan") {
+      // get all reccuring plans for the store
+      const recurring_application_charge =
+        await shopify.api.rest.RecurringApplicationCharge.all({
+          session: res.locals.shopify.session,
+        });
 
-    res.status(200).send({
-      success: true,
-      data: recurring_application_charge.confirmation_url,
-    });
+      // Delete active plan if any
+      recurring_application_charge.data.forEach(async (element) => {
+        if (element.status === "active") {
+          await shopify.api.rest.RecurringApplicationCharge.delete({
+            session: res.locals.shopify.session,
+            id: element.id,
+          });
+        }
+      });
+
+      // Update Database for the store Charges
+      await Charge.updateMany(
+        { shop: _req.query.shop, status: "active" }, // Filter
+        { $set: { status: "cancelled" } } // Update
+      );
+
+      res.status(200).send({
+        success: true,
+        data: "",
+      });
+    } else {
+      // upgrade the Plan
+      const recurring_application_charge =
+        new shopify.api.rest.RecurringApplicationCharge({
+          session: res.locals.shopify.session,
+        });
+      recurring_application_charge.name = _req.query.plan_name;
+      recurring_application_charge.price = Number(_req.query.price);
+      recurring_application_charge.return_url = `https://admin.shopify.com/store/${_req.query.shop.replace(
+        ".myshopify.com",
+        ""
+      )}/apps/ds-devlopment/pricingPlans`;
+      recurring_application_charge.test = true;
+      await recurring_application_charge.save({
+        update: true,
+      });
+
+      res.status(200).send({
+        success: true,
+        data: recurring_application_charge.confirmation_url,
+      });
+    }
   } catch (e) {
     console.log(`Failed to update Pricing Plan: ${e.message}`);
     res.status(500).send({ success: false, error: e.message });
@@ -244,8 +276,9 @@ app.get("/api/getPlanData", async (_req, res) => {
   try {
     // get Active Charge if any
     let charges = await Charge.findOne(
-      { shop: _req.query.shop, status: "ACTIVE" },
-      { createdAt: -1 } // -1 for descending order, 1 for ascending
+      { shop: _req.query.shop, status: "active" },
+      null,
+      { sort: { createdAt: -1 } }
     );
 
     if (charges) {
@@ -285,7 +318,6 @@ app.get("/api/getPlanData", async (_req, res) => {
       charges.plan_limit = data;
       await charges.save();
     }
-
     // create Plan Data according to active  plan_id
     const pricingPlanData = [
       {
@@ -324,16 +356,155 @@ app.get("/api/updateCharge", async (_req, res) => {
     });
 
     // if plan is active , add it to the Database
-    if(plan && plan.status === "active"){
-      console.log('YEs');
-    }
+    if (plan && plan.status === "active") {
+      let plan_id = 1;
+      let data = {
+        productLimit: 10,
+        discountLimit: 3,
+      };
+      // get Plan data from Plan name
+      switch (plan.name) {
+        case "Free Plan":
+          plan_id = 1;
+          data = {
+            productLimit: 10,
+            discountLimit: 3,
+          };
+          break;
+        case "Basic Plan":
+          plan_id = 2;
+          data = {
+            productLimit: 50,
+            discountLimit: 5,
+          };
+          break;
+        case "Premium Plan":
+          plan_id = 3;
+          data = {
+            productLimit: -1,
+            discountLimit: -1,
+          };
+          break;
+        default:
+          plan_id = 1;
+          data = {
+            productLimit: 10,
+            discountLimit: 3,
+          };
+          break;
+      }
 
-    res.status(200).send({
-      success: true,
-      data: plan,
-    });
+      const fetchPlanData = new Charge({
+        shop: _req.query.shop,
+        charge_id: Number(_req.query.charge_id),
+        test: plan.test,
+        status: plan.status,
+        name: plan.name,
+        price: Number(plan.price),
+        trial_days: plan.trial_days,
+        billing_on: new Date(plan.billing_on),
+        activated_on: new Date(plan.activated_on),
+        trial_ends_on: new Date(plan.trial_ends_on),
+        cancelled_on: new Date(plan.cancelled_on),
+        plan_id: plan_id,
+        plan_limit: data,
+      });
+      await fetchPlanData.save();
+
+      // create Plan Data according to active  plan_id
+      const pricingPlanData = [
+        {
+          id: 1,
+          status: plan_id === 1 ? "Active" : "Downgrade",
+          plan_name: "Free Plan",
+          price: 0,
+        },
+        {
+          id: 2,
+          status:
+            plan_id === 2 ? "Active" : plan_id > 2 ? "Downgrade" : "Upgrade",
+          plan_name: "Basic Plan",
+          price: 5.99,
+        },
+        {
+          id: 3,
+          status: plan_id === 3 ? "Active" : "Upgrade",
+          plan_name: "Premium Plan",
+          price: 50.99,
+        },
+      ];
+
+      res.status(200).send({
+        success: true,
+        data: {
+          return_url: plan.return_url,
+          pricingPlanData: pricingPlanData,
+        },
+      });
+    } else {
+      res
+        .status(500)
+        .send({ success: false, error: "unable to Update Charge" });
+    }
   } catch (e) {
     console.log(`Failed to update Pricing Plan Charge: ${e.message}`);
+    res.status(500).send({ success: false, error: e.message });
+  }
+});
+
+app.get("/api/getActivePlanLimitations", async (_req, res) => {
+  let plan_id = 1;
+  let data = {
+    productLimit: 10,
+    discountLimit: 3,
+  };
+
+  try {
+    // get Active Charge if any
+    let charges = await Charge.findOne(
+      { shop: _req.query.shop, status: "active" },
+      null,
+      { sort: { createdAt: -1 } }
+    );
+
+    if (charges) {
+      // If charges found for the store
+      plan_id = Number(charges.plan_id);
+
+      // set Limitation according to plan
+      switch (plan_id) {
+        case 1:
+          data = {
+            productLimit: 10,
+            discountLimit: 3,
+          };
+          break;
+        case 2:
+          data = {
+            productLimit: 50,
+            discountLimit: 5,
+          };
+          break;
+        case 3:
+          data = {
+            productLimit: -1,
+            discountLimit: -1,
+          };
+          break;
+
+        default:
+          data = {
+            productLimit: 10,
+            discountLimit: 3,
+          };
+          break;
+      }
+
+    }
+
+    res.status(200).send({ success: true, data: data });
+  } catch (e) {
+    console.log(`Failed to get Active Plan Details: ${e.message}`);
     res.status(500).send({ success: false, error: e.message });
   }
 });

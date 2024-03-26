@@ -11,7 +11,6 @@ import { MongoDBSessionStorage } from "@shopify/shopify-app-session-storage-mong
 // See the ensureBilling helper to learn more about billing in this template.
 const billingConfig = {
   "Free Plan": {
-    // This is an example configuration that would do a monthly charge for $5 (only USD is currently supported)
     amount: 0,
     currencyCode: "USD",
     trialDays: 0,
@@ -20,7 +19,6 @@ const billingConfig = {
     test: true,
   },
   "Basic Plan": {
-    // This is an example configuration that would do a monthly charge for $5 (only USD is currently supported)
     amount: 5.99,
     currencyCode: "USD",
     trialDays: 0,
@@ -29,7 +27,6 @@ const billingConfig = {
     test: true,
   },
   "Premium Plan": {
-    // This is an example configuration that would do a monthly charge for $5 (only USD is currently supported)
     amount: 50.99,
     currencyCode: "USD",
     trialDays: 0,

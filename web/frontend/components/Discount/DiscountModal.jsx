@@ -40,14 +40,14 @@ function DiscountModal(props) {
   // console.log(selected);
   const handleSelected = useCallback(
     (value) => {
-      if (selected.length < 3) {
+      if (selected.length < props.planLimitation.discountLimit || props.planLimitation.discountLimit === -1) {
         setSelected(value);
       } else {
-        const slicedArray = value.slice(-3);
-        if (slicedArray.length !== 3) {
+        const slicedArray = value.slice(-props.planLimitation.discountLimit);
+        if (slicedArray.length !== props.planLimitation.discountLimit) {
           setSelected(slicedArray);
         } else {
-          toast.error("You can select up to 3 options only!", {
+          toast.error(`You can select up to ${props.planLimitation.discountLimit} options only!`, {
             position: "bottom-center",
             autoClose: 5000,
             hideProgressBar: false,

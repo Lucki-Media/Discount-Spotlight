@@ -1,13 +1,16 @@
 import { useAuthenticatedFetch } from "../hooks";
 import {
+  Banner,
   Card,
   Frame,
   FullscreenBar,
   Layout,
+  Modal,
   Page,
   SkeletonBodyText,
   SkeletonDisplayText,
   SkeletonPage,
+  Text,
   TextContainer,
 } from "@shopify/polaris";
 import React from "react";
@@ -18,6 +21,7 @@ export default function pricingPlans() {
   const shop_url = document.getElementById("shopOrigin").value;
   const appFetch = useAuthenticatedFetch();
 
+  const [showWarning, setShowWarning] = useState(true);
   const [loading, setLoading] = useState(false);
   const [planDetails, setPlanDetails] = useState([
     {
@@ -43,20 +47,32 @@ export default function pricingPlans() {
   //   API CALL TO UPDATE PLAN
   const handlePlanChange = async (data) => {
     if (data.status !== "Active") {
-      setLoading(true);
-      const response = await appFetch(
-        `/api/updatePricingPlan?shop=${shop_url}&plan_name=${data.plan_name}&price=${data.price}`,
-        {
-          shop: shop_url,
-        }
-      );
-      if (response.ok) {
-        const responseData = await response.json();
-        // console.log("responseData");
-        // console.log(responseData);
-        window.top.location.href = responseData.data;
-        // setLoading(false);
+      // Show Banner first if merchant downgrades thew Plan
+      if (data.status === "Downgrade") {
+        setShowWarning(true);
+      } else {
+        // plan Upgrade
+        planUpgrade(data);
       }
+    }
+  };
+
+  const planUpgrade = async (data) => {
+    setLoading(true);
+    const response = await appFetch(
+      `/api/updatePricingPlan?shop=${shop_url}&plan_name=${data.plan_name}&price=${data.price}`,
+      {
+        shop: shop_url,
+      }
+    );
+    if (response.ok) {
+      const responseData = await response.json();
+      // console.log("responseData");
+      // console.log(responseData.data);
+      if (responseData.data !== "") {
+        window.top.location.href = responseData.data;
+      }
+      getPlanData();
     }
   };
 
@@ -68,15 +84,23 @@ export default function pricingPlans() {
     );
     if (charge_id !== null) {
       setLoading(true);
-      const response = await appFetch(`/api/updateCharge?shop=${shop_url}&charge_id=${charge_id}`, {
-        shop: shop_url,
-      });
+      const response = await appFetch(
+        `/api/updateCharge?shop=${shop_url}&charge_id=${charge_id}`,
+        {
+          shop: shop_url,
+        }
+      );
       if (response.ok) {
         const responseData = await response.json();
-        console.log("responseData");
-        console.log(responseData.data);
-        // setPlanDetails(responseData.data);
-        setLoading(false);
+        // console.log("responseData");
+        // console.log(responseData.data.return_url);
+        // console.log(responseData.data.pricingPlanData);
+        if (responseData.success) {
+          // Redirect to the same page without query data
+          await setPlanDetails(responseData.data.pricingPlanData);
+          window.top.location.href = responseData.data.return_url;
+        }
+        // setLoading(false);
       }
     }
   };
@@ -104,6 +128,41 @@ export default function pricingPlans() {
   if (loading === false) {
     return (
       <>
+        {/* WARNING BANNER */}
+        {showWarning && (
+          <Modal
+            open={showWarning}
+            onClose={() => {
+              setShowWarning(false);
+            }}
+            title="Are you sure you want to downgrade ?"
+            primaryAction={{
+              content: "Downgrade",
+              onAction: () => {
+                setShowWarning(false);
+              },
+            }}
+            secondaryActions={[
+              {
+                content: "Cancel",
+                onAction: () => {
+                  setShowWarning(false);
+                },
+              },
+            ]}
+          >
+            <Modal.Section>
+              <Text variant="bodyLg" as="p" alignment="justify">
+                If you downgrade your plan, you may lose some of the data you
+                have set up on the Discounts page. Please ensure that Discount
+                Management Data is set up within the limitations of your desired
+                plan before proceeding with the downgrade. Failure to do so may
+                result in automatic adjustments that could cause issues for you.
+              </Text>
+            </Modal.Section>
+          </Modal>
+        )}
+
         {/* LINK TO ADD PRICING ICONS  */}
         <link
           rel="stylesheet"

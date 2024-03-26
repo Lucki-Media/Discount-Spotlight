@@ -43,20 +43,26 @@ function DiscountCombobox(props) {
         );
         setSelectedOptions(again_selected);
       } else {
-        if (selectedOptions.length < 3) {
+        if (
+          selectedOptions.length < props.planLimitation.discountLimit ||
+          props.planLimitation.discountLimit === -1
+        ) {
           let new_selected = [...selectedOptions, Number(selected)];
           setSelectedOptions(new_selected);
         } else {
-          toast.error("You can select up to 3 options only!", {
-            position: "bottom-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "dark",
-          });
+          toast.error(
+            `You can select up to ${props.planLimitation.discountLimit} options only!`,
+            {
+              position: "bottom-center",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "dark",
+            }
+          );
         }
       }
 
