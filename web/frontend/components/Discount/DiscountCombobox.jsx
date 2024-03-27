@@ -42,6 +42,7 @@ function DiscountCombobox(props) {
           (option) => Number(option) !== Number(selected)
         );
         setSelectedOptions(again_selected);
+        props.discountCallback(props.product_id, again_selected);
       } else {
         if (
           selectedOptions.length < props.planLimitation.discountLimit ||
@@ -49,6 +50,7 @@ function DiscountCombobox(props) {
         ) {
           let new_selected = [...selectedOptions, Number(selected)];
           setSelectedOptions(new_selected);
+          props.discountCallback(props.product_id, new_selected);
         } else {
           toast.error(
             `You can select up to ${props.planLimitation.discountLimit} options only!`,
@@ -76,6 +78,7 @@ function DiscountCombobox(props) {
       const options = [...selectedOptions];
       options.splice(options.indexOf(tag), 1);
       setSelectedOptions(options);
+      props.discountCallback(props.product_id, options);
     },
     [selectedOptions]
   );
@@ -118,13 +121,13 @@ function DiscountCombobox(props) {
       : null;
 
   // callback whenever selected option changes
-  useEffect(() => {
-    props.discountCallback(props.product_id, selectedOptions);
-  }, [selectedOptions]);
+  // useEffect(() => {
+  //   props.discountCallback(props.product_id, selectedOptions);
+  // }, [selectedOptions]);
 
-  useEffect(() => {
-    setSelectedOptions(props.selectedOptions);
-  }, [props.selectedOptions]);
+  // useEffect(() => {
+  //   setSelectedOptions(props.selectedOptions);
+  // }, []);
 
   return (
     <>

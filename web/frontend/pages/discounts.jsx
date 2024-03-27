@@ -408,9 +408,9 @@ function DiscountsManagement() {
         count++; // Increment the count if discounts array is not empty
       }
     }
-    
+
     if (
-      count < planLimitation.productLimit ||
+      count <= planLimitation.productLimit ||
       planLimitation.productLimit === -1
     ) {
       // merchant has not reached at the limit

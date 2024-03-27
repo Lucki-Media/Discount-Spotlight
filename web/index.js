@@ -23,7 +23,7 @@ import ShopifySessions from "./db/models/ShopifySessions.js";
 import Customization from "./db/models/Customizations.js";
 import Charge from "./db/models/Charges.js";
 import { json_style_data } from "./frontend/Static/General_settings.js";
-import axios from "axios";
+import ProductDiscount from "./db/models/Discounts.js";
 
 const PORT = parseInt(
   process.env.BACKEND_PORT || process.env.PORT || "3000",
@@ -209,6 +209,65 @@ app.get("/api/updatePricingPlan", async (_req, res) => {
   );
 
   try {
+    // Remove extra data from database according to Plan CODE START
+    if (_req.query.plan_name !== "Premium Plan") {
+      let i = 1;
+      let data = {
+        productLimit: 10,
+        discountLimit: 3,
+      };
+      switch (
+        _req.query.plan_name // get Plan data from Plan name
+      ) {
+        case "Free Plan":
+          data = {
+            productLimit: 10,
+            discountLimit: 3,
+          };
+          break;
+        case "Basic Plan":
+          data = {
+            productLimit: 50,
+            discountLimit: 5,
+          };
+          break;
+        default:
+          data = {
+            productLimit: 10,
+            discountLimit: 3,
+          };
+          break;
+      }
+      const fetchDiscountsData = await ProductDiscount.find({
+        shop: _req.query.shop,
+      }).populate({
+        path: "arrayField",
+        options: { strictPopulate: false },
+      });
+
+      fetchDiscountsData.forEach(async (element) => {
+        if (i <= data.productLimit && element.discounts.length > 0) {
+          i++;
+          // IF DATA NOT REACHED AT THE PLAN LIMIT AND DISCOUNT IS NOT NULL
+          let fetchProductData = await ProductDiscount.findOne({
+            shop: _req.query.shop,
+            product_id: element.product_id,
+          });
+          if (fetchProductData) {
+            fetchProductData.discounts = fetchProductData.discounts.slice(
+              0,
+              data.discountLimit // Trim the discount if more then limit
+            );
+            await fetchProductData.save();
+          }
+        } else {
+          // DELETE DATA OF THE ELEMENT FROM DATABASE
+          await ProductDiscount.deleteOne({ _id: element._id });
+        }
+      });
+    }
+    // Remove extra data from database according to Plan CODE END
+
     // if Merchant downgrades with free plan, we need to get currect active plan and delete it...
     // if they jumps to the another paid plan Shopify will automatically cancel the current active plan and active the new one
     if (_req.query.plan_name === "Free Plan") {
@@ -499,7 +558,6 @@ app.get("/api/getActivePlanLimitations", async (_req, res) => {
           };
           break;
       }
-
     }
 
     res.status(200).send({ success: true, data: data });

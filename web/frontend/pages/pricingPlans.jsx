@@ -21,8 +21,9 @@ export default function pricingPlans() {
   const shop_url = document.getElementById("shopOrigin").value;
   const appFetch = useAuthenticatedFetch();
 
-  const [showWarning, setShowWarning] = useState(true);
+  const [showWarning, setShowWarning] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [planData, setPlanData] = useState();
   const [planDetails, setPlanDetails] = useState([
     {
       id: 1,
@@ -46,6 +47,7 @@ export default function pricingPlans() {
 
   //   API CALL TO UPDATE PLAN
   const handlePlanChange = async (data) => {
+    setPlanData(data);
     if (data.status !== "Active") {
       // Show Banner first if merchant downgrades thew Plan
       if (data.status === "Downgrade") {
@@ -140,6 +142,7 @@ export default function pricingPlans() {
               content: "Downgrade",
               onAction: () => {
                 setShowWarning(false);
+                planUpgrade(planData);
               },
             }}
             secondaryActions={[
