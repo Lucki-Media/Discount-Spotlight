@@ -27,6 +27,7 @@
   justify-content: center;
   right: 33.33%;
   overflow: hidden;
+  line-height: normal;
 }
 
 .onclick-popup .bgimage {
@@ -36,7 +37,9 @@
 .onclick-popup .bgimage img {
   width: 100%;
 }
-
+.onclick-popup .on-click {
+  display: flex;
+}
 .onclick-popup .on-click a {
   color: #000000;
   font-size: 18px;
@@ -47,6 +50,7 @@
   margin: 0px 0 0 10px;
   cursor: pointer;
   text-transform: uppercase;
+  line-height: normal;
 }
 
 .modal-content .popup-heading {

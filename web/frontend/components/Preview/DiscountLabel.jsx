@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import placeholder from "../../assets/placeholder-image.jpg";
 import style from "../../css/DisccountLabel.module.css";
 import SolidDoubleTags from "../Icons/SolidDoubleTags";
@@ -9,19 +8,6 @@ import ThinPercentageTag from "../Icons/ThinPercentageTag";
 import ThinTag from "../Icons/ThinTag";
 
 export default function DisccountLabel(props) {
-  const [isVibrating, setIsVibrating] = useState(false);
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setIsVibrating(true);
-      setTimeout(() => setIsVibrating(false), 2000); // Duration of the vibrate animation (0.2s)
-
-      // Clear the interval after 5 seconds (5000 milliseconds)
-      setTimeout(() => clearInterval(interval), 5000);
-    }, 5000); // Trigger every 5 seconds (5000 milliseconds)
-
-    // Cleanup the interval on component unmount
-    return () => clearInterval(interval);
-  });
   return (
     <div className={style["onclick-popup"]}>
       <div className={style.PreviewTopbar}>
@@ -133,7 +119,7 @@ export default function DisccountLabel(props) {
                     }
                   </a>
                   <a
-                    className={`${isVibrating ? style.shake : ""}`}
+                    className={style.shake}
                     href="#"
                     style={{
                       color:
