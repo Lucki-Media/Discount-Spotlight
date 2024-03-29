@@ -84,8 +84,6 @@ export default {
       // }
     },
   },
-<<<<<<< HEAD
-=======
   APP_UNINSTALLED: {
     deliveryMethod: DeliveryMethod.Http,
     callbackUrl: "/api/webhooks",
@@ -102,5 +100,4 @@ export default {
       
     },
   },
->>>>>>> origin/dev
 };
