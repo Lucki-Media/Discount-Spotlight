@@ -109,7 +109,7 @@ const App = () => {
     setTransferData(JSON.parse(response.data.data.customizations_json));
   };
 
-  // GET DISCOUNT DATA FROM THE DATABSE
+  // GET DISCOUNT DATA FROM THE DATABASE
   const getDiscountsDetails = async () => {
     let payLoad = {
       shop: window.Shopify.shop,

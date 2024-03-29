@@ -18,6 +18,7 @@ import {
 } from "@shopify/polaris";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import isEqual from "lodash/isEqual";
 import { useAuthenticatedFetch } from "../hooks";
 import { useState, useCallback, useEffect } from "react";
 import noImage from "../assets/noImage.jpeg";
@@ -38,7 +39,9 @@ function DiscountsManagement() {
   const [selected, setSelected] = useState(0);
   const [discounts, setDiscounts] = useState([]);
   const [products, setProducts] = useState([]);
+  const [APIresponse, setAPIresponse] = useState([]);
   const [discountProducts, setDiscountProducts] = useState([]);
+  const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
   const [pagination, setPagination] = useState({
     hasNextPage: false,
     hasPreviousPage: false,
@@ -243,6 +246,7 @@ function DiscountsManagement() {
       }
     }
     setDiscountProducts(product_data);
+    // setAPIresponse(APIresponse);
   };
 
   // TO PREVENT CLICK EVENT OF CHECKBOX ON COMBOBOX
@@ -266,8 +270,16 @@ function DiscountsManagement() {
   useEffect(() => {
     // get data from the database after call product api
     getDiscountsDetails();
+  }, [APIresponse]);
+
+  useEffect(() => {
     getPriceRules();
   }, []);
+
+  // TO ENABLE OR DISABLE SAVE BUTTON
+  useEffect(() => {
+    setIsSaveButtonDisabled(isEqual(discountProducts, APIresponse));
+  }, [discountProducts, APIresponse]);
 
   // INIT API
   const getData = async (discountData) => {
@@ -331,7 +343,7 @@ function DiscountsManagement() {
     }
   };
 
-  // GET DATA FROM THE DATABSE
+  // GET DATA FROM THE DATABASE
   const getDiscountsDetails = async () => {
     setLoading(true);
     await axios
@@ -339,16 +351,26 @@ function DiscountsManagement() {
         shop: shop_url,
       })
       .then((response) => {
-        // console.log(response.data.data.shop_data);
         setDiscountProducts(response.data.data.shop_data);
         setLoading(false);
+        // Set APIresponse only when fetching data initially
+        if (APIresponse.length === 0) {
+          setAPIresponse(response.data.data.shop_data);
+        }
 
         // CALL PRODUCT GQL API
         getData(response.data.data.shop_data);
+      })
+      .catch((error) => {
+        console.error(
+          "An error occurred while fetching Discounts Details:",
+          error
+        );
+        setLoading(false);
       });
   };
 
-  // SAVE DATA IN THE DATABSE
+  // SAVE DATA IN THE DATABASE
   const handleSave = async () => {
     setQueryValue("");
     setMode();
@@ -362,8 +384,9 @@ function DiscountsManagement() {
       })
       .then(async (response) => {
         await getData(response.data.data.shop_data);
-        await setDiscountProducts(response.data.data.shop_data);
 
+        await setDiscountProducts(response.data.data.shop_data);
+        await setAPIresponse(response.data.data.shop_data);
         toast.info("Data saved successfully !", {
           position: "bottom-center",
           autoClose: 5000,
@@ -608,7 +631,7 @@ function DiscountsManagement() {
                   alignItems: "center",
                   paddingLeft: "1rem",
                   paddingRight: "1rem",
-                  background: "#fff",
+                  background: isSaveButtonDisabled ? "#fff" : "#000000",
                   transition: "background 0.5s ease-out 0s",
                 }}
               >
@@ -620,15 +643,18 @@ function DiscountsManagement() {
                   <p
                     className="fullscreenbar_headertitle"
                     style={{
-                      color: "#000",
+                      color: isSaveButtonDisabled ? "#000" : "#fff",
                     }}
                   >
-                    Discount Management
+                    {isSaveButtonDisabled
+                      ? "Discount Management"
+                      : "Unsaved Changes"}
                   </p>
                 </div>
                 <ButtonGroup>
                   <Button
                     variant="primary"
+                    disabled={isSaveButtonDisabled}
                     onClick={handleSave}
                     loading={loading}
                   >

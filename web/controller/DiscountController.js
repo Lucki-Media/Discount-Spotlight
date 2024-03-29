@@ -4,7 +4,9 @@ import axios from "axios";
 
 const getDiscountsDetails = async (request, response) => {
   const { shop, accessToken } = request.body;
-  const fetchDiscountsData = await Discounts.find({ shop: shop }).populate({
+  const fetchDiscountsData = await Discounts.find({ shop: shop })
+  .select("-createdAt -updatedAt -__v") // Exclude createdAt, updatedAt, and __v fields (using - (dash) you can exclude some of the files)
+  .populate({
     path: "arrayField",
     options: { strictPopulate: false },
   });
