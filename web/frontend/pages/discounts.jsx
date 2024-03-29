@@ -426,17 +426,21 @@ function DiscountsManagement() {
 
           await setDiscountProducts(response.data.data.shop_data);
           await setAPIresponse(response.data.data.shop_data);
-          toast.info("Data saved successfully !", {
-            position: "bottom-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "dark",
-          });
           setLoading(false);
+          setIsSaveButtonDisabled(true);
+          setTimeout(() => {
+            // To show Toast after loading gets false
+            toast.info("Data saved successfully !", {
+              position: "bottom-center",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "dark",
+            });
+          }, 1000);
         })
         .catch((error) => {
           console.error("Error saving data:", error);
@@ -673,6 +677,7 @@ function DiscountsManagement() {
             callbackClose={() => openRemoveDiscountModal(false)}
             returnSelected={removeDiscountInBulk}
             primaryButtonText="Remove Discounts"
+            planLimitation={planLimitation}
             descriptionNote={`Note: Please select up to ${planLimitation.discountLimit} discount codes for removal from the selected products. The selected discount code will be removed only if it already exist in the list of selected discount codes for a particular product.`}
           />
         )}
@@ -710,7 +715,6 @@ function DiscountsManagement() {
                 </div>
                 <ButtonGroup>
                   <Button
-                    variant="primary"
                     disabled={isSaveButtonDisabled}
                     onClick={handleSave}
                     loading={loading}

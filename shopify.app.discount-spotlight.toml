@@ -3,7 +3,7 @@
 name = "Discount Spotlight"
 client_id = "84c340413d584409f4055aea77e7b477"
 application_url = "https://pig-striking-snipe.ngrok-free.app"
-embedded = true
+embedded = true 
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes

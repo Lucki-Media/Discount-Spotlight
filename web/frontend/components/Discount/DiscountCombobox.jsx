@@ -14,6 +14,7 @@ function DiscountCombobox(props) {
   const deselectedOptions = useMemo(() => props.discounts, []);
   // console.log(deselectedOptions);
   const [selectedOptions, setSelectedOptions] = useState(props.selectedOptions);
+  const [initFlag, setInitFlag] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [options, setOptions] = useState(deselectedOptions);
 
@@ -121,13 +122,17 @@ function DiscountCombobox(props) {
       : null;
 
   // callback whenever selected option changes
-  // useEffect(() => {
-  //   props.discountCallback(props.product_id, selectedOptions);
-  // }, [selectedOptions]);
+  useEffect(() => {
+    // use initFlag to prevent Unsaved changesbar display issue on init 
+    if (initFlag) {
+      props.discountCallback(props.product_id, selectedOptions);
+    }
+    setInitFlag(true);
+  }, [selectedOptions]);
 
-  // useEffect(() => {
-  //   setSelectedOptions(props.selectedOptions);
-  // }, []);
+  useEffect(() => {
+    setSelectedOptions(props.selectedOptions);
+  }, [props.selectedOptions]);
 
   return (
     <>
