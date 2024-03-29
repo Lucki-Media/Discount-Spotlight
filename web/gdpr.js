@@ -1,4 +1,5 @@
 import { DeliveryMethod } from "@shopify/shopify-api";
+import Charge from "./db/models/Charges.js";
 
 /**
  * @type {{[key: string]: import("@shopify/shopify-api").WebhookHandler}}
@@ -83,4 +84,23 @@ export default {
       // }
     },
   },
+<<<<<<< HEAD
+=======
+  APP_UNINSTALLED: {
+    deliveryMethod: DeliveryMethod.Http,
+    callbackUrl: "/api/webhooks",
+    callback: async (topic, shop, body, webhookId) => {
+      const payload = JSON.parse(body);
+      console.log('APP UNINSTALLED CALLED ');
+      console.log(shop);
+      // Update Database for the store Charges
+      await Charge.updateMany(
+        { shop: shop, status: "active" }, // Filter
+        { $set: { status: "cancelled" } } // Update
+      );
+
+      
+    },
+  },
+>>>>>>> origin/dev
 };

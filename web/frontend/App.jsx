@@ -31,12 +31,12 @@ export default function App() {
                   destination: "/customization",
                 },
                 {
-                  label: "FAQs",
-                  destination: "/faqs",
+                  label: "Pricing Plans",
+                  destination: "/pricingPlans",
                 },
                 {
-                  label: "Test",
-                  destination: "/test",
+                  label: "FAQs",
+                  destination: "/faqs",
                 },
               ]}
             />

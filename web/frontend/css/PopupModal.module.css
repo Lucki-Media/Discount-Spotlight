@@ -1,280 +1,278 @@
 .onclick-popup {
-    /* border-top: 30px solid #000000; */
-    border-radius: 10px;
-    background: #cccccc5e;
-    /* padding: 50px; */
+  /* border-top: 30px solid #000000; */
+  border-radius: 10px;
+  background: #cccccc5e;
+  /* padding: 50px; */
 }
-.PreviewTopbar{
-    height: 38px;
-    padding: 12px;
-    display: flex;
-    background-color:#000;
-    border-radius: 10px 10px 0 0;
+.PreviewTopbar {
+  height: 38px;
+  padding: 12px;
+  display: flex;
+  background-color: #000;
+  border-radius: 10px 10px 0 0;
 }
 .pagewidth {
-    margin: 0 auto;
-    padding: 20px;
-    max-width: 1300px;
+  margin: 0 auto;
+  padding: 20px;
+  max-width: 1300px;
 }
 
 .ds_product_details {
-    width: 100%;
-
+  width: 100%;
 }
 
 .ds_product_details_main {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .ds_product_details_main .product_image img {
-    border: 1px solid #Dfdfdf;
-    border-radius: 5px;
-    width: 100%;
-    margin: 0 auto;
+  border: 1px solid #dfdfdf;
+  border-radius: 5px;
+  width: 100%;
+  margin: 0 auto;
 }
 
-
 .onclick-popup .icon-with-text {
-    display: flex;
-    align-items: center;
-    text-align: center;
-    margin: 0 0 10px 0;
+  display: inline-flex;
+  align-items: center;
+  text-align: center;
+  margin: 0 0 10px 0;
+  line-height: normal;
 }
 
 .p_details {
-    margin-left: 50px;
+  margin-left: 50px;
 }
 
 .p_details p {
-    font-family: 'Inter', sans-serif;
-    font-size: 14px;
-    font-weight: 500;
-    color: #1C1D1D;
-    margin: 0 0 10px 0;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #1c1d1d;
+  margin: 0 0 10px 0;
 }
 
 .p_details h2 {
-    font-family: 'Inter', sans-serif;
-    font-size: 30px;
-    font-weight: 700;
-    color: #1C1D1D;
-    margin: 0 0 10px 0;
+  font-family: "Inter", sans-serif;
+  font-size: 30px;
+  font-weight: 700;
+  color: #1c1d1d;
+  margin: 0 0 10px 0;
 }
 
 .p_details h3 {
-    font-family: 'Inter', sans-serif;
-    font-size: 18px;
-    font-weight: 500;
-    color: #1C1D1D;
-    margin: 0 0 5px 0;
-
+  font-family: "Inter", sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  color: #1c1d1d;
+  margin: 0 0 5px 0;
 }
 
 .p_details .quantity_btns span {
-    font-family: 'Inter', sans-serif;
-    font-size: 14px;
-    font-weight: 400;
-    color: #1C1D1D;
-    margin: 0 0 5px;
-    display: block;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #1c1d1d;
+  margin: 0 0 10px;
+  display: block;
 }
 
 .quantity_numbers {
-    display: flex;
-    border: 1px solid #1C1D1D;
-    padding: 5px;
-    border-radius: 3px;
-    max-width: 80px;
-    justify-content: center;
+  display: flex;
+  border: 1px solid #1c1d1d;
+  padding: 5px;
+  border-radius: 3px;
+  max-width: 80px;
+  justify-content: center;
 }
 
 .quantity_numbers .numbers {
-    margin: 0 20px;
+  margin: 0 20px;
 }
 
 .addtocartbtn {
-    max-width: 400px;
-    background: #000;
-    color: #fff;
-    text-align: center;
-    border-radius: 5px;
-    padding: 10px 5px 10px 5px;
-    font-size: 18px;
-    font-weight: 500;
-    font-family: 'Inter', sans-serif;
-    text-decoration: none;
-    display: block;
-    margin: 20px 0 20px 0;
+  max-width: 400px;
+  background: #000;
+  color: #fff;
+  text-align: center;
+  border-radius: 5px;
+  padding: 10px 5px 10px 5px;
+  font-size: 18px;
+  font-weight: 500;
+  font-family: "Inter", sans-serif;
+  text-decoration: none;
+  display: block;
+  margin: 20px 0 20px 0;
 }
 
 .buynowbtn {
-    max-width: 400px;
-    background: transparent;
-    color: #1C1D1D;
-    text-align: center;
-    border: 1px solid #1C1D1D;
-    border-radius: 5px;
-    padding: 10px 5px 10px 5px;
-    font-size: 18px;
-    font-weight: 500;
-    font-family: 'Inter', sans-serif;
-    text-decoration: none;
-    display: block;
-    margin: 0px 0 20px 0;
+  max-width: 400px;
+  background: transparent;
+  color: #1c1d1d;
+  text-align: center;
+  border: 1px solid #1c1d1d;
+  border-radius: 5px;
+  padding: 10px 5px 10px 5px;
+  font-size: 18px;
+  font-weight: 500;
+  font-family: "Inter", sans-serif;
+  text-decoration: none;
+  display: block;
+  margin: 0px 0 20px 0;
 }
 
 .product_content {
-    max-width: 700px;
-    font-family: 'Inter', sans-serif;
-    font-size: 14px;
-    color: #1C1D1D;
-    line-height: 25px;
+  max-width: 700px;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  color: #1c1d1d;
+  line-height: 25px;
 }
 
 .onclick-popup .bgimage img {
-    width: 100%;
+  width: 100%;
 }
 
+.onclick-popup .on-click {
+  display: flex;
+}
 .onclick-popup .on-click a {
-    color: #000000;
-    font-size: 18px;
-    font-family: 'Inter', sans-serif;
-    font-weight: 500;
-    text-decoration: none;
-    padding: 0;
-    margin: 0px 0 0 10px;
-    cursor: pointer;
-
+  color: #000000;
+  font-size: 18px;
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  text-decoration: none;
+  padding: 0;
+  margin: 0px 0 0 10px;
+  cursor: pointer;
+  text-transform: uppercase;
+  line-height: normal;
 }
 
 .modal-content .popup-heading {
-    background-color: #fff;
-    border-radius: 8px 8px 0 0;
-    color: #1C1D1D;
-    font-family: 'Inter', sans-serif;
-    font-size: 18px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: normal;
-    padding: 15px 20px;
-    margin-bottom: 1px;
-
+  background-color: #fff;
+  border-radius: 8px 8px 0 0;
+  color: #1c1d1d;
+  font-family: "Inter", sans-serif;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  padding: 15px 20px;
+  margin-bottom: 1px;
 }
 
 .onclick-popup .modal-overlay {
-    /* position: fixed; */
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    /* background: rgba(0, 0, 0, 0.5); */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1;
-    padding:70px 0;
+  /* position: fixed; */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* background: rgba(0, 0, 0, 0.5); */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+  padding: 70px 0;
 }
 
 .onclick-popup .modal-content {
-    position: relative;
-    background: #F4F4F5;
-    border-radius: 8px;
-    width:50%;
-    min-height: 70%;
+  position: relative;
+  background: #f4f4f5;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 550px;
+  margin: 15px;
+  min-height: 70%;
 }
 
 .onclick-popup .close-btn {
-    cursor: pointer;
-    position: absolute;
-    top: 16px;
-    right: 20px;
-
+  cursor: pointer;
+  position: absolute;
+  top: 16px;
+  right: 20px;
 }
 
 .popupcoupon {
-    background-color: #fff;
-    margin: 0 0 10px;
-    padding: 15px 20px;
+  background-color: #fff;
+  margin: 0 0 10px;
+  padding: 15px 20px;
 }
 
 .popup_couponcode {
-    border: 0.5px dashed #000000;
-    color: #000000;
-    padding: 5px;
-    max-width: fit-content;
-    text-align: center;
-    padding: 5px;
-    margin-bottom: 15px;
-    font-size: 10px;
-    font-family: 'Inter', sans-serif;
-    font-weight: 600;
-    background-color: #fff;
-    cursor: pointer;
+  border: 0.5px dashed #000000;
+  color: #000000;
+  padding: 5px;
+  max-width: fit-content;
+  text-align: center;
+  padding: 5px;
+  margin-bottom: 15px;
+  font-size: 10px;
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  background-color: #fff;
+  cursor: pointer;
 }
 
 .popup_couponcode-details {
-    color: #1C1D1D;
-    font-family: 'Inter', sans-serif;
-    font-size: 10px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    display: block;
+  color: #1c1d1d;
+  font-family: "Inter", sans-serif;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  display: block;
 }
 
 .popup_couponcode-details span {
-    display: block;
-    padding: 0 0 5px;
-
+  display: block;
+  padding: 0 0 5px;
 }
 
-
 @media (max-width: 991.98px) {
-    .ds_product_details_main {
-        display: block;
+  .ds_product_details_main {
+    display: block;
+  }
 
-    }
+  .ds_product_details_main .product_image img {
+    display: block;
+    width: 80%;
+    text-align: center;
+  }
 
-    .ds_product_details_main .product_image img {
-        display: block;
-        width: 80%;
-        text-align: center;
-    }
+  .ds_product_details_main .product_image {
+    margin: 0 0 50px 0;
+  }
 
-    .ds_product_details_main .product_image {
-        margin: 0 0 50px 0;
-    }
-
-    .p_details {
-        margin: 0 auto;
-        width: 80%;
-    }
+  .p_details {
+    margin: 0 auto;
+    width: 80%;
+  }
 }
 /* COUPONCODE TOOLTIP */
 .popup_couponcode {
-    position: relative;
-  }
-  
-  .tooltip {
-    position: absolute;
-    top: 50%;
-    left: 100%; /* Position the tooltip to the right of the coupon code */
-    transform: translateY(-50%);
-    padding: 8px;
-    background-color: #333;
-    color: #fff;
-    border-radius: 4px;
-    font-size: 12px;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-    width: max-content;
-    margin: 0 5px ;
-  }
-  
-  .popup_couponcode:hover .tooltip {
-    opacity: 1;
-    visibility: visible;
-  }
-  
+  position: relative;
+}
+
+.tooltip {
+  position: absolute;
+  top: 50%;
+  left: 100%; /* Position the tooltip to the right of the coupon code */
+  transform: translateY(-50%);
+  padding: 8px;
+  background-color: #333;
+  color: #fff;
+  border-radius: 4px;
+  font-size: 12px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  width: max-content;
+  margin: 0 5px;
+}
+
+.popup_couponcode:hover .tooltip {
+  opacity: 1;
+  visibility: visible;
+}

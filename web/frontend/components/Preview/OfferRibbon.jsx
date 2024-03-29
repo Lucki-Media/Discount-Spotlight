@@ -57,24 +57,27 @@ export default function OfferRibbon(props) {
             <div className={style.offer_ribbon_product_main}>
               <div className={style.offer_ribbon_product_image}>
                 <img src={placeholder} alt="" />
-                <div
-                  className={`${style.discount_tag} DS__After_Discount_tag`}
-                  style={{
-                    color:
-                      props.json_style_data.offer_ribbon_settings.textColor,
-                    background:
-                      props.json_style_data.offer_ribbon_settings.bgColor,
-                    fontSize:
-                      props.json_style_data.offer_ribbon_settings.fontSize,
-                    [props.json_style_data.offer_ribbon_settings.position ===
-                    "top"
-                      ? "top"
-                      : "bottom"]:
-                      props.json_style_data.offer_ribbon_settings.offset,
-                  }}
-                >
-                  2 Special Discounts
-                </div>
+                {props.json_style_data.offer_ribbon_settings.enable ===
+                  true && (
+                  <div
+                    className={`${style.discount_tag} DS__After_Discount_tag`}
+                    style={{
+                      color:
+                        props.json_style_data.offer_ribbon_settings.textColor,
+                      background:
+                        props.json_style_data.offer_ribbon_settings.bgColor,
+                      fontSize:
+                        props.json_style_data.offer_ribbon_settings.fontSize,
+                      [props.json_style_data.offer_ribbon_settings.position ===
+                      "top"
+                        ? "top"
+                        : "bottom"]:
+                        props.json_style_data.offer_ribbon_settings.offset,
+                    }}
+                  >
+                    2 Special Discounts
+                  </div>
+                )}
               </div>
 
               <div className={style.offer_ribbon_product_brandname}>
@@ -84,7 +87,7 @@ export default function OfferRibbon(props) {
                 Men Treadgryp Printed Sneakers
               </div>
               <div className={style.offer_ribbon_product_price}>
-                Rs. 2000.00 IND
+                $2000.00 
               </div>
             </div>
           </div>

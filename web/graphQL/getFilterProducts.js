@@ -1,7 +1,7 @@
 import { GraphqlQueryError } from "@shopify/shopify-api";
 import shopify from "../shopify.js";
 
-export default async function getNextPageProducts(data) {
+export default async function getFilterProducts(data) {
   var { session, first, searchValue } = data;
   first = Number(first);
   const client = new shopify.api.clients.Graphql({ session });

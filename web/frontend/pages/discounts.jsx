@@ -31,6 +31,13 @@ function DiscountsManagement() {
   const shop_url = document.getElementById("shopOrigin").value;
   const appFetch = useAuthenticatedFetch();
 
+<<<<<<< HEAD
+=======
+  const [planLimitation, setPlanLimitation] = useState({
+    productLimit: 10,
+    discountLimit: 3,
+  });
+>>>>>>> origin/dev
   const [queryValue, setQueryValue] = useState("");
   const [filterLoading, setfilterLoading] = useState(false);
   const [addDiscountModal, openAddDiscountModal] = useState(false);
@@ -98,7 +105,13 @@ function DiscountsManagement() {
         if (productIndex !== -1) {
           // if product exist in updatedProductsCopy && not reached at limit and discount not add then add it
           if (
+<<<<<<< HEAD
             updatedProductsCopy[productIndex].discounts.length < 3 &&
+=======
+            (updatedProductsCopy[productIndex].discounts.length <
+              planLimitation.discountLimit ||
+              planLimitation.discountLimit === -1) &&
+>>>>>>> origin/dev
             !updatedProductsCopy[productIndex].discounts.includes(discountCode)
           ) {
             updatedProductsCopy[productIndex].discounts.push(discountCode);
@@ -274,6 +287,10 @@ function DiscountsManagement() {
 
   useEffect(() => {
     getPriceRules();
+<<<<<<< HEAD
+=======
+    getActivePlanLimitations();
+>>>>>>> origin/dev
   }, []);
 
   // TO ENABLE OR DISABLE SAVE BUTTON
@@ -316,6 +333,24 @@ function DiscountsManagement() {
       }
     } catch (error) {
       console.error("An error occurred while fetching Products:", error);
+    }
+  };
+
+  // API CALL TO GET ACTIVE PLAN DETAIL
+  const getActivePlanLimitations = async () => {
+    setLoading(true);
+    const response = await appFetch(
+      `/api/getActivePlanLimitations?shop=${shop_url}`,
+      {
+        shop: shop_url,
+      }
+    );
+    if (response.ok) {
+      const responseData = await response.json();
+      // console.log("responseData");
+      // console.log(responseData.data);
+      setPlanLimitation(responseData.data);
+      setLoading(false);
     }
   };
 
@@ -375,6 +410,7 @@ function DiscountsManagement() {
     setQueryValue("");
     setMode();
     clearSelection(); // To clear the data store merchant has selected
+<<<<<<< HEAD
     setLoading(true);
 
     await axios
@@ -388,6 +424,55 @@ function DiscountsManagement() {
         await setDiscountProducts(response.data.data.shop_data);
         await setAPIresponse(response.data.data.shop_data);
         toast.info("Data saved successfully !", {
+=======
+
+    // Check how many products has non-empty discounts
+    let count = 0;
+    for (const item of discountProducts) {
+      if (item.discounts.length > 0) {
+        count++; // Increment the count if discounts array is not empty
+      }
+    }
+
+    if (
+      count <= planLimitation.productLimit ||
+      planLimitation.productLimit === -1
+    ) {
+      // merchant has not reached at the limit
+      setLoading(true);
+
+      await axios
+        .post("/api/saveDiscountsDetails", {
+          shop: shop_url,
+          data: discountProducts,
+        })
+        .then(async (response) => {
+          await getData(response.data.data.shop_data);
+
+          await setDiscountProducts(response.data.data.shop_data);
+          await setAPIresponse(response.data.data.shop_data);
+          toast.info("Data saved successfully !", {
+            position: "bottom-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+          });
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error("Error saving data:", error);
+          setLoading(false);
+        });
+    } else {
+      // they have selected more then the limitations, so they can not save the data
+      toast.error(
+        `You can select up to ${planLimitation.productLimit} products only!`,
+        {
+>>>>>>> origin/dev
           position: "bottom-center",
           autoClose: 5000,
           hideProgressBar: false,
@@ -396,6 +481,7 @@ function DiscountsManagement() {
           draggable: true,
           progress: undefined,
           theme: "dark",
+<<<<<<< HEAD
         });
         setLoading(false);
       })
@@ -403,6 +489,11 @@ function DiscountsManagement() {
         console.error("Error saving data:", error);
         setLoading(false);
       });
+=======
+        }
+      );
+    }
+>>>>>>> origin/dev
   };
 
   // FILTER PRODUCT API & PAGINATION START
@@ -582,6 +673,10 @@ function DiscountsManagement() {
             discounts={discounts}
             selectedOptions={node.discounts}
             discountCallback={handleDiscountCallback}
+<<<<<<< HEAD
+=======
+            planLimitation={planLimitation}
+>>>>>>> origin/dev
           />
         </div>
       </IndexTable.Cell>
@@ -601,8 +696,14 @@ function DiscountsManagement() {
             } product(s)`}
             callbackClose={() => openAddDiscountModal(false)}
             returnSelected={addDiscountInBulk}
+<<<<<<< HEAD
             primaryButtonText="Add Discounts"
             descriptionNote="Note: Please select up to 3 discount codes to add to the selected products. The selected discount code will be added only if it does not already exist in the list of selected discount codes for a particular product, and the list has not reached its limit."
+=======
+            planLimitation={planLimitation}
+            primaryButtonText="Add Discounts"
+            descriptionNote={`Note: Please select up to ${planLimitation.discountLimit} discount codes to add to the selected products. The selected discount code will be added only if it does not already exist in the list of selected discount codes for a particular product, and the list has not reached its limit.`}
+>>>>>>> origin/dev
           />
         )}
 
@@ -616,7 +717,11 @@ function DiscountsManagement() {
             callbackClose={() => openRemoveDiscountModal(false)}
             returnSelected={removeDiscountInBulk}
             primaryButtonText="Remove Discounts"
+<<<<<<< HEAD
             descriptionNote="Note: Please select up to 3 discount codes for removal from the selected products. The selected discount code will be removed only if it already exist in the list of selected discount codes for a particular product."
+=======
+            descriptionNote={`Note: Please select up to ${planLimitation.discountLimit} discount codes for removal from the selected products. The selected discount code will be removed only if it already exist in the list of selected discount codes for a particular product.`}
+>>>>>>> origin/dev
           />
         )}
 

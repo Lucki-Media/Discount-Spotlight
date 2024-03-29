@@ -1,0 +1,17 @@
+{% schema %}
+{
+  "name": "DS Discount Label",
+  "target": "section",
+  "settings": [],
+  "javascript": "DL_bundle.js",
+  "enabled_on": {
+    "templates": ["product"],
+    "groups": ["aside"]
+  }
+}
+{% endschema %}
+
+{% comment %} Created LM div with unique classname where Discount label can be shown {% endcomment %}
+<div class="lm_ds_discount_label_q78er" id="{{ product.id | escape }}" style="display:inline-block;"></div>
+
+{% comment %} <script>console.log("Product id is {{ product.id | escape }}");</script> {% endcomment %}

@@ -16,7 +16,6 @@ export function AppBridgeProvider({ children }) {
   const location = useLocation();
   const navigate = useNavigate();
   const SHOPIFY_API_KEY = import.meta.env.VITE_REACT_APP_SHOPIFY_API_KEY;
-  
   const history = useMemo(
     () => ({
       replace: (path) => {

@@ -1,0 +1,76 @@
+.offer_ribbon_product {
+    border-top: 30px solid #000000;
+    border-radius: 10px;
+    background: #cccccc5e;
+    padding: 60px;
+}
+
+.pagewidth_ribbon {
+    margin: 0 auto;
+    padding: 20px;
+    max-width: 400px;
+    background: white;
+}
+
+.offer_ribbon_product_image {
+    position: relative;
+}
+
+.offer_ribbon_product_image img {
+    border: 1px solid #Dfdfdf;
+    border-radius: 5px;
+    width: 100%;
+    margin: 0 auto;
+    max-width: 360px;
+
+}
+
+.offer_ribbon_product_brandname {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: #1C1D1D;
+    margin: 10px 0 10px 0;
+}
+
+.offer_ribbon_product_name {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: #535766;
+    margin: 10px 0 10px 0;
+}
+
+.offer_ribbon_product_price {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: #1C1D1D;
+    margin: 10px 0 10px 0;
+}
+
+.discount_tag {
+    background: rgb(161 0 0);
+    margin-left: -10px;
+    position: absolute;
+    text-transform: uppercase;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    z-index: 1;
+    padding: 0 4px;
+    line-height: 24px;
+}
+
+.discount_tag::after {
+
+    content: "";
+    position: absolute;
+    border-color: rgb(161 0 0 / .5) transparent rgb(161 0 0 / .5) rgb(161 0 0);
+    border-style: solid;
+    border-width: 12px;
+    left: 100%;
+    width: 0;
+    height: 0;
+    top: 0;
+}
