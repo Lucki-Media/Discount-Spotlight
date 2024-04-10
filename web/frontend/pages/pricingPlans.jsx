@@ -41,7 +41,7 @@ export default function pricingPlans() {
       id: 3,
       status: "Upgrade",
       plan_name: "Premium Plan",
-      price: 50.99,
+      price: 14.99,
     },
   ]);
 
@@ -217,12 +217,13 @@ export default function pricingPlans() {
                             <h4 className="price">Free</h4>
                           </div>
                           <ul className="features">
-                            <li className="true">All Basic Features</li>
+                            <li className="true">All Customization Features</li>
+                            <li className="true">Bulk Action Features</li>
                             <li className="true">
-                              <b>10</b> products
+                              Showcase Discounts upto <b>10</b> Products
                             </li>
                             <li className="true">
-                              <b>3</b> discount
+                              Customize upto <b>3</b> discounts per Product
                             </li>
                             {/* <li className="true">Email support</li>
                           <li className="false">Unbranded</li> */}
@@ -257,12 +258,13 @@ export default function pricingPlans() {
                             <h4 className="price">$5.99/month</h4>
                           </div>
                           <ul className="features">
-                            <li className="true">All Basic Features</li>
+                            <li className="true">All Customization Features</li>
+                            <li className="true">Bulk Action Features</li>
                             <li className="true">
-                              <b>50</b> products
+                              Showcase Discounts upto <b>50</b> Products
                             </li>
                             <li className="true">
-                              <b>5</b> discount
+                              Customize upto <b>5</b> discounts per Product
                             </li>
                             {/* <li className="true">Silver support</li>
                           <li className="true">Unbranded</li> */}
@@ -294,15 +296,17 @@ export default function pricingPlans() {
                           </div>
                           <div className="price-box">
                             <div className="title">Premium Plan</div>
-                            <h4 className="price">$50.99/month</h4>
+                            <h4 className="price">$14.99/month</h4>
                           </div>
                           <ul className="features">
-                            <li className="true">All Basic Features</li>
+                            <li className="true">All Customization Features</li>
+                            <li className="true">Bulk Action Features</li>
                             <li className="true">
-                              <b>unlimited</b> products
+                              Showcase Discounts upto <b>unlimited</b> Products
                             </li>
                             <li className="true">
-                              <b>unlimited</b> discounts
+                              Customize upto <b>unlimited</b> discounts per
+                              Product
                             </li>
                             {/* <li className="true">Gold support</li>
                           <li className="true">Unbranded</li> */}

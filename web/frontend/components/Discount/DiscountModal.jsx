@@ -2,7 +2,7 @@ import {
   Button,
   Modal,
   LegacyStack,
-  TextContainer,
+  Scrollable,
   Frame,
   TextField,
   Icon,
@@ -40,23 +40,29 @@ function DiscountModal(props) {
   // console.log(selected);
   const handleSelected = useCallback(
     (value) => {
-      if (selected.length < props.planLimitation.discountLimit || props.planLimitation.discountLimit === -1) {
+      if (
+        selected.length < props.planLimitation.discountLimit ||
+        props.planLimitation.discountLimit === -1
+      ) {
         setSelected(value);
       } else {
         const slicedArray = value.slice(-props.planLimitation.discountLimit);
         if (slicedArray.length !== props.planLimitation.discountLimit) {
           setSelected(slicedArray);
         } else {
-          toast.error(`You can select up to ${props.planLimitation.discountLimit} options only!`, {
-            position: "bottom-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "dark",
-          });
+          toast.error(
+            `You can select up to ${props.planLimitation.discountLimit} options only!`,
+            {
+              position: "bottom-center",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "dark",
+            }
+          );
         }
       }
 
@@ -117,16 +123,18 @@ function DiscountModal(props) {
 
               {/* Discount Option List */}
               <LegacyStack.Item>
-                <OptionList
-                  onChange={handleSelected}
-                  sections={[
-                    {
-                      options: options,
-                    },
-                  ]}
-                  selected={selected}
-                  allowMultiple
-                />
+                <Scrollable shadow style={{ height: "250px" }} focusable>
+                  <OptionList
+                    onChange={handleSelected}
+                    sections={[
+                      {
+                        options: options,
+                      },
+                    ]}
+                    selected={selected}
+                    allowMultiple
+                  />
+                </Scrollable>
               </LegacyStack.Item>
 
               {/* Description Notes */}

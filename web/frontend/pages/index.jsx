@@ -103,7 +103,7 @@ export default function HomePage() {
         </Banner>
 
         {/* VIDEO BANNER */}
-        {/* <div style={{ padding: "20px 0" }}>
+        <div style={{ padding: "20px 0" }}>
           <Card sectioned>
             <div style={{ paddingBottom: 10 }}>
               <Text variant="headingMd" as="h6">
@@ -123,7 +123,7 @@ export default function HomePage() {
               </p>
             </Banner>
           </Card>
-        </div> */}
+        </div>
 
         {/* REDIRECTION BANNERS */}
         <div style={{ padding: "20px 0" }}>

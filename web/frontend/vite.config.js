@@ -15,7 +15,7 @@ if (
 }
 
 const proxyOptions = {
-  target: `http://127.0.0.1:${process.env.BACKEND_PORT}`,
+  target: `https://nodejs.luckimediadevelopment.com:${process.env.BACKEND_PORT}`,
   changeOrigin: false,
   secure: true,
   ws: false,

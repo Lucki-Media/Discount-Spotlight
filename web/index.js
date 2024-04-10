@@ -24,6 +24,8 @@ import Customization from "./db/models/Customizations.js";
 import Charge from "./db/models/Charges.js";
 import { json_style_data } from "./frontend/Static/General_settings.js";
 import ProductDiscount from "./db/models/Discounts.js";
+import crypto from "crypto";
+import bodyParser from "body-parser";
 
 const PORT = parseInt(
   process.env.BACKEND_PORT || process.env.PORT || "3000",
@@ -37,17 +39,6 @@ const STATIC_PATH =
     : `${process.cwd()}/web/frontend/`;
 
 const app = express();
-app.post(
-  shopify.config.webhooks.path,
-  shopify.processWebhooks({ webhookHandlers: GDPRWebhookHandlers })
-);
-app.use(express.json());
-app.use(cors());
-// router.get("/shopify_session_data", DashBoardController.shopifySessions);
-app.use("/", shopifySessionRoute);
-app.use("/", discountRoute);
-app.use("/", customizationRoute);
-app.use("/", countRoute);
 
 // Set up Shopify authentication and webhook handling
 app.get(shopify.config.auth.path, shopify.auth.begin());
@@ -57,13 +48,73 @@ app.get(
   shopify.redirectToShopifyOrAppRoot()
 );
 
-// Enable CORS only for specific routes
-app.use("/api/*", cors());
+// // Middleware to verify all webhooks call from Shopify
+// async function verifyShopifyWebhooks(req, res, next) {
+//   const hmac = req.query.hmac;
+
+//   if (!hmac) {
+//     return res.status(401).send("Webhook must originate from Shopify!");
+//   }
+
+//   const genHash = crypto
+//     .createHmac("sha256", process.env.SHOPIFY_API_SECRET)
+//     .update(req.body, "utf8", "hex")
+//     .digest("base64");
+
+//   if (genHash !== hmac) {
+//     return res.status(401).send("Couldn't verify incoming Webhook request!");
+//   }
+
+//   next();
+// }
+// app.use(verifyShopifyWebhooks);
+
+app.post(
+  shopify.config.webhooks.path,
+  shopify.processWebhooks({ webhookHandlers: GDPRWebhookHandlers })
+);
+
+// Middleware to capture raw body
+// app.use(
+//   shopify.config.webhooks.path,
+//   bodyParser.raw({ type: "application/json" }),
+//   async (req, res, next) => {
+//     const hmac = req.headers["x-shopify-hmac-sha256"];
+
+//     const genHash = crypto
+//       .createHmac("sha256", process.env.SHOPIFY_API_SECRET)
+//       .update(req.body, "utf8", "hex")
+//       .digest("base64");
+
+//     console.log(hmac);
+//     console.log(genHash);
+
+//     if (genHash !== hmac) {
+//       return res.status(401).send("Couldn't verify incoming Webhook request!");
+//     }
+
+//     // Now, if you want to use the parsed body later in your app, you can parse it here:
+//     req.body = JSON.parse(req.body);
+//     shopify.processWebhooks({ webhookHandlers: GDPRWebhookHandlers });
+//     next();
+//   }
+// );
+
+app.use(express.json());
+app.use(cors());
+// router.get("/shopify_session_data", DashBoardController.shopifySessions);
+app.use("/", shopifySessionRoute);
+app.use("/", discountRoute);
+app.use("/", customizationRoute);
+app.use("/", countRoute);
 
 // If you are adding routes outside of the /api path, remember to
 // also add a proxy rule for them in web/frontend/vite.config.js
 
 app.use("/api/*", shopify.validateAuthenticatedSession());
+
+// Enable CORS only for specific routes
+app.use("/api/*", cors());
 
 app.get("/api/products/count", async (_req, res) => {
   const countData = await shopify.api.rest.Product.all({
@@ -308,7 +359,7 @@ app.get("/api/updatePricingPlan", async (_req, res) => {
       recurring_application_charge.return_url = `https://admin.shopify.com/store/${_req.query.shop.replace(
         ".myshopify.com",
         ""
-      )}/apps/ds-devlopment/pricingPlans`;
+      )}/apps/${process.env.APP_NAME}/pricingPlans`;
       recurring_application_charge.test = true;
       await recurring_application_charge.save({
         update: true,
@@ -396,7 +447,7 @@ app.get("/api/getPlanData", async (_req, res) => {
         id: 3,
         status: plan_id === 3 ? "Active" : "Upgrade",
         plan_name: "Premium Plan",
-        price: 50.99,
+        price: 14.99,
       },
     ];
 
@@ -489,7 +540,7 @@ app.get("/api/updateCharge", async (_req, res) => {
           id: 3,
           status: plan_id === 3 ? "Active" : "Upgrade",
           plan_name: "Premium Plan",
-          price: 50.99,
+          price: 14.99,
         },
       ];
 
