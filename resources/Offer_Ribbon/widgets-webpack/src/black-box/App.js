@@ -31,7 +31,7 @@ const App = () => {
     // GET MERCHANT DEFINED CLASS FROM DATA RETRIVED FROM DATABASE
     var targetClassString = transferData.offer_ribbon_settings.targetCssClasses;
     var addedProductSelectors =
-      targetClassString !== undefined || targetClassString !== ""
+      targetClassString !== undefined && targetClassString !== ""
         ? targetClassString.replace(/, /g, ",").split(",")
         : [];
 

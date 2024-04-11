@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "license": "UNLICENSED",
-  "proxy": "https://pig-striking-snipe.ngrok-free.app/",
+  "proxy": "https://nodejs.luckimediadevelopment.com/",
   "scripts": {
     "debug": "node --inspect-brk index.js",
     "dev": "cross-env NODE_ENV=development nodemon index.js --ignore ./frontend",

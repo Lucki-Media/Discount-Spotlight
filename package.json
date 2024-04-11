@@ -2,7 +2,7 @@
   "name": "my-node-app",
   "version": "1.0.0",
   "main": "web/index.js",
-  "proxy": "https://pig-striking-snipe.ngrok-free.app/",
+  "proxy": "https://nodejs.luckimediadevelopment.com/",
   "license": "UNLICENSED",
   "scripts": {
     "shopify": "shopify",

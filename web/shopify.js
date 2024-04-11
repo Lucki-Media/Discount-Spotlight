@@ -27,7 +27,7 @@ const billingConfig = {
     test: true,
   },
   "Premium Plan": {
-    amount: 50.99,
+    amount: 14.99,
     currencyCode: "USD",
     trialDays: 0,
     interval: BillingInterval.Every30Days,

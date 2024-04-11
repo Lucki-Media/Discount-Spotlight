@@ -321,7 +321,7 @@ function OfferRibbonSettings(props) {
         <Modal.Section>
           <video controls style={{ width: "100%" }}>
             <source
-              src="https://nodejs.luckimediadevelopment.com/public/target-class-acknowledgement.mp4"
+              src="https://luckistore.in/discount_spotlight/target-class-acknowledgement.mp4"
               type="video/mp4"
             />
             Your browser does not support the video tag.

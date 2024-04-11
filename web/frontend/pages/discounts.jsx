@@ -39,6 +39,7 @@ function DiscountsManagement() {
   const [filterLoading, setfilterLoading] = useState(false);
   const [addDiscountModal, openAddDiscountModal] = useState(false);
   const [removeDiscountModal, openRemoveDiscountModal] = useState(false);
+  const [initFlag, setInitFlag] = useState(true);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState(0);
   const [discounts, setDiscounts] = useState([]);
@@ -144,7 +145,9 @@ function DiscountsManagement() {
         (product) =>
           Number(product.product_id) === Number(current.node.id.match(/\d+/)[0])
       );
-      current.node.discounts = updatedProductsCopy[productIndex].discounts;
+      if (productIndex !== -1) {
+        current.node.discounts = updatedProductsCopy[productIndex].discounts;
+      }
     }
 
     setProducts(currentProducts); // UPDATE CURRENT PRODUCT LIST
@@ -274,8 +277,10 @@ function DiscountsManagement() {
 
   // TO LOAD INIT DATA
   useEffect(() => {
-    // get data from the database after call product api
-    getDiscountsDetails();
+    // use initFlag to prevent Unsaved changesbar display issue on init
+    if (initFlag) {
+      getDiscountsDetails();
+    }
   }, [APIresponse]);
 
   useEffect(() => {
@@ -385,6 +390,7 @@ function DiscountsManagement() {
 
         // CALL PRODUCT GQL API
         getData(response.data.data.shop_data);
+        setInitFlag(false);
       })
       .catch((error) => {
         console.error(
@@ -424,8 +430,8 @@ function DiscountsManagement() {
         .then(async (response) => {
           await getData(response.data.data.shop_data);
 
-          await setDiscountProducts(response.data.data.shop_data);
           await setAPIresponse(response.data.data.shop_data);
+          await setDiscountProducts(response.data.data.shop_data);
           setLoading(false);
           setIsSaveButtonDisabled(true);
           setTimeout(() => {
