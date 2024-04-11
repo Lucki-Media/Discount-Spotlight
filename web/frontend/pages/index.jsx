@@ -84,7 +84,7 @@ export default function HomePage() {
       <Page>
         {/* THEME APP EXTENSION BANNER */}
         <Banner
-          title="How does the app works?"
+          title="Enable Theme App Extension"
           icon={ThemeTemplateIcon}
           action={{
             variant: "primary",
@@ -112,13 +112,15 @@ export default function HomePage() {
             </div>
             <Banner>
               <p>
-                To familiarize yourself with the app's functionality, kindly{" "}
+                To understand the functionality of our app, please watch our
+                instructional video on YouTube:{" "}
                 <a
-                  href="#"
-                  onClick={handleChange}
+                  href="https://youtu.be/GLVe209vpFE"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   style={{ color: "#00527C", fontWeight: 600 }}
                 >
-                  follow this link.{" "}
+                  Watch Video
                 </a>
               </p>
             </Banner>
