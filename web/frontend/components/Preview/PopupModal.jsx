@@ -134,7 +134,7 @@ export default function PopupModal(props) {
                     position: "relative", // Add position property
                   }}
                 >
-                  DISCOUNT_SPORTLIGHT_00{index}
+                  DISCOUNT_DAZZLE_00{index}
                   <span className={style["tooltip"]}>
                     {copiedText !== null
                       ? `Copied: ${copiedText}`
