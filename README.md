@@ -1,1 +1,1 @@
-# Discount-Spotlight
+# LM Discount Dazzle

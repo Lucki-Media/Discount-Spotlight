@@ -95,9 +95,7 @@ export default {
       await Charge.updateMany(
         { shop: shop, status: "active" }, // Filter
         { $set: { status: "cancelled" } } // Update
-      );
-
-      
+      ); 
     },
   },
 };

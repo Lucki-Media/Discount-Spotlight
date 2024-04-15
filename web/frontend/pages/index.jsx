@@ -76,7 +76,7 @@ export default function HomePage() {
                 flexGrow: 1,
               }}
             >
-              <p className="fullscreenbar_headertitle">Spotlight Dashboard</p>
+              <p className="fullscreenbar_headertitle">Dazzling Dashboard</p>
             </div>
           </div>
         </FullscreenBar>

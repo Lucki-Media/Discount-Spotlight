@@ -1,7 +1,7 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
 client_id = "77ab0f117b5c21f97449cc51920fad19"
-name = "Discount Spotlight"
+name = "LM Discount Dazzle"
 application_url = "https://nodejs.luckimediadevelopment.com"
 embedded = true
 
