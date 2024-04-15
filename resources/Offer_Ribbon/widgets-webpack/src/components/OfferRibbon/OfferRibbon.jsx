@@ -31,13 +31,11 @@ const OfferRibbon = (props) => {
   };
 
   // check if the badge is created for detailed product on Product Detail Page
-  var isProductDetailPage_Product =
-    window.meta && window.meta.product !== undefined
-      ? window.location.href
-          .substring(window.location.href.lastIndexOf("/"))
-          .replace("/", "")
-          .split("?")[0] === props.productHandle
-      : false;
+  var isProductDetailPage_Product = window.location.pathname
+    ? window.location.pathname
+        .substring(window.location.pathname.lastIndexOf("/"))
+        .replace("/", "") === props.productHandle
+    : false;
 
   useEffect(() => {
     productAPI();

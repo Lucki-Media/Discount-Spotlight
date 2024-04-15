@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import ReactDOM from "react-dom";
 import style from "./DiscountLabel.module.css";
 import axios from "axios";
 import SolidDoubleTags from "../Icons/SolidDoubleTags";
@@ -67,11 +68,28 @@ const DiscountLabel = (props) => {
   useEffect(() => {
     productAPI();
   }, []);
+
+  // Create a container for rendering the PopupModal outside the component hierarchy
+  const modalContainer = document.createElement("div");
+
+  useEffect(() => {
+    document.body.appendChild(modalContainer); // Append the container to the body tag
+    return () => {
+      document.body.removeChild(modalContainer); // Clean up by removing the container when the component unmounts
+    };
+  }, [modalContainer]);
+
   return (
     <>
       {discounts.length > 0 && (
         <div className={style["onclick-popup"]}>
-          <div className={style["icon-with-text"]} onClick={handleOpenModal}>
+          <div
+            className={style["icon-with-text"]}
+            onClick={(e) => {
+              e.preventDefault();
+              handleOpenModal();
+            }}
+          >
             {props.json_style_data.discount_label_settings.icon_style
               .iconType === "1" && (
               <ThinTag
@@ -171,16 +189,29 @@ const DiscountLabel = (props) => {
               </a>
             </div>
           </div>
-
-          {isModalOpen === true && (
-            <PopupModal
-              json_style_data={props.json_style_data}
-              openPopup={isModalOpen}
-              handleCloseModal={handlePopupClose}
-              discounts={discounts}
-            />
-          )}
         </div>
+      )}
+
+      {/* 
+          // {isModalOpen === true && (
+          //   <PopupModal
+          //     json_style_data={props.json_style_data}
+          //     openPopup={isModalOpen}
+          //     handleCloseModal={handlePopupClose}
+          //     discounts={discounts}
+          //   />
+          // )}
+           */}
+
+      {/* Render PopupModal using ReactDOM.createPortal */}
+      {ReactDOM.createPortal(
+        <PopupModal
+          json_style_data={props.json_style_data}
+          openPopup={isModalOpen}
+          handleCloseModal={handlePopupClose}
+          discounts={discounts}
+        />,
+        modalContainer // Render into the modalContainer
       )}
     </>
   );
