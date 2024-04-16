@@ -113,9 +113,9 @@ export default function HomePage() {
             <Banner>
               <p>
                 To understand the functionality of our app, please watch our
-                instructional video on YouTube:{" "}
+                instructional video :{" "}
                 <a
-                  href="https://youtu.be/GLVe209vpFE"
+                  href="https://luckistore.in/discount_spotlight/LM-DD-How-it-works.mp4"
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{ color: "#00527C", fontWeight: 600 }}
