@@ -360,7 +360,7 @@ app.get("/api/updatePricingPlan", async (_req, res) => {
         ".myshopify.com",
         ""
       )}/apps/${process.env.APP_NAME}/pricingPlans`;
-      recurring_application_charge.test = true;
+      recurring_application_charge.test = null;
       await recurring_application_charge.save({
         update: true,
       });
