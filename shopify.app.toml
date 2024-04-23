@@ -6,6 +6,7 @@ application_url = "https://nodejs.luckimediadevelopment.com"
 embedded = true
 
 [build]
+automatically_update_urls_on_dev = false
 include_config_on_deploy = true
 
 [access_scopes]
