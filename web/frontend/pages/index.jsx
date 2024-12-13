@@ -7,9 +7,6 @@ import {
   List,
   FullscreenBar,
 } from "@shopify/polaris";
-import { TitleBar } from "@shopify/app-bridge-react";
-import { useTranslation, Trans } from "react-i18next";
-import { useAuthenticatedFetch } from "../hooks";
 import axios from "axios";
 import {
   ThemeTemplateIcon,
@@ -18,14 +15,10 @@ import {
   DiscountIcon,
 } from "@shopify/polaris-icons";
 import { CChart } from "@coreui/react-chartjs";
-
-import { ProductsCard } from "../components";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function HomePage() {
-  const { t } = useTranslation();
   const shop_url = document.getElementById("shopOrigin").value;
-  const appFetch = useAuthenticatedFetch();
 
   const [year, setYear] = useState(new Date().getFullYear());
   const [graphArray, setGraphArray] = useState([
@@ -51,9 +44,6 @@ export default function HomePage() {
     "https://" +
     document.getElementById("shopOrigin").value +
     "/admin/themes/current/editor?context=apps";
-
-  const [active, setActive] = useState(false);
-  const handleChange = useCallback(() => setActive(!active), [active]);
 
   return (
     <>

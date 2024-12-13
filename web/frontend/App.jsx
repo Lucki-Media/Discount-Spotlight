@@ -7,7 +7,7 @@ import {
   AppBridgeProvider,
   QueryProvider,
   PolarisProvider,
-} from "./components";
+} from "./components/providers";
 
 export default function App() {
   // Any .tsx or .jsx files in /pages will become a route
