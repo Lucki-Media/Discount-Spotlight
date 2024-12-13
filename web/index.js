@@ -7,7 +7,6 @@ import cors from "cors";
 
 import connectDB from "./db/connections/DBConnectionUtil.js";
 import shopify from "./shopify.js";
-import productCreator from "./graphQL/product-creator.js";
 import getFilterProducts from "./graphQL/getFilterProducts.js";
 import getPrevPageProducts from "./graphQL/getPrevPageProducts.js";
 import getNextPageProducts from "./graphQL/getNextPageProducts.js";
@@ -19,13 +18,10 @@ import shopifySessionRoute from "./routes/ShopifySessions.js";
 import discountRoute from "./routes/DiscountRoute.js";
 import customizationRoute from "./routes/CustomizationRoute.js";
 import countRoute from "./routes/CountRoute.js";
-import ShopifySessions from "./db/models/ShopifySessions.js";
 import Customization from "./db/models/Customizations.js";
 import Charge from "./db/models/Charges.js";
 import { json_style_data } from "./frontend/Static/General_settings.js";
 import ProductDiscount from "./db/models/Discounts.js";
-import crypto from "crypto";
-import bodyParser from "body-parser";
 
 const PORT = parseInt(
   process.env.BACKEND_PORT || process.env.PORT || "3000",
@@ -115,27 +111,6 @@ app.use("/api/*", shopify.validateAuthenticatedSession());
 
 // Enable CORS only for specific routes
 app.use("/api/*", cors());
-
-app.get("/api/products/count", async (_req, res) => {
-  const countData = await shopify.api.rest.Product.all({
-    session: res.locals.shopify.session,
-  });
-  res.status(200).send(countData);
-});
-
-app.get("/api/products/create", async (_req, res) => {
-  let status = 200;
-  let error = null;
-
-  try {
-    await productCreator(res.locals.shopify.session);
-  } catch (e) {
-    console.log(`Failed to process products/create: ${e.message}`);
-    status = 500;
-    error = e.message;
-  }
-  res.status(status).send({ success: status === 200, error });
-});
 
 // DISCOUNT PAGE GRAPHQL API START
 app.get("/api/getPriceRules", async (_req, res) => {
@@ -360,7 +335,7 @@ app.get("/api/updatePricingPlan", async (_req, res) => {
         ".myshopify.com",
         ""
       )}/apps/${process.env.APP_NAME}/pricingPlans`;
-      recurring_application_charge.test = true;
+      recurring_application_charge.test = null;
       await recurring_application_charge.save({
         update: true,
       });

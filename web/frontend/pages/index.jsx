@@ -7,9 +7,6 @@ import {
   List,
   FullscreenBar,
 } from "@shopify/polaris";
-import { TitleBar } from "@shopify/app-bridge-react";
-import { useTranslation, Trans } from "react-i18next";
-import { useAuthenticatedFetch } from "../hooks";
 import axios from "axios";
 import {
   ThemeTemplateIcon,
@@ -18,14 +15,10 @@ import {
   DiscountIcon,
 } from "@shopify/polaris-icons";
 import { CChart } from "@coreui/react-chartjs";
-
-import { ProductsCard } from "../components";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function HomePage() {
-  const { t } = useTranslation();
   const shop_url = document.getElementById("shopOrigin").value;
-  const appFetch = useAuthenticatedFetch();
 
   const [year, setYear] = useState(new Date().getFullYear());
   const [graphArray, setGraphArray] = useState([
@@ -52,9 +45,6 @@ export default function HomePage() {
     document.getElementById("shopOrigin").value +
     "/admin/themes/current/editor?context=apps";
 
-  const [active, setActive] = useState(false);
-  const handleChange = useCallback(() => setActive(!active), [active]);
-
   return (
     <>
       <div className="fullscreenbar_div">
@@ -76,7 +66,7 @@ export default function HomePage() {
                 flexGrow: 1,
               }}
             >
-              <p className="fullscreenbar_headertitle">Spotlight Dashboard</p>
+              <p className="fullscreenbar_headertitle">Dazzling Dashboard</p>
             </div>
           </div>
         </FullscreenBar>
@@ -113,9 +103,9 @@ export default function HomePage() {
             <Banner>
               <p>
                 To understand the functionality of our app, please watch our
-                instructional video on YouTube:{" "}
+                instructional video :{" "}
                 <a
-                  href="https://youtu.be/GLVe209vpFE"
+                  href="https://luckistore.in/discount_spotlight/LM-DD-How-it-works.mp4"
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{ color: "#00527C", fontWeight: 600 }}

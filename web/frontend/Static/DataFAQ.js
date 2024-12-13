@@ -2,26 +2,26 @@ const DataFAQ = [
     {
         key: "1",
         panel: "panel1",
-        question: "What is Discount Spotlight?",
-        answer: "&#x25CF; Discount Spotlight is a Shopify app that allows merchants to individually set and showcase up to three discount codes on each product. You can customize the appearance of discount labels, popups, and ribbons to enhance your store's promotional capabilities.",
+        question: "What is LM Discount Dazzle?",
+        answer: "&#x25CF; LM Discount Dazzle is a Shopify app that allows merchants to individually set and showcase up to three discount codes on each product. You can customize the appearance of discount labels, popups, and ribbons to enhance your store's promotional capabilities.",
     },
     {
         key: "2",
         panel: "panel2",
         question: "Is the UI customizable?",
-        answer: "&#x25CF; Yes, Discount Spotlight offers extensive customization options for the user interface. You can tailor the appearance of discount labels, popups, and ribbons to match the look and feel of your store.",
+        answer: "&#x25CF; Yes, LM Discount Dazzle offers extensive customization options for the user interface. You can tailor the appearance of discount labels, popups, and ribbons to match the look and feel of your store.",
     },
     {
         key: "3",
         panel: "panel3",
         question: "How do I set up individual discounts for each product?",
-        answer: "&#x25CF; Navigate to the Discounts page within the Discount Spotlight dashboard. Here, you'll find a list of all products in your store. Use the dropdown (combobox) beside each product to select and set up to three discount codes specifically for that product.",
+        answer: "&#x25CF; Navigate to the Discounts page within the LM Discount Dazzle dashboard. Here, you'll find a list of all products in your store. Use the dropdown (combobox) beside each product to select and set up to three discount codes specifically for that product.",
     },
     {
         key: "4",
         panel: "panel4",
         question: "What is the Discounts page, and how do I access it?",
-        answer: "&#x25CF; The Discounts page is a feature within Discount Spotlight where you can set individual discounts for each product. Access it from the Discount Spotlight dashboard to see a list of all products in your store and customize their discount settings.",
+        answer: "&#x25CF; The Discounts page is a feature within LM Discount Dazzle where you can set individual discounts for each product. Access it from the LM Discount Dazzle dashboard to see a list of all products in your store and customize their discount settings.",
     },
     {
         key: "5",

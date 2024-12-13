@@ -49,7 +49,7 @@ export default function DisccountLabel(props) {
               <img src={placeholder} alt="" />
             </div>
             <div className={style.p_details}>
-              <p>Discount Sportlight</p>
+              <p>Discount Dazzle</p>
               <h2>Demo Product</h2>
               <div className={style["icon-with-text"]}>
                 {props.json_style_data.discount_label_settings.icon_style

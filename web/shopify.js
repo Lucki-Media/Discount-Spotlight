@@ -16,7 +16,7 @@ const billingConfig = {
     trialDays: 0,
     interval: BillingInterval.Every30Days,
     replacementBehavior: BillingReplacementBehavior.ApplyImmediately,
-    test: true,
+    test: null,
   },
   "Basic Plan": {
     amount: 5.99,
@@ -24,7 +24,7 @@ const billingConfig = {
     trialDays: 0,
     interval: BillingInterval.Every30Days,
     replacementBehavior: BillingReplacementBehavior.ApplyImmediately,
-    test: true,
+    test: null,
   },
   "Premium Plan": {
     amount: 14.99,
@@ -32,7 +32,7 @@ const billingConfig = {
     trialDays: 0,
     interval: BillingInterval.Every30Days,
     replacementBehavior: BillingReplacementBehavior.ApplyImmediately,
-    test: true,
+    test: null,
   },
 };
 
