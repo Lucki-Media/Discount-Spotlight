@@ -23,10 +23,7 @@ import Charge from "./db/models/Charges.js";
 import { json_style_data } from "./frontend/Static/General_settings.js";
 import ProductDiscount from "./db/models/Discounts.js";
 
-const PORT = parseInt(
-  process.env.BACKEND_PORT || process.env.PORT || "3000",
-  10
-);
+const PORT = parseInt("3000", 10);
 const databaseUrl = process.env.MONGO_DB_CLOUD_URL;
 const databaseName = process.env.DATABASE_NAME;
 const STATIC_PATH =

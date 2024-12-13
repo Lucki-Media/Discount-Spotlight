@@ -2,7 +2,7 @@
   "name": "react-scripts-webpack",
   "version": "0.1.0",
   "private": true,
-  "proxy": "https://nodejs.luckimediadevelopment.com",
+  "proxy": "https://pig-striking-snipe.ngrok-free.app",
   "dependencies": {
     "@apollo/client": "^3.7.0",
     "@babel/core": "^7.16.0",

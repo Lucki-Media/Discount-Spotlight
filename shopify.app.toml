@@ -8,7 +8,7 @@ embedded = true
 [build]
 automatically_update_urls_on_dev = true
 dev_store_url = "ds-develop-store.myshopify.com"
-include_config_on_deploy = true 
+include_config_on_deploy = true
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
@@ -17,19 +17,18 @@ use_legacy_install_flow = true
 
 [auth]
 redirect_urls = [
-  "https://nodejs.luckimediadevelopment.com/auth/callback",
-  "https://nodejs.luckimediadevelopment.com/auth/shopify/callback",
-  "https://nodejs.luckimediadevelopment.com/api/auth/callback",
-  "https://nodejs.luckimediadevelopment.com/.shopify/graphiql/auth/callback"
+  "https://legitimate-consequences-tan-cubic.trycloudflare.com/auth/callback",
+  "https://legitimate-consequences-tan-cubic.trycloudflare.com/auth/shopify/callback",
+  "https://legitimate-consequences-tan-cubic.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
 api_version = "2024-01"
 
   [webhooks.privacy_compliance]
-  customer_deletion_url = "https://nodejs.luckimediadevelopment.com/api/webhooks/customer_deletion"
-  customer_data_request_url = "https://nodejs.luckimediadevelopment.com/api/webhooks/customer_request"
-  shop_deletion_url = "https://nodejs.luckimediadevelopment.com/api/webhooks/deletion"
+  customer_deletion_url = "https://pig-striking-snipe.ngrok-free.app/api/webhooks/customer_deletion"
+  customer_data_request_url = "https://pig-striking-snipe.ngrok-free.app/api/webhooks/customer_request"
+  shop_deletion_url = "https://pig-striking-snipe.ngrok-free.app/api/webhooks/deletion"
 
 [pos]
 embedded = false

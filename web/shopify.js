@@ -55,8 +55,8 @@ const shopify = shopifyApp({
   },
   // This should be replaced with your preferred storage strategy
   sessionStorage: new MongoDBSessionStorage(
-    "mongodb+srv://discountspotlight:9RVJOCRkxInTsiA0@discount-spotlight.70piy8b.mongodb.net/",
-    "discount-spotlight"
+    "mongodb://admin:Luckimedia%401234@5.183.8.55:27017/",
+    "discount-dazzle-dev"
   ),
 });
 

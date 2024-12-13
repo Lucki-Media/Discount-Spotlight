@@ -15,7 +15,7 @@ if (
 }
 
 const proxyOptions = {
-  target: `https://nodejs.luckimediadevelopment.com:${process.env.BACKEND_PORT}`,
+  target: `https://pig-striking-snipe.ngrok-free.app:${process.env.BACKEND_PORT}`,
   changeOrigin: false,
   secure: true,
   ws: false,
